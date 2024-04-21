@@ -30,29 +30,28 @@ const IndexPage = () => {
       {/* Hero Container */}
       <Hero
         maxWidth={'500px'}
-        image={'/banner1.png'}
-        title={'Essentials for a cold winter'}
-        subtitle={'Discover Autumn Winter 2021'}
-        ctaText={'shop now'}
+        image={'/Couverture_JM_petit_logo.jpg'}
+        title={'Racontez votre histoire avec style'}
+        ctaText={'Commencer le shopping'}
         ctaAction={goToShop}
       />
 
       {/* Message Container */}
       <div className={styles.messageContainer}>
-        <p>
+      {/*   <p>
           This is a demonstration of the Sydney theme for verse by{' '}
           <span className={styles.gold}>matter design.</span>
-        </p>
-        <p>
+        </p> */}
+        {/* <p>
           wear by <span className={styles.gold}>sunspel</span> and{' '}
           <span className={styles.gold}>scotch&soda</span>
-        </p>
+        </p> */}
       </div>
 
       {/* Collection Container */}
       <div className={styles.collectionContainer}>
         <Container size={'large'}>
-          <Title name={'New Collection'} />
+          <Title name={'Nouvelle collection'} />
           <ProductCollectionGrid />
         </Container>
       </div>
@@ -72,7 +71,7 @@ const IndexPage = () => {
       </div>
 
       {/* Highlight  */}
-      <div className={styles.highlightContainer}>
+      {/* <div className={styles.highlightContainer}>
         <Container size={'large'} fullMobile>
           <Highlight
             image={'/highlight.png'}
@@ -85,14 +84,14 @@ const IndexPage = () => {
             link={'/shop'}
           />
         </Container>
-      </div>
+      </div> */}
 
       {/* Promotion */}
       <div className={styles.promotionContainer}>
         <Hero image={toOptimizedImage('/banner2.png')} title={`-50% off \n All Essentials`} />
         <div className={styles.linkContainers}>
-          <Link to={'/shop'}>WOMAN</Link>
-          <Link to={'/shop'}>MAN</Link>
+          <Link to={'/shop'}>Femme</Link>
+          <Link to={'/shop'}>Homme</Link>
         </div>
       </div>
 
