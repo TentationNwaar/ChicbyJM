@@ -15,12 +15,16 @@
         "wishlist": true,
         "tags": ["sample"],
         "gallery": [
-            {"image": "/products/pdp1.jpeg", "alt": "pdp description 1"},
-            {"image": "/products/pdp2.jpeg", "alt": "pdp description 2"},
-            {"image": "/products/pdp3.jpeg", "alt": "pdp description 3"},
-            {"image": "/products/pdp4.jpeg", "alt": "pdp description 4"}
+            {"image": "/products/Maillot_Basketball_JM_unisexe/MaillotBasketballJMunisexe.jpg", "alt": "Maillot basketball JM unisexe"},
+            {"image": "/products/Maillot_Basketball_JM_unisexe/MaillotBasketballJMunisexe2.jpg", "alt": "Maillot basketball JM unisexe"},
+            {"image": "/products/Maillot_Basketball_JM_unisexe/MaillotBasketballJMunisexe3.jpg", "alt": "Maillot basketball JM unisexe"},
+            {"image": "/products/Maillot_Basketball_JM_unisexe/MaillotBasketballJMunisexe4.jpg", "alt": "Maillot basketball JM unisexe"},
+            {"image": "/products/Maillot_Basketball_JM_unisexe/MaillotBasketballJMunisexe5.jpg", "alt": "Maillot basketball JM unisexe"},
+            {"image": "/products/Maillot_Basketball_JM_unisexe/MaillotBasketballJMunisexe6.jpg", "alt": "Maillot basketball JM unisexe"},
+            {"image": "/products/Maillot_Basketball_JM_unisexe/MaillotBasketballJMunisexe7.jpg", "alt": "Maillot basketball JM unisexe"},
+            {"image": "/products/Maillot_Basketball_JM_unisexe/MaillotBasketballJMunisexe8.jpg", "alt": "Maillot basketball JM unisexe"}
         ],
-        "description": "This soft lambswool jumper is knitted in Scotland, using yarn from one of the world's oldest spinners based in Fife. Once knitted, the garment is washed in Scottish spring water to make it beautifully soft."
+        "description": "Fabriqué en maille 100% polyester respirante, ce maillot de sport unisexe offre une ventilation et un confort optimaux lors d'entraînements intenses ou d'activités de loisir. La coupe décontractée et la longueur allongée du maillot offrent une plus grande couvrance, tandis que la finition du col assure une résistance à long terme et un look soigné. <br><br>• 100&nbsp;% polyester respirant (mailles)<br>• Poids du tissu&nbsp;:&nbsp;140&nbsp;g/m² (4,13&nbsp;oz/yd²)<br>• Coupe confortable<br>• Élastique et résistant<br>• Couture sur le côté<br>• Grande longueur<br>• Manches courtes raglan<br>• Bordure de col<br>• Encolure ras du cou classique"
     },
     {
         "name": "Classic T-Shirt",

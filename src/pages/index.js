@@ -30,6 +30,7 @@ const IndexPage = () => {
       {/* Hero Container */}
       <Hero
         maxWidth={'500px'}
+        maxHeight={'300px'}
         image={'/Couverture_JM_petit_logo.jpg'}
         title={'Racontez votre histoire avec style'}
         ctaText={'Commencer le shopping'}
