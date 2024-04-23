@@ -2,7 +2,7 @@ import React from 'react';
 import { navigate } from 'gatsby';
 
 import * as styles from './Brand.module.css';
-import brandImage from '/Users/max/Documents/Website/JM/ChicbyJM/static/Logo_JM_Transparent.png';
+import brandImage from '/Logo_JM_Transparent.png';
 
 const Brand = (props) => {
   return (
