@@ -8,7 +8,7 @@ const AttributeGrid = (props) => {
   return (
     <div className={styles.root}>
       <Attribute
-        icon={'Livraison'}
+        icon={'delivery'}
         title={'Livraison internationale'}
         subtitle={'Oui oui partout'}
       />
@@ -18,7 +18,7 @@ const AttributeGrid = (props) => {
         subtitle={<a href="/PolitiqueRetour">Cliquez pour en savoir plus</a>}
       />
       <Attribute
-        icon={'Carte de crédit'}
+        icon={'creditcard'}
         title={'Paiement sécurisé'}
         subtitle={'Achetez en toute sécurité'}
       />
