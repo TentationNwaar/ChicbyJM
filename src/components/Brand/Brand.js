@@ -2,7 +2,7 @@ import React from 'react';
 import { navigate } from 'gatsby';
 
 import * as styles from './Brand.module.css';
-import brandImage from '/Logo_JM_Transparent.png';
+import logo from '../../../static/Logo_JM_Transparent.png'; 
 
 const Brand = (props) => {
   return (
@@ -12,7 +12,7 @@ const Brand = (props) => {
       onClick={() => navigate('/')}
     >
       <img
-        src={brandImage}
+        src={logo}
         alt="Logo JM"
         width="127"
         height="24"
