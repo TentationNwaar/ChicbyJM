@@ -7,13 +7,13 @@ module.exports = {
     {
       resolve: 'gatsby-plugin-react-i18next',
       options: {
-        localeJsonSourceName: 'locales', // nom de la source de données
-        languages: ['en', 'fr'], // langues supportées
-        defaultLanguage: 'en', // langue par défaut
+        localeJsonSourceName: 'intl', // Name of the data source
+        languages: ['en', 'fr'], // Supported languages
+        defaultLanguage: 'fr', // Default language
         siteUrl: 'https://chicbyjm.netlify.app/',
         i18nextOptions: {
           interpolation: {
-            escapeValue: false, // pas nécessaire pour React
+            escapeValue: false, // Not necessary for React
           },
           keySeparator: false,
           nsSeparator: false,
@@ -23,7 +23,7 @@ module.exports = {
             matchPath: '/:lang?/about',
             getLanguageFromPath: true,
           },
-          // plus de configurations de pages si nécessaire
+          // Additional page configurations if necessary
         ],
       },
     },
