@@ -1,8 +1,14 @@
 .root {
     display: flex;
+    align-items: center;
     justify-content: center;
     cursor: pointer;
 }
+
+img {
+    margin: 0;
+    padding: 0; /* Optionnel : S'assure qu'il n'y a pas de padding par défaut */
+  }
 
 @media (max-width: 800px) {
     .root svg {

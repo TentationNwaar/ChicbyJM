@@ -44,9 +44,9 @@ const ShopPage = (props) => {
         </Container>
         <Banner
           maxWidth={'650px'}
-          name={`Woman's Sweaters`}
+          name={` Sweaters`}
           subtitle={
-            'Look to our women’s sweaters for modern takes on one-and-done dressing. From midis in bold prints to dramatic floor-sweeping styles and easy all-in-ones, our edit covers every mood.'
+            'Une collection élégante et polyvalente qui allie confort et sophistication. Chaque pièce est conçue pour sublimer votre style quotidien, avec des coupes modernes et des détails raffinés. Parfait pour une allure chic en toute occasion.'
           }
         />
         <Container size={'large'} spacing={'min'}>
@@ -64,7 +64,7 @@ const ShopPage = (props) => {
               <div
                 className={`${styles.iconContainer} ${styles.sortContainer}`}
               >
-                <span>Sort by</span>
+                <span>Trier par</span>
                 <Icon symbol={'caret'} />
               </div>
             </div>

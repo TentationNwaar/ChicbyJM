@@ -29,7 +29,7 @@ const IndexPage = () => {
     <Layout disablePaddingBottom>
       {/* Hero Container */}
       <Hero
-        image={'/Couverture_JM_petit_logo.jpg'}
+        image={'/Banner1_JM.png'}
         title={'Racontez votre histoire avec style'}
         ctaText={'Commencer le shopping'}
         ctaAction={goToShop}

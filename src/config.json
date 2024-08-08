@@ -64,64 +64,56 @@
   ],
   "headerLinks": [
     {
-      "menuLabel": "Shop",
+      "menuLabel": "Shopping",
       "menuLink": "/shop",
       "category": [
         {
-          "categoryLabel": "woman",
+          "categoryLabel": "Femme",
           "submenu": [
             {
-              "menuLabel": "All clothing",
+              "menuLabel": "Tous les vêtements",
               "menuLink": "/shop"
             },
             {
-              "menuLabel": "sweatshirts & hoodies",
+              "menuLabel": "Hauts",
               "menuLink": "/shop"
             },
             {
-              "menuLabel": "jackets",
+              "menuLabel": "Bas",
               "menuLink": "/shop"
             },
             {
-              "menuLabel": "trousers",
+              "menuLabel": "Chaussures",
               "menuLink": "/shop"
             }
           ]
         },
         {
-          "categoryLabel": "men",
+          "categoryLabel": "Homme",
           "submenu": [
             {
-              "menuLabel": "All clothing",
+              "menuLabel": "Tous les vêtements",
               "menuLink": "/shop"
             },
             {
-              "menuLabel": "sweatshirts & hoodies",
+              "menuLabel": "Hauts",
               "menuLink": "/shop"
             },
             {
-              "menuLabel": "jackets",
+              "menuLabel": "Bas",
               "menuLink": "/shop"
             },
             {
-              "menuLabel": "trousers",
-              "menuLink": "/shop"
-            },
-            {
-              "menuLabel": "pants",
+              "menuLabel": "Chaussures",
               "menuLink": "/shop"
             }
           ]
         },
         {
-          "categoryLabel": "accessories",
+          "categoryLabel": "Accessoires",
           "submenu": [
             {
-              "menuLabel": "caps & scarves",
-              "menuLink": "/shop"
-            },
-            {
-              "menuLabel": "bags",
+              "menuLabel": "Sacs",
               "menuLink": "/shop"
             }
           ]
@@ -129,44 +121,47 @@
       ]
     },
     {
-      "menuLabel": "journal",
+      "menuLabel": "Collection",
       "menuLink": "/blog",
       "category": null
     },
     {
-      "menuLabel": "About",
+      "menuLabel": "A propos",
+      "menuLink": "/about",
+      "category": null
+    },
+    {
+      "menuLabel": "Contact",
       "menuLink": "/about",
       "category": null
     }
   ],
   "filters": [
     {
-      "category": "colour",
+      "category": "Couleur",
       "items": [
-        { "name": "Black", "value": true },
-        { "name": "Green", "value": false },
-        { "name": "Dark Blue", "value": false },
-        { "name": "Blue", "value": true },
-        { "name": "Grey", "value": false },
-        { "name": "Red", "value": false }
+        { "name": "Noir", "value": true },
+        { "name": "Vert", "value": false },
+        { "name": "Bleu foncé", "value": false },
+        { "name": "Bleu", "value": true },
+        { "name": "Gris", "value": false },
+        { "name": "Rouge", "value": false }
       ]
     },
 
     {
-      "category": "size",
+      "category": "Taille",
       "items": [
         { "name": "XXS", "value": false },
         { "name": "XS", "value": false },
         { "name": "S", "value": false },
         { "name": "M", "value": false },
         { "name": "L", "value": false },
-        { "name": "XL", "value": false },
-        { "name": "XXL", "value": false },
-        { "name": "Onesize", "value": false }
+        { "name": "XL", "value": false }
       ]
     },
     {
-      "category": "gender",
+      "category": "Genre",
       "items": [
         { "name": "Male", "value": false },
         { "name": "Female", "value": false },
