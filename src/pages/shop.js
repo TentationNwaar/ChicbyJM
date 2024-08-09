@@ -18,20 +18,20 @@ const ShopPage = (props) => {
   const [showFilter, setShowFilter] = useState(false);
   const data = generateMockProductData(6, 'woman');
 
-  useEffect(() => {
-    window.addEventListener('keydown', escapeHandler);
-    return () => window.removeEventListener('keydown', escapeHandler);
-  }, []);
-
   const escapeHandler = (e) => {
     if (e?.keyCode === undefined) return;
     if (e.keyCode === 27) setShowFilter(false);
   };
 
+  useEffect(() => {
+    window.addEventListener('keydown', escapeHandler);
+    return () => window.removeEventListener('keydown', escapeHandler);
+  }, []);
+
   return (
     <Layout>
       <div className={styles.root}>
-        <Container size={'large'} spacing={'min'}>
+        <Container size="large" spacing="min">
           <div className={styles.breadcrumbContainer}>
             <Breadcrumbs
               crumbs={[
@@ -43,29 +43,27 @@ const ShopPage = (props) => {
           </div>
         </Container>
         <Banner
-          maxWidth={'650px'}
-          name={`Woman's Sweaters`}
-          subtitle={
-            'Look to our women’s sweaters for modern takes on one-and-done dressing. From midis in bold prints to dramatic floor-sweeping styles and easy all-in-ones, our edit covers every mood.'
-          }
+          maxWidth="650px"
+          name="Woman's Sweaters"
+          subtitle="Look to our women’s sweaters for modern takes on one-and-done dressing. From midis in bold prints to dramatic floor-sweeping styles and easy all-in-ones, our edit covers every mood."
         />
-        <Container size={'large'} spacing={'min'}>
+        <Container size="large" spacing="min">
           <div className={styles.metaContainer}>
             <span className={styles.itemCount}>476 items</span>
             <div className={styles.controllerContainer}>
               <div
                 className={styles.iconContainer}
-                role={'presentation'}
+                role="presentation"
                 onClick={() => setShowFilter(!showFilter)}
               >
-                <Icon symbol={'filter'} />
+                <Icon symbol="filter" />
                 <span>Filters</span>
               </div>
               <div
                 className={`${styles.iconContainer} ${styles.sortContainer}`}
               >
                 <span>Sort by</span>
-                <Icon symbol={'caret'} />
+                <Icon symbol="caret" />
               </div>
             </div>
           </div>
@@ -75,22 +73,21 @@ const ShopPage = (props) => {
             filters={Config.filters}
           />
           <div className={styles.chipsContainer}>
-            <Chip name={'XS'} />
-            <Chip name={'S'} />
+            <Chip name="XS" />
+            <Chip name="S" />
           </div>
           <div className={styles.productContainer}>
             <span className={styles.mobileItemCount}>476 items</span>
-            <ProductCardGrid data={data}></ProductCardGrid>
+            <ProductCardGrid data={data} />
           </div>
           <div className={styles.loadMoreContainer}>
             <span>6 of 456</span>
-            <Button fullWidth level={'secondary'}>
+            <Button fullWidth level="secondary">
               LOAD MORE
             </Button>
           </div>
         </Container>
       </div>
-
       <LayoutOption />
     </Layout>
   );

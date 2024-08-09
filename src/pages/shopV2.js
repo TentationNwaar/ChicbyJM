@@ -29,56 +29,46 @@ const ShopV2Page = (props) => {
   return (
     <Layout>
       <div className={styles.root}>
-        <Container size={'large'} spacing={'min'}>
-          <Breadcrumbs
-            crumbs={[{ link: '/', label: 'Home' }, { label: 'Woman' }]}
-          />
+        <Container size="large" spacing="min">
+          <Breadcrumbs crumbs={[{ link: '/', label: 'Home' }, { label: 'Woman' }]} />
         </Container>
         <Banner
-          maxWidth={'650px'}
-          name={`Woman`}
-          subtitle={
-            'Look to our women’s sweaters for modern takes on one-and-done dressing. From midis in bold prints to dramatic floor-sweeping styles and easy all-in-ones, our edit covers every mood.'
-          }
+          maxWidth="650px"
+          name="Woman"
+          subtitle="Look to our women’s sweaters for modern takes on one-and-done dressing. From midis in bold prints to dramatic floor-sweeping styles and easy all-in-ones, our edit covers every mood."
         />
-        <Container size={'large'} spacing={'min'}>
+        <Container size="large" spacing="min">
           <div className={styles.content}>
             <div className={styles.filterContainer}>
-              {filterState.map((category, categoryIndex) => {
-                return (
-                  <div key={categoryIndex}>
-                    <Accordion customStyle={styles} title={category.category}>
-                      {category.items.map((item, itemIndex) => {
-                        return (
-                          <div key={itemIndex} className={styles.filters}>
-                            <Checkbox
-                              size={'sm'}
-                              action={(e) =>
-                                filterTick(e, categoryIndex, itemIndex)
-                              }
-                              label={item.name}
-                              value={item.value}
-                              id={item.name}
-                              name={item.name}
-                            />
-                          </div>
-                        );
-                      })}
-                    </Accordion>
-                  </div>
-                );
-              })}
+              {filterState.map((category, categoryIndex) => (
+                <div key={categoryIndex}>
+                  <Accordion customStyle={styles} title={category.category}>
+                    {category.items.map((item, itemIndex) => (
+                      <div key={itemIndex} className={styles.filters}>
+                        <Checkbox
+                          size="sm"
+                          action={(e) => filterTick(e, categoryIndex, itemIndex)}
+                          label={item.name}
+                          value={item.value}
+                          id={item.name}
+                          name={item.name}
+                        />
+                      </div>
+                    ))}
+                  </Accordion>
+                </div>
+              ))}
             </div>
             <div>
               <div className={styles.metaContainer}>
-                <span className={`standardSpan`}>476 items</span>
+                <span className="standardSpan">476 items</span>
               </div>
-              <ProductCardGrid height={'440px'} data={data}></ProductCardGrid>
+              <ProductCardGrid height="440px" data={data} />
             </div>
           </div>
           <div className={styles.loadMoreContainer}>
             <span>6 of 456</span>
-            <Button fullWidth level={'secondary'}>
+            <Button fullWidth level="secondary">
               LOAD MORE
             </Button>
           </div>
