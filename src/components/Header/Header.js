@@ -27,11 +27,11 @@ const Header = (prop) => {
   const [search, setSearch] = useState('');
 
   const searchRef = createRef();
-  const bannerMessage = 'Livraison international';
+  const bannerMessage = 'EXCLUSIF : PROFITEZ DE 10 % DE RÉDUCTION SUR TOUTE VOTRE PREMIÈRE COMMANDE AVEC LE CODE JM2024';
   const searchSuggestions = [
-    'Oversize sweaters',
-    'Lama Pajamas',
-    'Candles Cinnamon',
+    'T-shirt',
+    'School Spirit',
+    'Ciel bleu',
   ];
 
   const handleHover = (navObject) => {

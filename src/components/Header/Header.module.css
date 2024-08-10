@@ -27,7 +27,7 @@
 }
 
 .headerMessageContainer {
-    background-color: var(--bg-grey);
+    background-color: var(--standard-black);
     padding: 8px;
     display: flex;
     align-items: center;
@@ -38,7 +38,7 @@
     font-weight: 500;
     font-size: 12px;
     line-height: 15px;
-    color: var(--grey-crumb);
+    color: var(--standard-white);
 }
 
 .root .linkContainers {
@@ -50,7 +50,7 @@
     text-transform: uppercase;
     color: var(--standard-black);
     font-weight: 500;
-    padding-bottom: 50px;
+    padding-bottom: 30px;
     font-size: 12px;
     line-height: 15px;
     border-bottom: 2px solid transparent;

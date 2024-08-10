@@ -35,18 +35,6 @@ const IndexPage = () => {
         ctaAction={goToShop}
       />
 
-      {/* Message Container */}
-      <div className={styles.messageContainer}>
-      {/*   <p>
-          This is a demonstration of the Sydney theme for verse by{' '}
-          <span className={styles.gold}>matter design.</span>
-        </p> */}
-        {/* <p>
-          wear by <span className={styles.gold}>sunspel</span> and{' '}
-          <span className={styles.gold}>scotch&soda</span>
-        </p> */}
-      </div>
-
       {/* Collection Container */}
       <div className={styles.collectionContainer}>
         <Container size={'large'}>
@@ -68,22 +56,6 @@ const IndexPage = () => {
           />
         </Container>
       </div>
-
-      {/* Highlight  */}
-      {/* <div className={styles.highlightContainer}>
-        <Container size={'large'} fullMobile>
-          <Highlight
-            image={'/highlight.png'}
-            altImage={'highlight image'}
-            miniImage={'/highlightmin.png'}
-            miniImageAlt={'mini highlight image'}
-            title={'Luxury Knitwear'}
-            description={`This soft lambswool jumper is knitted in Scotland, using yarn from one of the world's oldest spinners based in Fife`}
-            textLink={'shop now'}
-            link={'/shop'}
-          />
-        </Container>
-      </div> */}
 
       {/* Promotion */}
       <div className={styles.promotionContainer}>

@@ -64,64 +64,85 @@
   ],
   "headerLinks": [
     {
-      "menuLabel": "Shop",
+      "menuLabel": "Shopping",
       "menuLink": "/shop",
       "category": [
         {
-          "categoryLabel": "woman",
+          "categoryLabel": "Tous les vêtements",
+          "menuLink": "/shop"
+        },
+        {
+          "categoryLabel": "Femme",
           "submenu": [
             {
-              "menuLabel": "All clothing",
+              "menuLabel": "Tous les vêtements",
               "menuLink": "/shop"
             },
             {
-              "menuLabel": "sweatshirts & hoodies",
+              "menuLabel": "Hauts",
               "menuLink": "/shop"
             },
             {
-              "menuLabel": "jackets",
+              "menuLabel": "Bas",
               "menuLink": "/shop"
             },
             {
-              "menuLabel": "trousers",
+              "menuLabel": "Chaussures",
               "menuLink": "/shop"
             }
           ]
         },
         {
-          "categoryLabel": "men",
+          "categoryLabel": "Homme",
           "submenu": [
             {
-              "menuLabel": "All clothing",
+              "menuLabel": "Tous les vêtements",
               "menuLink": "/shop"
             },
             {
-              "menuLabel": "sweatshirts & hoodies",
+              "menuLabel": "Hauts",
               "menuLink": "/shop"
             },
             {
-              "menuLabel": "jackets",
+              "menuLabel": "Bas",
               "menuLink": "/shop"
             },
             {
-              "menuLabel": "trousers",
-              "menuLink": "/shop"
-            },
-            {
-              "menuLabel": "pants",
+              "menuLabel": "Chaussures",
               "menuLink": "/shop"
             }
           ]
         },
         {
-          "categoryLabel": "accessories",
+          "categoryLabel": "Enfants",
           "submenu": [
             {
-              "menuLabel": "caps & scarves",
+              "menuLabel": "Tous les vêtements",
               "menuLink": "/shop"
             },
             {
-              "menuLabel": "bags",
+              "menuLabel": "Hauts",
+              "menuLink": "/shop"
+            },
+            {
+              "menuLabel": "Bas",
+              "menuLink": "/shop"
+            },
+            {
+              "menuLabel": "Chaussures",
+              "menuLink": "/shop"
+            }
+          ]
+        },
+        {
+          "categoryLabel": "Accessoires",
+          "submenu": [
+            {
+              "menuLabel": "Couvre-chef",
+              "menuLink": "/shop"
+            },
+            {
+              "menuLabel": "Sacs",
               "menuLink": "/shop"
             }
           ]
@@ -129,12 +150,17 @@
       ]
     },
     {
-      "menuLabel": "journal",
+      "menuLabel": "Collections",
       "menuLink": "/blog",
       "category": null
     },
     {
-      "menuLabel": "About",
+      "menuLabel": "Contact",
+      "menuLink": "/blog",
+      "category": null
+    },
+    {
+      "menuLabel": "A propos",
       "menuLink": "/about",
       "category": null
     }

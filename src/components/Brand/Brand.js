@@ -14,8 +14,8 @@ const Brand = (props) => {
       <img
         src={logo}
         alt="Logo JM"
-        width="100"
-        height="100"
+        width="60"
+        height="60"
         onClick={() => navigate('/')} // Si vous souhaitez ajouter une action sur le clic de l'image
       />
 
