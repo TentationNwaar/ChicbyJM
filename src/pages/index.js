@@ -17,6 +17,11 @@ import * as styles from './index.module.css';
 import { Link, navigate } from 'gatsby';
 import { toOptimizedImage } from '../helpers/general';
 
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+
+
 const IndexPage = () => {
   const newArrivals = generateMockProductData(3, 'shirt');
   const blogData = generateMockBlogData(3);
@@ -26,6 +31,7 @@ const IndexPage = () => {
   };
 
   return (
+    
     <Layout disablePaddingBottom>
       {/* Hero Container */}
       <Hero
