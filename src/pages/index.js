@@ -21,7 +21,42 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
+// Création du carousel d'image
+const HeroCarousel = () => {
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 3000,
+    nextArrow: <div>Next</div>,
+    prevArrow: <div>Prev</div>,
+  };
 
+  return (
+    <Slider {...settings}>
+      <div > 
+        <img src="/Couverture_JM_petit_logo.jpg" alt="Image 1" style={{ width: '100%', height: '400px', objectFit: 'fill' }} />
+      </div>
+      <div>
+        <img src="../collections/FloconDeNeige.jpg" alt="Image 2" style={{ width: '100%', height: '400px', objectFit: 'fill' }} />
+      </div>
+      <div>
+        <img src="../collections/CielBleu.jpg" alt="Image 3" style={{ width: '100%', height: '400px', objectFit: 'fill' }} />
+      </div>
+      <div>
+        <img src="../collections/ErableRouge.jpg" alt="Image 3" style={{ width: '100%', height: '400px', objectFit: 'fill' }} />
+      </div>
+      <div>
+        <img src="../collections/JardinSecret.jpg" alt="Image 3" style={{ width: '100%', height: '400px', objectFit: 'fill' }} />
+      </div>
+    </Slider>
+  );
+};
+
+// Les nouveautés
 const IndexPage = () => {
   const newArrivals = generateMockProductData(3, 'shirt');
   const blogData = generateMockBlogData(3);
@@ -31,8 +66,8 @@ const IndexPage = () => {
   };
 
   return (
-    
     <Layout disablePaddingBottom>
+      <HeroCarousel /> {}
       {/* Hero Container */}
       <Hero
         image={'/Couverture_JM_petit_logo.jpg'}
@@ -81,28 +116,6 @@ const IndexPage = () => {
         }
       />
 
-      {/* Blog Grid */}
-      {/* <div className={styles.blogsContainer}>
-        <Container size={'large'}>
-          <Title name={'Journal'} subtitle={'Notes on life and style'} />
-          <BlogPreviewGrid data={blogData} />
-        </Container>
-      </div> */}
-
-      {/* Promotion */}
-      {/* <div className={styles.sustainableContainer}>
-        <Hero
-          image={toOptimizedImage('/banner3.png')}
-          title={'We are Sustainable'}
-          subtitle={
-            'From caring for our land to supporting our people, discover the steps we’re taking to do more for the world around us.'
-          }
-          ctaText={'read more'}
-          maxWidth={'660px'}
-          ctaStyle={styles.ctaCustomButton}
-        />
-      </div> */}
-
       {/* Social Media */}
       <div className={styles.socialContainer}>
         <Title
@@ -119,6 +132,6 @@ const IndexPage = () => {
       <AttributeGrid />
     </Layout>
   );
-};
+}
 
 export default IndexPage;

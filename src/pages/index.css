@@ -1,0 +1,42 @@
+.carousel-slide {
+    position: relative;
+  }
+  
+  .carousel-image {
+    width: 100%;
+    height: 400px;
+    object-fit: fill; /* Remplit l'image dans l'espace spécifié */
+  }
+  
+  .carousel-content {
+    position: absolute;
+    top: 10px; /* Positionne le texte en haut de l'image */
+    left: 50%;
+    transform: translateX(-50%); /* Centre horizontalement le contenu */
+    text-align: center;
+    color: white; /* Couleur du texte */
+    background-color: rgba(0, 0, 0, 0.5); /* Fond semi-transparent pour le contraste */
+    padding: 10px 20px;
+    border-radius: 10px;
+  }
+  
+  .carousel-content h2 {
+    margin: 0;
+    font-size: 24px; /* Ajustez la taille du texte */
+  }
+  
+  .carousel-content button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #fff; /* Couleur du bouton */
+    color: #000; /* Couleur du texte du bouton */
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .carousel-content button:hover {
+    background-color: #000; /* Fond du bouton au survol */
+    color: #fff; /* Texte du bouton au survol */
+  }
+  

@@ -4,6 +4,9 @@ module.exports = {
     siteUrl: `https://jamm.matter.design`,
   },
   plugins: [
+    `gatsby-plugin-image`,
+    `gatsby-plugin-sharp`,
+    `gatsby-transformer-sharp`,
     {
       resolve: 'gatsby-plugin-react-i18next',
       options: {
