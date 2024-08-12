@@ -27,11 +27,40 @@ import 'slick-carousel/slick/slick-theme.css';
 const HeroCarousel = () => {
   // Tableau d'images à tester
   const images = [
-    { src: '../collections/carousel/Couverture_JM_petit_logo.jpg', alt: 'Image 1' },
-    { src: '../collections/carousel/CielBleu.jpg', alt: 'Image 2' },
-    { src: '../collections/carousel/ErableRouge.jpeg', alt: 'Image 3' },
-    { src: '../collections/carousel/FloconDeNeige.jpg', alt: 'Image 4' },
-    { src: '../collections/carousel/JardinSecret.jpg', alt: 'Image 5' },
+    { src: '../collections/carousel/Couverture_JM_petit_logo.jpg', 
+      alt: 'Image 1',
+      title: 'Racontez votre histoire avec style', 
+      ctaText: 'Commencer le shopping',
+      ctaLink: '/shop'
+    },
+
+    { src: '../collections/carousel/CielBleu.jpg', 
+      alt: 'Image 2',
+      title: 'Un vent de fraîcheur dans votre dressing cet été', 
+      ctaText: 'Découvrez la collection',
+      ctaLink: '/shop' 
+    },
+
+    { src: '../collections/carousel/ErableRouge.jpeg', 
+      alt: 'Image 3',
+      title: 'Laissez-vous envoûter par la beauté des feuilles en automne', 
+      ctaText: 'Découvrez la collection',
+      ctaLink: '/shop'
+    },
+
+    { src: '../collections/carousel/FloconDeNeige.jpg', 
+      alt: 'Image 4',
+      title: 'Enveloppez-vous de douceur et de chaleur', 
+      ctaText: 'Découvrez la collection',
+      ctaLink: '/shop' 
+    },
+
+    { src: '../collections/carousel/JardinSecret.jpg', 
+      alt: 'Image 5',
+      title: 'Révélez votre côté fleuri', 
+      ctaText: 'Découvrez la collection',
+      ctaLink: '/shop'
+    },
   ];
 
   const settings = {
@@ -47,12 +76,21 @@ const HeroCarousel = () => {
   return (
     <Slider {...settings}>
       {images.map((image, index) => (
-        <div key={index}>
+        <div key={index} className={styles.carouselSlide}>
           <img
             src={image.src}
             alt={image.alt}
-            style={{ width: '100%', height: '400px', objectFit: 'cover' }}
+            className={styles.carouselImage}
           />
+          <div className={styles.carouselOverlay}>
+            <h2 className={styles.carouselTitle}>{image.title}</h2>
+            <button 
+              className={styles.carouselButton} 
+              onClick={() => navigate(image.ctaLink)}
+            >
+              {image.ctaText}
+            </button>
+          </div>
         </div>
       ))}
     </Slider>
@@ -73,12 +111,12 @@ const IndexPage = () => {
     <Layout disablePaddingBottom>
       <HeroCarousel /> {}
       {/* Hero Container */}
-      <Hero
+      {/* <Hero
         image={'/Couverture_JM_petit_logo.jpg'}
         title={'Racontez votre histoire avec style'}
         ctaText={'Commencer le shopping'}
         ctaAction={goToShop}
-      />
+      /> */}
 
       {/* Collection Container */}
       <div className={styles.collectionContainer}>
