@@ -23,6 +23,10 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+</style>
+
 // Création du carousel d'image
 const HeroCarousel = () => {
   // Tableau d'images à tester
@@ -43,7 +47,7 @@ const HeroCarousel = () => {
 
     { src: '../collections/carousel/ErableRouge.jpeg', 
       alt: 'Image 3',
-      title: 'Laissez-vous envoûter par la beauté des feuilles en automne', 
+      title: 'Succombez à la magie des feuilles d\'automne',
       ctaText: 'Découvrez la collection',
       ctaLink: '/shop'
     },
