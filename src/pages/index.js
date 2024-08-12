@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { graphql, useStaticQuery } from 'gatsby';
+import { GatsbyImage, getImage } from 'gatsby-plugin-image';
 
 import AttributeGrid from '../components/AttributeGrid';
 import Container from '../components/Container';
@@ -23,6 +25,15 @@ import 'slick-carousel/slick/slick-theme.css';
 
 // Création du carousel d'image
 const HeroCarousel = () => {
+  // Tableau d'images à tester
+  const images = [
+    { src: '../collections/carousel/Couverture_JM_petit_logo.jpg', alt: 'Image 1' },
+    { src: '../collections/carousel/CielBleu.jpg', alt: 'Image 2' },
+    { src: '../collections/carousel/ErableRouge.jpeg', alt: 'Image 3' },
+    { src: '../collections/carousel/FloconDeNeige.jpg', alt: 'Image 4' },
+    { src: '../collections/carousel/JardinSecret.jpg', alt: 'Image 5' },
+  ];
+
   const settings = {
     dots: true,
     infinite: true,
@@ -31,30 +42,23 @@ const HeroCarousel = () => {
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 3000,
-    nextArrow: <div>Next</div>,
-    prevArrow: <div>Prev</div>,
   };
 
   return (
     <Slider {...settings}>
-      <div > 
-        <img src="/Couverture_JM_petit_logo.jpg" alt="Image 1" style={{ width: '100%', height: '400px', objectFit: 'fill' }} />
-      </div>
-      <div>
-        <img src="../collections/FloconDeNeige.jpg" alt="Image 2" style={{ width: '100%', height: '400px', objectFit: 'fill' }} />
-      </div>
-      <div>
-        <img src="../collections/CielBleu.jpg" alt="Image 3" style={{ width: '100%', height: '400px', objectFit: 'fill' }} />
-      </div>
-      <div>
-        <img src="../collections/ErableRouge.jpg" alt="Image 3" style={{ width: '100%', height: '400px', objectFit: 'fill' }} />
-      </div>
-      <div>
-        <img src="../collections/JardinSecret.jpg" alt="Image 3" style={{ width: '100%', height: '400px', objectFit: 'fill' }} />
-      </div>
+      {images.map((image, index) => (
+        <div key={index}>
+          <img
+            src={image.src}
+            alt={image.alt}
+            style={{ width: '100%', height: '400px', objectFit: 'cover' }}
+          />
+        </div>
+      ))}
     </Slider>
   );
 };
+
 
 // Les nouveautés
 const IndexPage = () => {
