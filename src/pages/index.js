@@ -43,7 +43,7 @@ const HeroCarousel = () => {
 
     { src: '../collections/carousel/ErableRouge.jpeg', 
       alt: 'Image 3',
-      title: 'Succombez à la magie des feuilles d\'automne',
+      title: 'Laissez-vous envoûter par la beauté des feuilles en automne', 
       ctaText: 'Découvrez la collection',
       ctaLink: '/shop'
     },
