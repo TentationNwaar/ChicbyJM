@@ -1,31 +1,27 @@
 import * as React from 'react';
 import { graphql, useStaticQuery } from 'gatsby';
 import { GatsbyImage, getImage } from 'gatsby-plugin-image';
+import { StaticImage } from 'gatsby-plugin-image';
 
 import AttributeGrid from '../components/AttributeGrid';
 import Container from '../components/Container';
 import Hero from '../components/Hero';
-import BlogPreviewGrid from '../components/BlogPreviewGrid';
-import Highlight from '../components/Highlight';
+/* import BlogPreviewGrid from '../components/BlogPreviewGrid';
+import Highlight from '../components/Highlight'; */
 import Layout from '../components/Layout/Layout';
 import ProductCollectionGrid from '../components/ProductCollectionGrid';
 import ProductCardGrid from '../components/ProductCardGrid';
 import Quote from '../components/Quote';
 import Title from '../components/Title';
 
-import { generateMockBlogData, generateMockProductData } from '../helpers/mock';
-
 import * as styles from './index.module.css';
+import * as styles from './support.module.css';
 import { Link, navigate } from 'gatsby';
 import { toOptimizedImage } from '../helpers/general';
 
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
-</style>
 
 // Création du carousel d'image
 const HeroCarousel = () => {
@@ -104,8 +100,41 @@ const HeroCarousel = () => {
 
 // Les nouveautés
 const IndexPage = () => {
-  const newArrivals = generateMockProductData(3, 'shirt');
-  const blogData = generateMockBlogData(3);
+  // Requêter les articles les plus récents
+  const data = useStaticQuery(graphql`
+    query {
+      allFile(
+        filter: { extension: { regex: "/(jpg|jpeg|png)/" }, relativeDirectory: { eq: "../images/products" } }
+        sort: { fields: [birthTime], order: DESC }
+        limit: 3
+      ) {
+        edges {
+          node {
+            childImageSharp {
+              gatsbyImageData(layout: CONSTRAINED)
+            }
+            name
+            relativePath
+          }
+        }
+      }
+    }
+  `);
+
+  console.log('Données de la requête GraphQL :', data);
+
+  if (!data.allFile || data.allFile.edges.length === 0) {
+    console.error('Aucune image trouvée. Vérifiez le chemin et les fichiers.');
+  }
+
+  // Transformer les données en un format compatible avec ProductCardGrid
+  const newArrivals = data.allFile.edges.map(edge => ({
+    image: getImage(edge.node.childImageSharp),
+    name: edge.node.name,
+    path: `/shop/${edge.node.name.replace(/\.[^/.]+$/, "")}`,
+  }));
+
+  console.log('Articles nouvellement arrivés :', newArrivals);
 
   const goToShop = () => {
     navigate('/shop');
@@ -113,14 +142,7 @@ const IndexPage = () => {
 
   return (
     <Layout disablePaddingBottom>
-      <HeroCarousel /> {}
-      {/* Hero Container */}
-      {/* <Hero
-        image={'/Couverture_JM_petit_logo.jpg'}
-        title={'Racontez votre histoire avec style'}
-        ctaText={'Commencer le shopping'}
-        ctaAction={goToShop}
-      /> */}
+      <HeroCarousel />
 
       {/* Collection Container */}
       <div className={styles.collectionContainer}>
@@ -139,11 +161,13 @@ const IndexPage = () => {
             showSlider
             height={480}
             columns={3}
-            data={newArrivals}
+            data={newArrivals.map(item => ({
+              image: <GatsbyImage image={item.image} alt={item.name} />,
+              name: item.name,
+            }))}
           />
         </Container>
       </div>
-
       {/* Promotion */}
       <div className={styles.promotionContainer}>
         <Hero image={toOptimizedImage('/Banner1_JM.png')} title={`-20% de réduction \n sur les essentiels du moment`} />
