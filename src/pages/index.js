@@ -15,7 +15,7 @@ import Quote from '../components/Quote';
 import Title from '../components/Title';
 
 import * as styles from './index.module.css';
-import * as styles from './support.module.css';
+/* import * as supportStyles from './support.module.css'; */
 import { Link, navigate } from 'gatsby';
 import { toOptimizedImage } from '../helpers/general';
 
