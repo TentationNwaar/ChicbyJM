@@ -1,6 +1,7 @@
 import React from "react"
 import { graphql, useStaticQuery } from "gatsby"
 import { GatsbyImage, getImage } from "gatsby-plugin-image"
+import './RecentImages.css'
 
 const RecentImages = () => {
   const data = useStaticQuery(graphql`
@@ -23,7 +24,7 @@ const RecentImages = () => {
   `)
 
   return (
-    <div>
+    <div className="image-gallery">
       {data.allFile.edges.map(({ node }) => {
         const image = getImage(node.childImageSharp.gatsbyImageData)
         return (
@@ -31,7 +32,7 @@ const RecentImages = () => {
             key={node.relativePath}
             image={image}
             alt={node.relativePath}
-            style={{ marginBottom: "1rem", gap: "30px" }}
+            className="gallery-image"
           />
         )
       })}
