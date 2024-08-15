@@ -27,12 +27,12 @@
       "subTitle": "Info",
       "links": [
         {
-          "text": "About Us",
+          "text": "A propos",
           "link": "/about"
         },
         {
-          "text": "Journal",
-          "link": "/blog"
+          "text": "Contact",
+          "link": "/support#contact"
         },
         {
           "text": "Privacy Policy",
@@ -41,16 +41,17 @@
       ]
     },
     {
-      "subTitle": "Support",
+      "subTitle": "Mentions légales",
       "links": [
         {
-          "text": "FAQ",
-          "link": "/faq"
+          "text": "Conditions Générales de Vente",
+          "link": "/blog"
         },
         {
-          "text": "Contact Us",
-          "link": "/support#contact"
+          "text": "FAQ - Questions fréquentes",
+          "link": "/faq"
         },
+        
         {
           "text": "Shipping & Returns",
           "link": "/support#returns"

@@ -27,8 +27,8 @@ const AboutPage = (props) => {
         {/* Hero Container */}
         <Hero
           maxWidth={'900px'}
-          image={'/about.png'}
-          title={`Sydney \n A British brand since 1860`}
+          image={'/ShippingBox_Mockup.png'}
+          title={`Chic by JM \n Une entreprise Suisse depuis 2023`}
         />
 
         <div className={styles.navContainer}>
@@ -49,22 +49,20 @@ const AboutPage = (props) => {
         <Container size={'large'} spacing={'min'}>
           <div className={styles.detailContainer} ref={historyRef}>
             <p>
-              Founded in 1860, Sydney is an innovative British brand with a
-              contemporary edge. We make timeless everyday luxury clothing.
+            Créée en 2023, Chic by JM est une marque suisse dédiée à l'élégance et au style affirmé. 
+            Notre mission est de permettre à chacun de se distinguer avec sophistication. 
             </p>
             <br />
             <br />
             <p>
-              We created some of the world's first T-shirts and spent decades
-              perfecting the feel of the cotton. Today we are the only brand
-              that makes T-shirts in its own factory in the UK. And we do this
-              in the same factory we have occupied since 1937.
+            En seulement un an, nous avons su séduire une clientèle variée, des particuliers aux clubs de sport, comme les renommés Montreux Jazzers. 
+            Nous continuons à nous engager pour offrir des produits qui allient classe et modernité.
             </p>
           </div>
         </Container>
 
         <div className={styles.imageContainer}>
-          <img alt={'shirt brand'} src={toOptimizedImage('/about1.png')}></img>
+          <img alt={'Wallpaper_MontreuxJazzers_Maillots'} src={toOptimizedImage('/Wallpaper_MontreuxJazzers_Maillots.png')}></img>
         </div>
 
         <Container size={'large'} spacing={'min'}>
