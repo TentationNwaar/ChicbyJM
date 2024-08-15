@@ -33,16 +33,10 @@ const AboutPage = (props) => {
 
         <div className={styles.navContainer}>
           <ThemeLink onClick={() => handleScroll(historyRef)} to={'#history'}>
-            History
+            Histoire
           </ThemeLink>
           <ThemeLink onClick={() => handleScroll(valuesRef)} to={'#values'}>
-            Values
-          </ThemeLink>
-          <ThemeLink
-            onClick={() => handleScroll(sustainabilityRef)}
-            to={'#sustainability'}
-          >
-            Sustainability
+            Valeurs
           </ThemeLink>
         </div>
 
@@ -67,7 +61,7 @@ const AboutPage = (props) => {
 
         <Container size={'large'} spacing={'min'}>
           <div className={styles.content}>
-            <h3>Our Values</h3>
+            <h3>Nos valeurs</h3>
             <div ref={valuesRef}>
               <p>
                 Sunspel produced some of the world's earliest T-shirts. In the

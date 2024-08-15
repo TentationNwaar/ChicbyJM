@@ -32,16 +32,17 @@
 }
 
 .detailContainer {
-    margin-left: auto;
-    max-width: 800px;
-    margin-top: 164px;
+    margin-top: 40px;
 }
 
 .detailContainer p{
     font-family: var(--standard-header);
     font-weight: normal;
-    font-size: 42px;
+    font-size: 30px;
     line-height: 50px;
+    text-align: justify;
+    display: flex;
+    justify-content: center;
 }
 
 .imageContainer {
