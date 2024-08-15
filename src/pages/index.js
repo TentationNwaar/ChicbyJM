@@ -116,7 +116,7 @@ const IndexPage = () => {
       {/* New Arrivals */}
       <div className={styles.newArrivalsContainer}>
         <Container>
-          <Title name={'Les nouveautés'} link={'/shop'} textLink={'Tout voir'} />
+          <Title name={'Les nouveautés'} link={'/shopTous'} textLink={'Tout voir'} />
           <RecentImages />
           {/* <ProductCardGrid
             spacing={true}
@@ -134,8 +134,8 @@ const IndexPage = () => {
       <div className={styles.promotionContainer}>
         <Hero image={toOptimizedImage('/Banner1_JM.png')} title={`-20% de réduction \n sur les essentiels du moment`} />
         <div className={styles.linkContainers}>
-          <Link to={'/shop'}>Femme</Link>
-          <Link to={'/shop'}>Homme</Link>
+          {/* <Link to={'/shop'}>Femme</Link>
+          <Link to={'/shop'}>Homme</Link> */}
         </div>
       </div>
 

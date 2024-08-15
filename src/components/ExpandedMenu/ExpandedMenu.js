@@ -15,7 +15,7 @@ const ExpandedMenu = (props) => {
           return (
             <div key={index} className={styles.categoryContainer}>
               <span className={styles.categoryName}>{item.categoryLabel}</span>
-              <ul>
+              {/* <ul>
                 {item.submenu.map((link, linkIndex) => {
                   return (
                     <li key={linkIndex}>
@@ -25,7 +25,7 @@ const ExpandedMenu = (props) => {
                     </li>
                   );
                 })}
-              </ul>
+              </ul> */}
             </div>
           );
         })}

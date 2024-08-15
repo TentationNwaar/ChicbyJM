@@ -44,8 +44,9 @@ const ShopPage = (props) => {
         </Container>
         <Banner
           maxWidth="650px"
-          name="Vêtements pour femmes"
-          subtitle="Alliez confort et style raffiné avec nos pièces uniques, pensées pour l'univers féminin moderne."
+          name="Vêtements pour hommes"
+          subtitle="Des vêtements modernes et raffinés pour un style impeccable au quotidien.
+          Des pièces uniques pensées pour l’homme contemporain, alliant confort et sophistication"
         />
         <Container size="large" spacing="min">
           <div className={styles.metaContainer}>

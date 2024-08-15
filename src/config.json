@@ -55,10 +55,6 @@
         {
           "text": "Shipping & Returns",
           "link": "/support#returns"
-        },
-        {
-          "text": "How to use this theme",
-          "link": "/how-to-use"
         }
       ]
     }
@@ -66,7 +62,7 @@
   "headerLinks": [
     {
       "menuLabel": "Shopping",
-      "menuLink": "/shop",
+      "menuLink": "/shopTous",
       "category": [
         {
           "categoryLabel": "Tous les vêtements",

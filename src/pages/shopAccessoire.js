@@ -44,8 +44,9 @@ const ShopPage = (props) => {
         </Container>
         <Banner
           maxWidth="650px"
-          name="Vêtements pour femmes"
-          subtitle="Alliez confort et style raffiné avec nos pièces uniques, pensées pour l'univers féminin moderne."
+          name="Accessoires"
+          subtitle="Complétez votre style avec les accessoires Chic by JM : des pièces élégantes qui apportent une touche finale parfaite.
+          Chaque accessoire est conçu pour allier sophistication et praticité, enrichissant votre look avec une note unique."
         />
         <Container size="large" spacing="min">
           <div className={styles.metaContainer}>
