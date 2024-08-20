@@ -10,13 +10,45 @@ import Icon from '../components/Icons/Icon';
 import Layout from '../components/Layout';
 import LayoutOption from '../components/LayoutOption';
 import ProductCardGrid from '../components/ProductCardGrid';
-import { generateMockProductData } from '../helpers/mock';
+//import { generateMockProductData } from '../helpers/mock';
 import Button from '../components/Button';
 import Config from '../config.json';
+import { graphql, useStaticQuery } from 'gatsby';
 
 const ShopPage = (props) => {
+  const data = useStaticQuery(graphql`
+    query {
+      allProductsCsv {
+        edges {
+          node {
+            Handle
+            Title
+            Body_HTML
+            Vendor
+            Product_Category
+            Type
+            Tags
+            Published
+            Variant_Price
+            Variant_Compare_At_Price
+            Image_Src
+            Image_Alt_Text
+            SEO_Title
+            SEO_Description
+            Google_Shopping_Gender
+            Google_Shopping_Age_Group
+            Google_Shopping_Condition
+            Price_Switzerland
+            Status
+          }
+        }
+      }
+    }
+  `);
+
+  const products = data.allProductsCsv.edges;
   const [showFilter, setShowFilter] = useState(false);
-  const data = generateMockProductData(6, 'woman');
+  //const data = generateMockProductData(6, 'woman');
 
   const escapeHandler = (e) => {
     if (e?.keyCode === undefined) return;
@@ -57,12 +89,12 @@ const ShopPage = (props) => {
                 onClick={() => setShowFilter(!showFilter)}
               >
                 <Icon symbol="filter" />
-                <span>Filters</span>
+                <span>Filtrer</span>
               </div>
               <div
                 className={`${styles.iconContainer} ${styles.sortContainer}`}
               >
-                <span>Sort by</span>
+                <span>Trier par</span>
                 <Icon symbol="caret" />
               </div>
             </div>
@@ -78,12 +110,32 @@ const ShopPage = (props) => {
           </div>
           <div className={styles.productContainer}>
             <span className={styles.mobileItemCount}>476 items</span>
-            <ProductCardGrid data={data} />
+            <ProductCardGrid data={products} />
           </div>
+          <div>
+            <h1>Nos Produits</h1>
+            <ul className={styles.imageGrid}>
+          {data.allProductsCsv.edges.map(({ node }) => (
+            <li key={node.Handle}>
+              <img 
+                src={node.Image_Src} 
+                alt={node.Image_Alt_Text}
+                style={{ width: '300px', height: 'auto' }}
+              />
+              <h2 style={{ fontSize: '24px' }}>
+                {node.Title}
+              </h2>
+              
+              <p>{node.Variant_Price} CHF</p>
+              {/* <p>Catégorie: {node.Product_Category}</p> */}
+            </li>
+          ))}
+        </ul>
+        </div>
           <div className={styles.loadMoreContainer}>
             <span>6 of 456</span>
             <Button fullWidth level="secondary">
-              LOAD MORE
+              Charger plus
             </Button>
           </div>
         </Container>

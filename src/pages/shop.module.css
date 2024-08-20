@@ -13,6 +13,20 @@
     margin-top: 32px;
 }
 
+.image-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 colonnes de largeur égale */
+    gap: 16px; /* Espacement entre les éléments */
+    list-style-type: none;
+    padding: 0;
+  }
+
+  .image-grid li {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
 .metaContainer {
     display: flex;
     align-items: center;

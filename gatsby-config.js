@@ -11,9 +11,25 @@ module.exports = {
         path: `${__dirname}/src/images/nouveaute`,
       },
     },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `content`,
+        path: `${__dirname}/src/content/`, // <- Le répertoire où vos fichiers Markdown seront stockés
+      },
+    },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `products`,
+        path: `${__dirname}/src/data/`, // Répertoire contenant votre fichier CSV
+      },
+    },
     `gatsby-plugin-image`,
     `gatsby-plugin-sharp`,
     `gatsby-transformer-sharp`,
+    `gatsby-transformer-remark`,
+    `gatsby-transformer-csv`, // Transforme les fichiers CSV en noeuds GraphQL
     {
       resolve: 'gatsby-plugin-react-i18next',
       options: {

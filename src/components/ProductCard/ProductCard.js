@@ -16,7 +16,7 @@ const ProductCard = (props) => {
     originalPrice,
     meta,
     showQuickView,
-    height = 580,
+    height = 280,
   } = props;
 
   const handleRouteToProduct = () => {
@@ -40,7 +40,12 @@ const ProductCard = (props) => {
         onClick={() => handleRouteToProduct()}
         role={'presentation'}
       >
-        <img style={{ height: `${height}px` }} src={toOptimizedImage(image)} alt={imageAlt}></img>
+        <img
+          style={{ height: `${height}px` }} // Vous pouvez conserver cette ligne si vous souhaitez contrôler la hauteur via le prop
+          src={toOptimizedImage(image)}
+          alt={imageAlt}
+          className={styles.productImage} // Ajoutez cette classe ici
+        ></img>
         <div
           className={styles.bagContainer}
           role={'presentation'}

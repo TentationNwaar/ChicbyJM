@@ -14,7 +14,7 @@
 .root img {
     display: block;
     width: 100%;
-    object-fit: cover;
+    object-fit: fill;
     border-radius: 1px;
 }
 
@@ -131,7 +131,11 @@
 
 @media (max-width: 600px) {
     .imageContainer img{
-        height: 300px !important;
+        height: 100px !important;
+        display: flex;
+        width: 10%; /* Ajuster la largeur ici si nécessaire */
+        object-fit: fill;
+        border-radius: 1px;
     }
 
     .productName {
@@ -149,6 +153,10 @@
 @media (max-width: 400px) {
     .imageContainer img{
         height: 220px !important;
+        display: flex;
+        width: 10%; /* Ajuster la largeur ici si nécessaire */
+        object-fit: fill;
+        border-radius: 1px;
     }
 
     .bagContainer {

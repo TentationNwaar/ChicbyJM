@@ -167,7 +167,7 @@ const Header = (prop) => {
             showSearch === true ? styles.show : styles.hide
           }`}
         >
-          <h4>What are you looking for?</h4>
+          <h4>Que recherchez-vous?</h4>
           <form className={styles.searchForm} onSubmit={(e) => handleSearch(e)}>
             <FormInputField
               ref={searchRef}
