@@ -47,10 +47,12 @@ const ShopPage = (props) => {
     }
   `);
 
+  console.log(data.allProductsCsv.edges.length)
+
   const products = data.allProductsCsv.edges;
   const [showFilter, setShowFilter] = useState(false);
-  //const data = generateMockProductData(6, 'woman');
 
+  //Vérifie que l'utilisateur quitte le mode filtre
   const escapeHandler = (e) => {
     if (e?.keyCode === undefined) return;
     if (e.keyCode === 27) setShowFilter(false);
@@ -60,6 +62,10 @@ const ShopPage = (props) => {
     window.addEventListener('keydown', escapeHandler);
     return () => window.removeEventListener('keydown', escapeHandler);
   }, []);
+
+  const filteredProducts = products.filter(({ node }) => node.Image_Position === "1");
+  const totalItems = products.length;
+  const displayedItems = filteredProducts.length;
 
   return (
     <Layout>
@@ -82,7 +88,7 @@ const ShopPage = (props) => {
         />
         <Container size="large" spacing="min">
           <div className={styles.metaContainer}>
-            <span className={styles.itemCount}>476 items</span>
+            <span className={styles.itemCount}>{filteredProducts.length} items</span>
             <div className={styles.controllerContainer}>
               <div
                 className={styles.iconContainer}
@@ -110,11 +116,10 @@ const ShopPage = (props) => {
             <Chip name="S" />
           </div>
           <div className={styles.productContainer}>
-            <span className={styles.mobileItemCount}>476 items</span>
+            <span className={styles.mobileItemCount}>{filteredProducts.length} produits</span>
             <ProductCardGrid data={products} />
           </div>
           <div>
-            <h1>Nos Produits</h1>
             <ul className={styles.imageGrid}>
               {data.allProductsCsv.edges.map(({ node }) => {
                 // Vérifier si l'image a la position 1
@@ -126,7 +131,7 @@ const ShopPage = (props) => {
                         alt={node.Image_Alt_Text}
                         style={{ width: '300px', height: 'auto' }}
                       />
-                      <h2 style={{ fontSize: '24px' }}>
+                      <h2 style={{ fontSize: '22px' }}>
                         {node.Title}
                       </h2>
                       
@@ -134,12 +139,11 @@ const ShopPage = (props) => {
                     </li>
                   );
                 }
-                return null; // Ne rien retourner si l'image n'a pas la position 1
               })}
             </ul>
         </div>
           <div className={styles.loadMoreContainer}>
-            <span>6 of 456</span>
+            <span>{displayedItems} sur {totalItems}</span>
             <Button fullWidth level="secondary">
               Charger plus
             </Button>

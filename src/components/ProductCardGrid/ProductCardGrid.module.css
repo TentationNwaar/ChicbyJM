@@ -1,5 +1,6 @@
 .root {
-
+    display: flex;
+    flex-direction: column;
 }
 
 .cardGrid {
@@ -10,7 +11,7 @@
 }
 
 .mobileSlider {
-    display: none;
+    /* display: none; */
 }
 
 .show {

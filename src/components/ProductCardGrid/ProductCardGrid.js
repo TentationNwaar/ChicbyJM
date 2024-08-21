@@ -6,7 +6,7 @@ import ProductCard from '../ProductCard';
 import QuickView from '../QuickView';
 import Slider from '../Slider';
 
-const ProductCardGrid = (image, ...props) => {
+const ProductCardGrid = (props) => {
   const [showQuickView, setShowQuickView] = useState(false);
   const { height, columns = 3, data, spacing, showSlider = false } = props;
   const columnCount = {
