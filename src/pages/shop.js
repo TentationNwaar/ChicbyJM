@@ -32,6 +32,7 @@ const ShopPage = (props) => {
             Variant_Price
             Variant_Compare_At_Price
             Image_Src
+            Image_Position
             Image_Alt_Text
             SEO_Title
             SEO_Description
@@ -115,22 +116,27 @@ const ShopPage = (props) => {
           <div>
             <h1>Nos Produits</h1>
             <ul className={styles.imageGrid}>
-          {data.allProductsCsv.edges.map(({ node }) => (
-            <li key={node.Handle}>
-              <img 
-                src={node.Image_Src} 
-                alt={node.Image_Alt_Text}
-                style={{ width: '300px', height: 'auto' }}
-              />
-              <h2 style={{ fontSize: '24px' }}>
-                {node.Title}
-              </h2>
-              
-              <p>{node.Variant_Price} CHF</p>
-              {/* <p>Catégorie: {node.Product_Category}</p> */}
-            </li>
-          ))}
-        </ul>
+              {data.allProductsCsv.edges.map(({ node }) => {
+                // Vérifier si l'image a la position 1
+                if (node.Image_Position === "1") {
+                  return (
+                    <li key={node.Handle}>
+                      <img 
+                        src={node.Image_Src} 
+                        alt={node.Image_Alt_Text}
+                        style={{ width: '300px', height: 'auto' }}
+                      />
+                      <h2 style={{ fontSize: '24px' }}>
+                        {node.Title}
+                      </h2>
+                      
+                      <p>{node.Variant_Price} CHF</p>
+                    </li>
+                  );
+                }
+                return null; // Ne rien retourner si l'image n'a pas la position 1
+              })}
+            </ul>
         </div>
           <div className={styles.loadMoreContainer}>
             <span>6 of 456</span>

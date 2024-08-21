@@ -100,6 +100,14 @@
         display: none;
     }
 
+    .image-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); /* 3 colonnes de largeur égale */
+        gap: 16px; /* Espacement entre les éléments */
+        list-style-type: none;
+        padding: 0;
+      }
+
     .controllerContainer {
         gap: 0px;
         display: flex;
@@ -134,4 +142,15 @@
     .breadcrumbContainer > div {
         display: none;
     }
+}
+
+@media (max-width: 1148px) {
+
+    .image-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); /* 3 colonnes de largeur égale */
+        gap: 16px; /* Espacement entre les éléments */
+        list-style-type: none;
+        padding: 0;
+      }
 }
