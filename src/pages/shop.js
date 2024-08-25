@@ -10,7 +10,6 @@ import Icon from '../components/Icons/Icon';
 import Layout from '../components/Layout';
 import LayoutOption from '../components/LayoutOption';
 import ProductCardGrid from '../components/ProductCardGrid';
-//import { generateMockProductData } from '../helpers/mock';
 import Button from '../components/Button';
 import Config from '../config.json';
 import { graphql, useStaticQuery } from 'gatsby';
@@ -47,12 +46,16 @@ const ShopPage = (props) => {
     }
   `);
 
-  console.log(data.allProductsCsv.edges.length)
-
   const products = data.allProductsCsv.edges;
   const [showFilter, setShowFilter] = useState(false);
 
-  //Vérifie que l'utilisateur quitte le mode filtre
+  // Filtrer les produits pour ceux qui ont le tag "Femme" et image en position 1
+  const filteredProducts = products.filter(({ node }) => 
+    node.Tags.split(',').map(tag => tag.trim()).includes("Femme") && node.Image_Position === "1"
+  );
+  const totalItems = products.length;
+  const displayedItems = filteredProducts.length;
+
   const escapeHandler = (e) => {
     if (e?.keyCode === undefined) return;
     if (e.keyCode === 27) setShowFilter(false);
@@ -62,10 +65,6 @@ const ShopPage = (props) => {
     window.addEventListener('keydown', escapeHandler);
     return () => window.removeEventListener('keydown', escapeHandler);
   }, []);
-
-  const filteredProducts = products.filter(({ node }) => node.Image_Position === "1");
-  const totalItems = products.length;
-  const displayedItems = filteredProducts.length;
 
   return (
     <Layout>
@@ -87,7 +86,7 @@ const ShopPage = (props) => {
         />
         <Container size="large" spacing="min">
           <div className={styles.metaContainer}>
-            <span className={styles.itemCount}>{filteredProducts.length} items</span>
+            <span className={styles.itemCount}>{filteredProducts.length} produits</span>
             <div className={styles.controllerContainer}>
               <div
                 className={styles.iconContainer}
@@ -111,37 +110,28 @@ const ShopPage = (props) => {
             filters={Config.filters}
           />
           <div className={styles.chipsContainer}>
-            <Chip name="XS" />
-            <Chip name="S" />
           </div>
           <div className={styles.productContainer}>
             <span className={styles.mobileItemCount}>{filteredProducts.length} produits</span>
-            <ProductCardGrid data={products} />
+            <ProductCardGrid data={filteredProducts} />
           </div>
           <div>
             <ul className={styles.imageGrid}>
-              {data.allProductsCsv.edges.map(({ node }) => {
-                // Vérifier si l'image a la position 1
-                if (node.Image_Position === "1") {
-                  return (
-                    <li key={node.Handle}>
-                      <img 
-                        src={node.Image_Src} 
-                        alt={node.Image_Alt_Text}
-                        style={{ width: '300px', height: 'auto' }}
-                      />
-                      <h2 
-                      style={{ fontSize: '22px' }}>
-                      {node.Title}
-                      </h2>
-                    
-                      <p>{node.Variant_Price} CHF</p>
-                    </li>
-                  );
-                }
-              })}
+              {filteredProducts.map(({ node }) => (
+                <li key={node.Handle}>
+                  <img 
+                    src={node.Image_Src} 
+                    alt={node.Image_Alt_Text}
+                    style={{ width: '300px', height: 'auto' }}
+                  />
+                  <h2 style={{ fontSize: '22px' }}>
+                    {node.Title}
+                  </h2>
+                  <p>{node.Variant_Price} CHF</p>
+                </li>
+              ))}
             </ul>
-        </div>
+          </div>
           <div className={styles.loadMoreContainer}>
             <span>{displayedItems} sur {totalItems}</span>
             <Button fullWidth level="secondary">

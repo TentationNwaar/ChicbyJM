@@ -9,13 +9,12 @@
   "languageList": [
     { "value": "english", "label": "English" },
     { "value": "german", "label": "Deutsch" },
+    { "value": "french", "label": "French" },
     { "value": "mandarin", "label": "普通话" }
   ],
   "social": {
-    "facebook": "https://www.facebook.com/MatterDesign/",
-    "instagram": "https://www.instagram.com/p/CVwMlChIWmW",
-    "twitter": "https://twitter.com/hellomatter",
-    "youtube": "https://www.youtube.com/channel/UCEOu94Haa--QmltsSawflXg"
+    "instagram": "https://www.instagram.com/chicby_jm/",
+    "tiktok": "https://www.tiktok.com/@chicbyjm"
   },
   "paymentOptions": {
     "visa": true,
@@ -164,19 +163,27 @@
   ],
   "filters": [
     {
-      "category": "colour",
+      "category": "couleurs",
       "items": [
-        { "name": "Black", "value": true },
-        { "name": "Green", "value": false },
-        { "name": "Dark Blue", "value": false },
-        { "name": "Blue", "value": true },
-        { "name": "Grey", "value": false },
-        { "name": "Red", "value": false }
+        { "name": "Noir", "value": false },
+        { "name": "Vert", "value": false },
+        { "name": "Bleu foncé", "value": false },
+        { "name": "Bleu", "value": false },
+        { "name": "Gris", "value": false },
+        { "name": "Rouge", "value": false },
+        { "name": "Blanc", "value": false },
+        { "name": "Beige", "value": false },
+        { "name": "Marron", "value": false },
+        { "name": "Rose", "value": false },
+        { "name": "Violet", "value": false },
+        { "name": "Jaune", "value": false },
+        { "name": "Orange", "value": false },
+        { "name": "Turquoise", "value": false }
       ]
     },
 
     {
-      "category": "size",
+      "category": "taille",
       "items": [
         { "name": "XXS", "value": false },
         { "name": "XS", "value": false },
@@ -184,16 +191,28 @@
         { "name": "M", "value": false },
         { "name": "L", "value": false },
         { "name": "XL", "value": false },
-        { "name": "XXL", "value": false },
-        { "name": "Onesize", "value": false }
+        { "name": "XXL", "value": false }
       ]
     },
     {
-      "category": "gender",
+      "category": "type de produits",
       "items": [
-        { "name": "Male", "value": false },
-        { "name": "Female", "value": false },
-        { "name": "Unisex", "value": false }
+        { "name": "T-shirts", "value": false },
+        { "name": "Pantalons", "value": false },
+        { "name": "Shorts", "value": false },
+        { "name": "Sweatshirt", "value": false },
+        { "name": "Robes", "value": false },
+        { "name": "Chemises", "value": false },
+        { "name": "Jupes", "value": false }
+      ]
+    },
+    {
+      "category": "prix",
+      "items": [
+        { "name": "Moins de 50 CHF", "value": false },
+        { "name": "50 - 100 CHF", "value": false },
+        { "name": "100 - 200 CHF", "value": false },
+        { "name": "Plus de 200 CHF", "value": false }
       ]
     }
   ]
