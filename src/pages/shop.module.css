@@ -17,15 +17,22 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr); /* 3 colonnes de largeur égale */
     gap: 16px; /* Espacement entre les éléments */
-    list-style-type: none;
-    padding: 0;
-  }
+    text-align: center;
+}
 
-  .image-grid li {
+.image-grid li {
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
+    margin-bottom: 24px; /* Marge inférieure si nécessaire */
+}
+
+.image-grid h2 {
+    font-size: 24px; /* Ajustez la taille de la police selon vos besoins */
+    line-height: 40px; /* Ajustez la hauteur de ligne pour réduire l'espace entre les lignes du titre */
+    margin: 0; /* Réduit la marge autour du titre */
+    padding: 0; /* Réduit le padding autour du titre */
+}
 
 .metaContainer {
     display: flex;
@@ -95,6 +102,10 @@
     display: none;
 }
 
+@media (max-width: 930px) {
+
+}
+
 @media (max-width: 800px) {
     .itemCount {
         display: none;
@@ -150,7 +161,10 @@
         display: grid;
         grid-template-columns: repeat(2, 1fr); /* 3 colonnes de largeur égale */
         gap: 16px; /* Espacement entre les éléments */
-        list-style-type: none;
-        padding: 0;
-      }
+        text-align: center;
+    }
+
+    .image-grid li {
+        margin-bottom: 24px; /* Marge en bas de chaque élément */
+    }
 }

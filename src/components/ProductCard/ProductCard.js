@@ -44,7 +44,6 @@ const ProductCard = (props) => {
           style={{ height: `${height}px` }} // Vous pouvez conserver cette ligne si vous souhaitez contrôler la hauteur via le prop
           src={toOptimizedImage(image)}
           alt={imageAlt}
-          className={styles.productImage} // Ajoutez cette classe ici
         ></img>
         <div
           className={styles.bagContainer}

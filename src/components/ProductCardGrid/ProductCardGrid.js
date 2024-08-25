@@ -15,13 +15,18 @@ const ProductCardGrid = (props) => {
 
   const renderCards = () => {
     return data.map(({ node }, index) => {
-      // Assurez-vous que node et node.frontmatter existent
+      // Vérifiez que le node et le frontmatter existent
       if (!node || !node.frontmatter) {
         console.warn(`Node or frontmatter is undefined for node at index ${index}`);
-        return null; // Ignorer ce node si frontmatter est absent
+        return null; // Ignorez ce node s'il est invalide
       }
   
       const { title, price, image } = node.frontmatter;
+  
+      if (!title || !price || !image) {
+        console.warn(`Missing data in frontmatter for node at index ${index}`);
+        return null; // Ignorez ce node s'il manque des données essentielles
+      }
   
       return (
         <ProductCard
@@ -39,8 +44,6 @@ const ProductCardGrid = (props) => {
       );
     });
   };
-  
-  
 
   return (
     <div className={styles.root} style={columnCount}>

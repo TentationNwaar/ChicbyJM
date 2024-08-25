@@ -34,9 +34,9 @@
         padding-right: 16px;
     }
 
-    .hideSubtitleOnMobile {
+    /* .hideSubtitleOnMobile {
         display: none;
-    }
+    } */
 
     .content h2 {
         font-size: 32px;

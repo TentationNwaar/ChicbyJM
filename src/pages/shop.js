@@ -82,7 +82,6 @@ const ShopPage = (props) => {
           </div>
         </Container>
         <Banner
-          maxWidth="650px"
           name="Vêtements pour femmes"
           subtitle="Alliez confort et style raffiné avec nos pièces uniques, pensées pour l'univers féminin moderne."
         />
@@ -131,10 +130,11 @@ const ShopPage = (props) => {
                         alt={node.Image_Alt_Text}
                         style={{ width: '300px', height: 'auto' }}
                       />
-                      <h2 style={{ fontSize: '22px' }}>
-                        {node.Title}
+                      <h2 
+                      style={{ fontSize: '22px' }}>
+                      {node.Title}
                       </h2>
-                      
+                    
                       <p>{node.Variant_Price} CHF</p>
                     </li>
                   );
