@@ -5,7 +5,6 @@ import Banner from '../components/Banner';
 import Breadcrumbs from '../components/Breadcrumbs';
 import CardController from '../components/CardController';
 import Container from '../components/Container';
-import Chip from '../components/Chip';
 import Icon from '../components/Icons/Icon';
 import Layout from '../components/Layout';
 import LayoutOption from '../components/LayoutOption';
@@ -22,40 +21,34 @@ const ShopPage = (props) => {
           node {
             Handle
             Title
-            Body_HTML
-            Vendor
-            Product_Category
-            Type
             Tags
-            Published
             Variant_Price
-            Variant_Compare_At_Price
             Image_Src
             Image_Position
             Image_Alt_Text
-            SEO_Title
-            SEO_Description
-            Google_Shopping_Gender
-            Google_Shopping_Age_Group
-            Google_Shopping_Condition
-            Price_Switzerland
-            Status
           }
         }
       }
     }
   `);
 
+  // Liste des produits
   const products = data.allProductsCsv.edges;
-  const [showFilter, setShowFilter] = useState(false);
 
-  // Filtrer les produits pour ceux qui ont le tag "Femme" et image en position 1
+  // Filtrage des produits pour ceux qui ont le tag "Femme" et une image en position 1
   const filteredProducts = products.filter(({ node }) => 
     node.Tags.split(',').map(tag => tag.trim()).includes("Femme") && node.Image_Position === "1"
   );
-  const totalItems = products.length;
-  const displayedItems = filteredProducts.length;
 
+  // Nombre total d'articles pertinents
+  const totalItems = filteredProducts.length;
+
+  // Nombre d'articles affichés (ceci pourrait changer si vous ajoutez une logique de pagination ou de limite)
+  const displayedItems = filteredProducts.length; // Par défaut, on affiche tout ce qui est filtré.
+
+  const [showFilter, setShowFilter] = useState(false);
+
+  // Gestion de l'événement Escape pour fermer le filtre
   const escapeHandler = (e) => {
     if (e?.keyCode === undefined) return;
     if (e.keyCode === 27) setShowFilter(false);
@@ -86,7 +79,7 @@ const ShopPage = (props) => {
         />
         <Container size="large" spacing="min">
           <div className={styles.metaContainer}>
-            <span className={styles.itemCount}>{filteredProducts.length} produits</span>
+            <span className={styles.itemCount}>{totalItems} produits</span>
             <div className={styles.controllerContainer}>
               <div
                 className={styles.iconContainer}
@@ -112,7 +105,7 @@ const ShopPage = (props) => {
           <div className={styles.chipsContainer}>
           </div>
           <div className={styles.productContainer}>
-            <span className={styles.mobileItemCount}>{filteredProducts.length} produits</span>
+            <span className={styles.mobileItemCount}>{displayedItems} produits</span>
             <ProductCardGrid data={filteredProducts} />
           </div>
           <div>
@@ -132,11 +125,12 @@ const ShopPage = (props) => {
               ))}
             </ul>
           </div>
+          <span style={{ textAlign: 'center', display: 'block' }}>{displayedItems} sur {totalItems}</span>
           <div className={styles.loadMoreContainer}>
-            <span>{displayedItems} sur {totalItems}</span>
-            <Button fullWidth level="secondary">
+            
+            {/* <Button fullWidth level="secondary">
               Charger plus
-            </Button>
+            </Button> */}
           </div>
         </Container>
       </div>

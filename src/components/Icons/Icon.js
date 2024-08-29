@@ -1,6 +1,4 @@
 import React from 'react';
-
-// Alphabetical order please
 import Arrow from './Arrow';
 import Bag from './Bag';
 import BagPlus from './BagPlus';
@@ -17,7 +15,7 @@ import Filter from './Filter';
 import Heart from './Heart';
 import HeartFill from './HeartFill';
 import Instagram from './Instagram';
-import TikTok from './TikTok';
+import TikTok from './TikTok'; // Import TikTok here
 import List from './List';
 import Logout from './Logout';
 import Minus from './Minus';
@@ -65,6 +63,8 @@ function Icon(props) {
       return <HeartFill />;
     case 'instagram':
       return <Instagram />;
+    case 'tiktok': // Use 'tiktok' for the symbol
+      return <TikTok />;
     case 'list':
       return <List />;
     case 'logout':

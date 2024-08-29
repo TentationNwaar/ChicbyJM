@@ -1,19 +1,9 @@
 import React from 'react';
-import Instagram from './Instagram';
-import TikTok from './TikTok'; // Ajout du nouvel import
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTiktok } from '@fortawesome/free-brands-svg-icons';
 
-const Footer = () => (
-  <footer>
-    <div>
-      <a href="https://instagram.com" aria-label="Instagram">
-        <Instagram />
-      </a>
-      <a href="https://tiktok.com" aria-label="TikTok"> {/* Ajout du lien et icône TikTok */}
-        <TikTok />
-      </a>
-      {/* Autres éléments du footer */}
-    </div>
-  </footer>
+const TikTok = () => (
+  <FontAwesomeIcon icon={faTiktok} size="2x" />
 );
 
-export default Footer;
+export default TikTok;

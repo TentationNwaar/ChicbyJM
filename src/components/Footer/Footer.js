@@ -8,6 +8,7 @@ import FormInputField from '../FormInputField/FormInputField';
 import Icon from '../Icons/Icon';
 import Button from '../Button';
 import Config from '../../config.json';
+import TikTok from '../Icons/TikTok'; 
 import * as styles from './Footer.module.css';
 
 const Footer = (prop) => {
@@ -71,8 +72,8 @@ const Footer = (prop) => {
               <div className={styles.newsLetterContent}>
                 <span className={styles.linkTitle}>Newsletter</span>
                 <p className={styles.promoMessage}>
-                  Get 15% off your first purchase! Plus, be the first to know
-                  about sales, new product launches and exclusive offers!
+                Soyez le premier à être informé des ventes, 
+                des lancements de nouveaux produits et des offres exclusives ! 
                 </p>
                 <form
                   className={styles.newsLetterForm}
@@ -104,6 +105,16 @@ const Footer = (prop) => {
                       className={styles.socialIconContainer}
                     >
                       <Icon symbol={'instagram'}></Icon>
+                    </div>
+                  )}
+
+                  {Config.social.tiktok && (
+                    <div
+                      onClick={() => handleSocialClick('tiktok')}
+                      role={'presentation'}
+                      className={styles.socialIconContainer}
+                    >
+                      <TikTok />
                     </div>
                   )}
 
