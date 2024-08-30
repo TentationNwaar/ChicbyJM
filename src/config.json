@@ -61,14 +61,39 @@
   "headerLinks": [
     {
       "menuLabel": "Shopping",
-      "menuLink": "/shopTous",
+      "menuLink": "/shopTous"
+    },
+    {
+      "menuLabel": "Homme",
+      "menuLink": "/shopHomme",
       "category": [
         {
-          "categoryLabel": "Tous les vêtements",
-          "menuLink": "/shopTous"
-        },
+          "submenu": [
+            {
+              "menuLabel": "Tous les vêtements",
+              "menuLink": "/shopHomme"
+            },
+            {
+              "menuLabel": "Hauts",
+              "menuLink": "/shopHomme"
+            },
+            {
+              "menuLabel": "Bas",
+              "menuLink": "/shopHomme"
+            },
+            {
+              "menuLabel": "Chaussures",
+              "menuLink": "/shopHomme"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "menuLabel": "Femme",
+      "menuLink": "/shop",
+      "category": [
         {
-          "categoryLabel": "Femme",
           "submenu": [
             {
               "menuLabel": "Tous les vêtements",
@@ -84,61 +109,6 @@
             },
             {
               "menuLabel": "Chaussures",
-              "menuLink": "/shop"
-            }
-          ]
-        },
-        {
-          "categoryLabel": "Homme",
-          "submenu": [
-            {
-              "menuLabel": "Tous les vêtements",
-              "menuLink": "/shop"
-            },
-            {
-              "menuLabel": "Hauts",
-              "menuLink": "/shop"
-            },
-            {
-              "menuLabel": "Bas",
-              "menuLink": "/shop"
-            },
-            {
-              "menuLabel": "Chaussures",
-              "menuLink": "/shop"
-            }
-          ]
-        },
-        {
-          "categoryLabel": "Enfants",
-          "submenu": [
-            {
-              "menuLabel": "Tous les vêtements",
-              "menuLink": "/shop"
-            },
-            {
-              "menuLabel": "Hauts",
-              "menuLink": "/shop"
-            },
-            {
-              "menuLabel": "Bas",
-              "menuLink": "/shop"
-            },
-            {
-              "menuLabel": "Chaussures",
-              "menuLink": "/shop"
-            }
-          ]
-        },
-        {
-          "categoryLabel": "Accessoires",
-          "submenu": [
-            {
-              "menuLabel": "Couvre-chef",
-              "menuLink": "/shop"
-            },
-            {
-              "menuLabel": "Sacs",
               "menuLink": "/shop"
             }
           ]
@@ -146,18 +116,38 @@
       ]
     },
     {
+      "menuLabel": "Enfant",
+      "menuLink": "/shopEnfant",
+      "category": [
+        {
+          "submenu": [
+            {
+              "menuLabel": "Tous les vêtements",
+              "menuLink": "/shopEnfant"
+            },
+            {
+              "menuLabel": "Hauts",
+              "menuLink": "/shopEnfant"
+            },
+            {
+              "menuLabel": "Bas",
+              "menuLink": "/shopEnfant"
+            },
+            {
+              "menuLabel": "Chaussures",
+              "menuLink": "/shopEnfant"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "menuLabel": "Accessoires",
+      "menuLink": "/shopAccessoire"
+    },
+    {
       "menuLabel": "Collections",
       "menuLink": "/blog",
-      "category": null
-    },
-    {
-      "menuLabel": "Contact",
-      "menuLink": "/blog",
-      "category": null
-    },
-    {
-      "menuLabel": "A propos",
-      "menuLink": "/about",
       "category": null
     }
   ],

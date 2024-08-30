@@ -16,7 +16,6 @@ const Brand = (props) => {
         alt="Logo JM"
         width="60"
         height="60"
-        onClick={() => navigate('/')} // Si vous souhaitez ajouter une action sur le clic de l'image
       />
     </div>
   );

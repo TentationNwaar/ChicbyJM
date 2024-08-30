@@ -1,10 +1,24 @@
 .root {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
+    align-items: center;
     cursor: pointer;
 }
 
+.header {
+    width: 100%;
+    padding: 0 20px; /* Adds some padding around the header */
+}
+
+.logo {
+    margin-right: auto; /* Ensures the logo is on the left */
+}
+
 @media (max-width: 800px) {
+    .root {
+        justify-content: center; /* Aligns the logo to the left on smaller screens */
+    }
+
     .root svg {
         width: 90px;
         height: 16.67px;

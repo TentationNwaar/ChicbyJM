@@ -19,11 +19,11 @@
 }
 
 .header {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    display: flex;
     align-items: center;
-    padding: 48px 0px 48px 0px;
-    margin: 0 auto;
+    justify-content: space-between;
+    position: relative;
+    padding: 10px 20px; /* Adjust padding to fit your design */
 }
 
 .headerMessageContainer {
@@ -45,17 +45,27 @@
     display: flex;
 }
 
+.linkContainer {
+    flex: 1; /* This allows the navigation to take up space and push other elements as needed */
+    display: flex;
+    justify-content: center; /* Center the navigation links */
+}
+
+.navContainer {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+}
+
+
 .navLink {
-    margin-right: 40px;
-    text-transform: uppercase;
-    color: var(--standard-black);
-    font-weight: 500;
-    padding-bottom: 30px;
-    font-size: 12px;
-    line-height: 15px;
-    border-bottom: 2px solid transparent;
-    transition: border 0.3s ease-in-out;
-    width: 100%;
+    margin: 0 15px;
+    text-decoration: none;
+    color: #000; /* Adjust the color as needed */
 }
 
 .activeLink {
@@ -63,9 +73,9 @@
 }
 
 .actionContainers {
-  display: flex;
-  flex-direction: row;
-  justify-content: end;
+    display: flex;
+    align-items: center;
+    margin-left: auto; /* Push the action buttons to the right */
 }
 
 .actionContainers > * {
@@ -216,13 +226,19 @@
         display: block;
     }
 
+    .navContainer {
+        position: static;
+        transform: none;
+        justify-content: flex-end;
+        display: none; /* Hide on smaller screens if using mobile navigation */
+    }
+
     .linkContainer {
       display: none;
     }
 
     .burgerIcon {
-        display: flex;
-        align-items: center;
+        display: block;
     }
 
     .burgerIcon svg {
@@ -232,6 +248,10 @@
 
     .hideOnMobile {
         display: none;
+    }
+
+    .actionContainers {
+        display: none; /* Hide action buttons on smaller screens */
     }
 
     .actionContainers > * {
@@ -244,8 +264,7 @@
     }
 
     .header {
-        padding: 24px 8px 24px 8px;
-        margin: 0px 8px;
+        justify-content: space-between;
     }
 
     .searchContainer {

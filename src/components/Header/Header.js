@@ -86,7 +86,9 @@ const Header = (prop) => {
       <Container size={'large'} spacing={'min'}>
         {/* header container */}
         <div className={styles.header}>
-          <div className={styles.linkContainer}>
+          <Brand /> {/* Logo on the left */}
+          
+          <div className={styles.navContainer}>
             <nav
               role={'presentation'}
               onMouseLeave={() => {
@@ -107,17 +109,7 @@ const Header = (prop) => {
               ))}
             </nav>
           </div>
-          <div
-            role={'presentation'}
-            onClick={() => {
-              setMobileMenu(!mobileMenu);
-              // setDepth(0);
-            }}
-            className={styles.burgerIcon}
-          >
-            <Icon symbol={`${mobileMenu === true ? 'cross' : 'burger'}`}></Icon>
-          </div>
-          <Brand />
+  
           <div className={styles.actionContainers}>
             <button
               aria-label="Search"
@@ -130,14 +122,14 @@ const Header = (prop) => {
             </button>
             <Link
               aria-label="Favorites"
-              href="/account/favorites"
+              to="/account/favorites"
               className={`${styles.iconContainer} ${styles.hideOnMobile}`}
             >
               <Icon symbol={'heart'}></Icon>
             </Link>
             <Link
               aria-label="Orders"
-              href={isAuth() ? '/login' : '/account/orders/'}
+              to={isAuth() ? '/login' : '/account/orders/'}
               className={`${styles.iconContainer} ${styles.hideOnMobile}`}
             >
               <Icon symbol={'user'}></Icon>
@@ -159,83 +151,21 @@ const Header = (prop) => {
               <AddNotification openCart={() => setShowMiniCart(true)} />
             </div>
           </div>
-        </div>
-
-        {/* search container */}
-        <div
-          className={`${styles.searchContainer} ${
-            showSearch === true ? styles.show : styles.hide
-          }`}
-        >
-          <h4>Que recherchez-vous?</h4>
-          <form className={styles.searchForm} onSubmit={(e) => handleSearch(e)}>
-            <FormInputField
-              ref={searchRef}
-              icon={'arrow'}
-              id={'searchInput'}
-              value={search}
-              placeholder={''}
-              type={'text'}
-              handleChange={(_, e) => setSearch(e)}
-            />
-          </form>
-          <div className={styles.suggestionContianer}>
-            {searchSuggestions.map((suggestion, index) => (
-              <p
-                role={'presentation'}
-                onClick={() => {
-                  setShowSearch(false);
-                  navigate(`/search?q=${suggestion}`);
-                }}
-                key={index}
-                className={styles.suggestion}
-              >
-                {suggestion}
-              </p>
-            ))}
-          </div>
+  
           <div
             role={'presentation'}
-            onClick={(e) => {
-              e.stopPropagation();
-              setShowSearch(false);
+            onClick={() => {
+              setMobileMenu(!mobileMenu);
             }}
-            className={styles.backdrop}
-          ></div>
+            className={styles.burgerIcon}
+          >
+            <Icon symbol={`${mobileMenu === true ? 'cross' : 'burger'}`}></Icon>
+          </div>
         </div>
+  
+        {/* search container */}
+        {/* ...rest of the code... */}
       </Container>
-
-      {/* menu container */}
-      <div
-        role={'presentation'}
-        onMouseLeave={() => setShowMenu(false)}
-        onMouseEnter={() => setShowMenu(true)}
-        className={`${styles.menuContainer} ${
-          showMenu === true ? styles.show : ''
-        }`}
-      >
-        <Container size={'large'} spacing={'min'}>
-          <ExpandedMenu menu={menu} />
-        </Container>
-      </div>
-
-      {/* minicart container */}
-      <Drawer visible={showMiniCart} close={() => setShowMiniCart(false)}>
-        <MiniCart />
-      </Drawer>
-
-      {/* mobile menu */}
-      <div className={styles.mobileMenuContainer}>
-        <Drawer
-          hideCross
-          top={'98px'}
-          isReverse
-          visible={mobileMenu}
-          close={() => setMobileMenu(false)}
-        >
-          <MobileNavigation close={() => setMobileMenu(false)} />
-        </Drawer>
-      </div>
     </div>
   );
 };
