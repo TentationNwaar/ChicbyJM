@@ -19,10 +19,8 @@ const Header = (prop) => {
   const [showMiniCart, setShowMiniCart] = useState(false);
   const [mobileMenu, setMobileMenu] = useState(false);
   const [showMenu, setShowMenu] = useState(true);
-
   const [menu, setMenu] = useState();
   const [activeMenu, setActiveMenu] = useState();
-
   const [showSearch, setShowSearch] = useState(false);
   const [search, setSearch] = useState('');
 
@@ -75,7 +73,6 @@ const Header = (prop) => {
         searchRef.current.focus();
       }, 250);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showSearch]);
 
   return (
@@ -84,16 +81,13 @@ const Header = (prop) => {
         <span>{bannerMessage}</span>
       </div>
       <Container size={'large'} spacing={'min'}>
-        {/* header container */}
         <div className={styles.header}>
-          <Brand /> {/* Logo on the left */}
-          
+          <Brand />
+
           <div className={styles.navContainer}>
             <nav
               role={'presentation'}
-              onMouseLeave={() => {
-                setShowMenu(false);
-              }}
+              onMouseLeave={() => setShowMenu(false)}
             >
               {Config.headerLinks.map((navObject) => (
                 <Link
@@ -109,30 +103,28 @@ const Header = (prop) => {
               ))}
             </nav>
           </div>
-  
+
           <div className={styles.actionContainers}>
             <button
               aria-label="Search"
               className={`${styles.iconButton} ${styles.iconContainer}`}
-              onClick={() => {
-                setShowSearch(!showSearch);
-              }}
+              onClick={() => setShowSearch(!showSearch)}
             >
-              <Icon symbol={'search'}></Icon>
+              <Icon symbol={'search'} />
             </button>
             <Link
               aria-label="Favorites"
               to="/account/favorites"
               className={`${styles.iconContainer} ${styles.hideOnMobile}`}
             >
-              <Icon symbol={'heart'}></Icon>
+              <Icon symbol={'heart'} />
             </Link>
             <Link
               aria-label="Orders"
               to={isAuth() ? '/login' : '/account/orders/'}
               className={`${styles.iconContainer} ${styles.hideOnMobile}`}
             >
-              <Icon symbol={'user'}></Icon>
+              <Icon symbol={'user'} />
             </Link>
             <button
               aria-label="Cart"
@@ -142,7 +134,7 @@ const Header = (prop) => {
                 setMobileMenu(false);
               }}
             >
-              <Icon symbol={'bag'}></Icon>
+              <Icon symbol={'bag'} />
               <div className={styles.bagNotification}>
                 <span>1</span>
               </div>
@@ -151,7 +143,7 @@ const Header = (prop) => {
               <AddNotification openCart={() => setShowMiniCart(true)} />
             </div>
           </div>
-  
+
           <div
             role={'presentation'}
             onClick={() => {
@@ -159,13 +151,39 @@ const Header = (prop) => {
             }}
             className={styles.burgerIcon}
           >
-            <Icon symbol={`${mobileMenu === true ? 'cross' : 'burger'}`}></Icon>
+            <Icon symbol={mobileMenu ? 'cross' : 'burger'} />
           </div>
         </div>
-  
-        {/* search container */}
-        {/* ...rest of the code... */}
       </Container>
+
+      {/* Mobile Navigation Drawer */}
+      {mobileMenu && (
+        <Drawer isOpen={mobileMenu} onClose={() => setMobileMenu(false)}>
+          <MobileNavigation />
+        </Drawer>
+      )}
+
+      {/* Search Container */}
+      {showSearch && (
+        <div className={styles.searchContainer}>
+          <form onSubmit={handleSearch}>
+            <FormInputField
+              placeholder="Rechercher"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              ref={searchRef}
+            />
+            <button type="submit">Search</button>
+          </form>
+          <div className={styles.searchSuggestions}>
+            {searchSuggestions.map((suggestion) => (
+              <div key={suggestion} className={styles.suggestionItem}>
+                {suggestion}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

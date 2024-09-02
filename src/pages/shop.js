@@ -43,8 +43,28 @@ const ShopPage = (props) => {
   // Nombre total d'articles pertinents
   const totalItems = filteredProducts.length;
 
-  // Nombre d'articles affichés (ceci pourrait changer si vous ajoutez une logique de pagination ou de limite)
-  const displayedItems = filteredProducts.length; // Par défaut, on affiche tout ce qui est filtré.
+  // Limit the number of items shown on mobile to 10
+  const [displayedItems, setDisplayedItems] = useState(10);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Show more items when clicking the button
+  const showMoreItems = () => {
+    setDisplayedItems(prev => prev + 10); // Show 10 more items
+  };
+
+  // Check if the screen size is mobile
+  useEffect(() => {
+    const updateIsMobile = () => setIsMobile(window.innerWidth <= 430);
+    updateIsMobile();
+    window.addEventListener('resize', updateIsMobile);
+    return () => window.removeEventListener('resize', updateIsMobile);
+  }, []);
+
+  const visibleProducts = isMobile
+    ? filteredProducts.slice(0, displayedItems)
+    : filteredProducts;
+
+  const showLoadMoreButton = isMobile && displayedItems < totalItems;
 
   const [showFilter, setShowFilter] = useState(false);
 
@@ -64,13 +84,6 @@ const ShopPage = (props) => {
       <div className={styles.root}>
         <Container size="large" spacing="min">
           <div className={styles.breadcrumbContainer}>
-            <Breadcrumbs
-              crumbs={[
-                { link: '/', label: 'Home' },
-                { link: '/', label: 'Woman' },
-                { label: 'Sweaters' },
-              ]}
-            />
           </div>
         </Container>
         <Banner
@@ -105,12 +118,12 @@ const ShopPage = (props) => {
           <div className={styles.chipsContainer}>
           </div>
           <div className={styles.productContainer}>
-            <span className={styles.mobileItemCount}>{displayedItems} produits</span>
-            <ProductCardGrid data={filteredProducts} />
+            <span className={styles.mobileItemCount}>{visibleProducts.length} produits</span>
+            <ProductCardGrid data={visibleProducts} />
           </div>
           <div>
             <ul className={styles.imageGrid}>
-              {filteredProducts.map(({ node }) => (
+              {visibleProducts.map(({ node }) => (
                 <li key={node.Handle}>
                   <img 
                     src={node.Image_Src} 
@@ -125,13 +138,14 @@ const ShopPage = (props) => {
               ))}
             </ul>
           </div>
-          <span style={{ textAlign: 'center', display: 'block' }}>{displayedItems} sur {totalItems}</span>
-          <div className={styles.loadMoreContainer}>
-            
-            {/* <Button fullWidth level="secondary">
-              Charger plus
-            </Button> */}
-          </div>
+          <span style={{ textAlign: 'center', display: 'block' }}>{visibleProducts.length} sur {totalItems}</span>
+          {showLoadMoreButton && (
+            <div className={styles.loadMoreContainer}>
+              <Button fullWidth level="secondary" onClick={showMoreItems}>
+                Charger plus
+              </Button>
+            </div>
+          )}
         </Container>
       </div>
       <LayoutOption />

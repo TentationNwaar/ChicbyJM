@@ -58,7 +58,7 @@ const ShopPage = (props) => {
                 onClick={() => setShowFilter(!showFilter)}
               >
                 <Icon symbol="filter" />
-                <span>Filters</span>
+                <span>Filtres</span>
               </div>
               <div
                 className={`${styles.iconContainer} ${styles.sortContainer}`}

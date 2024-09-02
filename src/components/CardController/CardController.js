@@ -148,7 +148,7 @@ const CardController = (props) => {
             <div className={styles.mobileButtonContainer}>
               {category === undefined && (
                 <Button fullWidth level={'primary'}>
-                  show results: 1234
+                  Afficher les résultats : 1234
                 </Button>
               )}
               {category !== undefined && (

@@ -72,13 +72,13 @@ const ShopPage = (props) => {
       <div className={styles.root}>
         <Container size="large" spacing="min">
           <div className={styles.breadcrumbContainer}>
-            <Breadcrumbs
+            {/* <Breadcrumbs
               crumbs={[
                 { link: '/', label: 'Home' },
                 { link: '/', label: 'Woman' },
                 { label: 'Sweaters' },
               ]}
-            />
+            /> */}
           </div>
         </Container>
         <Banner
