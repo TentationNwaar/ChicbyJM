@@ -2,6 +2,7 @@ import React from 'react';
 import Arrow from './Arrow';
 import Bag from './Bag';
 import BagPlus from './BagPlus';
+import Back from './Back';
 import Burger from './Burger';
 import Caret from './Caret';
 import Check from './Check';
@@ -35,6 +36,8 @@ function Icon(props) {
       return <Arrow />;
     case 'bag':
       return <Bag />;
+    case 'back':
+      return <Back />;
     case 'bagPlus':
       return <BagPlus />;
     case 'burger':

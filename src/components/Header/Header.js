@@ -16,21 +16,23 @@ import MobileNavigation from '../MobileNavigation';
 import * as styles from './Header.module.css';
 
 const Header = (prop) => {
-  const [showMiniCart, setShowMiniCart] = useState(false);
-  const [mobileMenu, setMobileMenu] = useState(false);
-  const [showMenu, setShowMenu] = useState(true);
-  const [menu, setMenu] = useState();
-  const [activeMenu, setActiveMenu] = useState();
-  const [showSearch, setShowSearch] = useState(false);
-  const [search, setSearch] = useState('');
+const [showMiniCart, setShowMiniCart] = useState(false);
+const [mobileMenu, setMobileMenu] = useState(false);
+const toggleMenu = () => setMobileMenu(!mobileMenu);
+const closeMenu = () => setMobileMenu(false);
+const [showMenu, setShowMenu] = useState(true);
+const [menu, setMenu] = useState();
+const [activeMenu, setActiveMenu] = useState();
+const [showSearch, setShowSearch] = useState(false);
+const [search, setSearch] = useState('');
 
-  const searchRef = createRef();
-  const bannerMessage = 'EXCLUSIF : PROFITEZ DE 10 % DE RÉDUCTION SUR TOUTE VOTRE PREMIÈRE COMMANDE AVEC LE CODE JM2024';
-  const searchSuggestions = [
-    'T-shirt',
-    'School Spirit',
-    'Ciel bleu',
-  ];
+const searchRef = createRef();
+const bannerMessage = 'EXCLUSIF : PROFITEZ DE 10 % DE RÉDUCTION SUR TOUTE VOTRE PREMIÈRE COMMANDE AVEC LE CODE JM2024';
+const searchSuggestions = [
+  'T-shirt',
+  'School Spirit',
+  'Ciel bleu',
+];
 
   const handleHover = (navObject) => {
     if (navObject.category) {
@@ -156,10 +158,13 @@ const Header = (prop) => {
         </div>
       </Container>
 
-      {/* Mobile Navigation Drawer */}
       {mobileMenu && (
-        <Drawer isOpen={mobileMenu} onClose={() => setMobileMenu(false)}>
-          <MobileNavigation />
+        <Drawer 
+          visible={mobileMenu} 
+          close={() => setMobileMenu(false)}
+          hideCross={false}
+        >
+          <MobileNavigation close={() => setMobileMenu(false)} />
         </Drawer>
       )}
 

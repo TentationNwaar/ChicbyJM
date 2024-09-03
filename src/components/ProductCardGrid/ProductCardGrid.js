@@ -63,7 +63,9 @@ const ProductCardGrid = (props) => {
         </div>
       )}
 
-      <Drawer visible={showQuickView} close={() => setShowQuickView(false)}>
+      <Drawer 
+      visible={showQuickView} 
+      close={() => setShowQuickView(false)}>
         <QuickView close={() => setShowQuickView(false)} />
       </Drawer>
     </div>
