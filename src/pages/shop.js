@@ -8,6 +8,7 @@ import Container from '../components/Container';
 import Icon from '../components/Icons/Icon';
 import Layout from '../components/Layout';
 import LayoutOption from '../components/LayoutOption';
+import { Link } from 'gatsby';
 import ProductCardGrid from '../components/ProductCardGrid';
 import Button from '../components/Button';
 import Config from '../config.json';
@@ -122,21 +123,21 @@ const ShopPage = (props) => {
             <ProductCardGrid data={visibleProducts} />
           </div>
           <div>
-            <ul className={styles.imageGrid}>
-              {visibleProducts.map(({ node }) => (
-                <li key={node.Handle}>
+          <ul className={styles.imageGrid}>
+            {visibleProducts.map(({ node }) => (
+              <li key={node.Handle}>
+                <Link to={`/product/${node.Handle}`}>
                   <img 
                     src={node.Image_Src} 
                     alt={node.Image_Alt_Text}
                     style={{ width: '300px', height: 'auto' }}
                   />
-                  <h2 style={{ fontSize: '22px' }}>
-                    {node.Title}
-                  </h2>
+                  <h2 style={{ fontSize: '22px' }}>{node.Title}</h2>
                   <p>{node.Variant_Price} CHF</p>
-                </li>
-              ))}
-            </ul>
+                </Link>
+              </li>
+            ))}
+          </ul>
           </div>
           <span style={{ textAlign: 'center', display: 'block' }}>{visibleProducts.length} sur {totalItems}</span>
           {showLoadMoreButton && (
