@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { graphql } from 'gatsby';
 import Layout from '../components/Layout';
-import './product-template.css'; // Make sure to customize this CSS file
+import './product-template.css'; // Keep the same CSS
 
 const ProductTemplate = ({ data }) => {
   const product = data.productsCsv;
   const [selectedSize, setSelectedSize] = useState('2XS'); // Default size selection
   const [quantity, setQuantity] = useState(1);
-  const [selectedImage, setSelectedImage] = useState(0); // To track the main displayed image
+  const [selectedImage, setSelectedImage] = useState(0); // Track the main displayed image
 
   const sizes = ['2XS', 'XS', 'S', 'M', 'L', 'XL'];
 
@@ -22,6 +22,15 @@ const ProductTemplate = ({ data }) => {
   // Assuming `Variant_Image` is a comma-separated list of image URLs
   const productImages = product.Variant_Image ? product.Variant_Image.split(',') : [];
 
+  // Function to handle moving to the next or previous image in the carousel
+  const handleCarousel = (direction) => {
+    if (direction === 'next') {
+      setSelectedImage((prevIndex) => (prevIndex + 1) % productImages.length); // Moves forward
+    } else {
+      setSelectedImage((prevIndex) => (prevIndex - 1 + productImages.length) % productImages.length); // Moves backward
+    }
+  };
+
   return (
     <Layout>
       <div className="product-container">
@@ -29,25 +38,20 @@ const ProductTemplate = ({ data }) => {
         <div className="product-images">
           {/* Display the main selected image */}
           {productImages.length > 0 && (
-            <img
-              src={productImages[selectedImage]} // Show the selected image
-              alt={product.Image_Alt_Text || `Product Image ${selectedImage + 1}`}
-              className="main-product-image"
-            />
-          )}
-
-          {/* Thumbnail navigation */}
-          <div className="image-thumbnails">
-            {productImages.map((image, index) => (
+            <>
               <img
-                key={index}
-                src={image}
-                alt={`Thumbnail ${index + 1}`}
-                className={`thumbnail-image ${selectedImage === index ? 'active' : ''}`}
-                onClick={() => setSelectedImage(index)} // Change main image when thumbnail is clicked
+                src={productImages[selectedImage]} // Show the selected image
+                alt={product.Image_Alt_Text || `Product Image ${selectedImage + 1}`}
+                className="main-product-image"
               />
-            ))}
-          </div>
+
+              {/* Mobile-only: Carousel buttons for image navigation */}
+              <div className="carousel-controls">
+                <button onClick={() => handleCarousel('prev')} className="carousel-button left-arrow">❮</button>
+                <button onClick={() => handleCarousel('next')} className="carousel-button right-arrow">❯</button>
+              </div>
+            </>
+          )}
         </div>
 
         {/* Right Section: Product Info */}
