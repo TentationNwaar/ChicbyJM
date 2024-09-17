@@ -8,7 +8,7 @@
 
 .product-images {
   flex: 1;
-  position: relative; /* Ensure the arrows stay inside the image container */
+  position: relative;
   text-align: center;
 }
 
@@ -20,13 +20,37 @@
   margin: 0 auto;
 }
 
-/* Carousel controls for image navigation */
+/* Desktop-only: Thumbnails grid */
+.desktop-thumbnails {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  margin-top: 10px;
+  justify-content: center;
+  display: none; /* Hidden by default, shown on desktop */
+}
+
+.thumbnail-image {
+  width: 80px;
+  height: 80px;
+  cursor: pointer;
+  border: 1px solid #ddd;
+  padding: 5px;
+  transition: border 0.3s;
+}
+
+.thumbnail-image.active,
+.thumbnail-image:hover {
+  border: 2px solid #000;
+}
+
+/* Carousel controls for image navigation (Mobile only) */
 .carousel-controls {
   position: absolute;
   top: 50%;
   left: 0;
   right: 0;
-  display: flex;
+  display: none; /* Hidden by default, shown on mobile */
   justify-content: space-between;
   transform: translateY(-50%);
   width: 100%;
@@ -136,8 +160,12 @@
   border: none;
 }
 
-/* Responsiveness */
+/* Mobile view */
 @media (max-width: 768px) {
+  .carousel-controls {
+    display: flex; /* Show arrows on mobile */
+  }
+
   .product-container {
     flex-direction: column;
     align-items: center;
@@ -151,5 +179,20 @@
 
   .main-product-image {
     max-width: 100%;
+  }
+
+  .desktop-thumbnails {
+    display: none; /* Hide thumbnails on mobile */
+  }
+}
+
+/* Desktop view */
+@media (min-width: 769px) {
+  .desktop-thumbnails {
+    display: grid; /* Show thumbnails in grid format on desktop */
+  }
+
+  .carousel-controls {
+    display: none; /* Hide carousel arrows on desktop */
   }
 }

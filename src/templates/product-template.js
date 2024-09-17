@@ -1,13 +1,23 @@
 import React, { useState } from 'react';
 import { graphql } from 'gatsby';
 import Layout from '../components/Layout';
-import './product-template.css'; // Keep the same CSS
+import './product-template.css';
 
 const ProductTemplate = ({ data }) => {
-  const product = data.productsCsv;
-  const [selectedSize, setSelectedSize] = useState('2XS'); // Default size selection
+  // Récupère toutes les lignes du produit
+  const productNodes = data.allProductsCsv.nodes;
+
+  // Utilise la première ligne pour les informations du produit
+  const product = productNodes[0];
+
+  // Récupère toutes les URLs d'images du produit
+  const productImages = productNodes
+    .map(node => node.Image_Src) // Récupère l'URL d'image de chaque ligne
+    .filter(Boolean); // Supprime les lignes sans URL d'image
+
+  const [selectedSize, setSelectedSize] = useState('2XS');
   const [quantity, setQuantity] = useState(1);
-  const [selectedImage, setSelectedImage] = useState(0); // Track the main displayed image
+  const [selectedImage, setSelectedImage] = useState(0);
 
   const sizes = ['2XS', 'XS', 'S', 'M', 'L', 'XL'];
 
@@ -19,33 +29,42 @@ const ProductTemplate = ({ data }) => {
     setQuantity(prevQuantity => Math.max(1, prevQuantity + change));
   };
 
-  // Assuming `Variant_Image` is a comma-separated list of image URLs
-  const productImages = product.Variant_Image ? product.Variant_Image.split(',') : [];
-
-  // Function to handle moving to the next or previous image in the carousel
   const handleCarousel = (direction) => {
     if (direction === 'next') {
-      setSelectedImage((prevIndex) => (prevIndex + 1) % productImages.length); // Moves forward
+      setSelectedImage((prevIndex) => (prevIndex + 1) % productImages.length);
     } else {
-      setSelectedImage((prevIndex) => (prevIndex - 1 + productImages.length) % productImages.length); // Moves backward
+      setSelectedImage((prevIndex) => (prevIndex - 1 + productImages.length) % productImages.length);
     }
   };
 
   return (
     <Layout>
       <div className="product-container">
-        {/* Left Section: Product Images */}
+        {/* Section Gauche : Images du produit */}
         <div className="product-images">
-          {/* Display the main selected image */}
+          {/* Affiche l'image principale sélectionnée */}
           {productImages.length > 0 && (
             <>
               <img
-                src={productImages[selectedImage]} // Show the selected image
-                alt={product.Image_Alt_Text || `Product Image ${selectedImage + 1}`}
+                src={productImages[selectedImage]}
+                alt={product.Image_Alt_Text || `Image du produit ${selectedImage + 1}`}
                 className="main-product-image"
               />
 
-              {/* Mobile-only: Carousel buttons for image navigation */}
+              {/* Pour les ordinateurs de bureau : Grille des vignettes */}
+              <div className="desktop-thumbnails">
+                {productImages.map((image, index) => (
+                  <img
+                    key={index}
+                    src={image}
+                    alt={`Vignette ${index + 1}`}
+                    className={`thumbnail-image ${selectedImage === index ? 'active' : ''}`}
+                    onClick={() => setSelectedImage(index)}
+                  />
+                ))}
+              </div>
+
+              {/* Pour les mobiles : Boutons de navigation du carousel */}
               <div className="carousel-controls">
                 <button onClick={() => handleCarousel('prev')} className="carousel-button left-arrow">❮</button>
                 <button onClick={() => handleCarousel('next')} className="carousel-button right-arrow">❯</button>
@@ -54,12 +73,12 @@ const ProductTemplate = ({ data }) => {
           )}
         </div>
 
-        {/* Right Section: Product Info */}
+        {/* Section Droite : Informations sur le produit */}
         <div className="product-info">
           <h1 className="product-title">{product.Title}</h1>
           <p className="product-price">{product.Variant_Price} CHF</p>
 
-          {/* Size Selector */}
+          {/* Sélecteur de taille */}
           <div className="product-sizes">
             <p><strong>Taille</strong></p>
             <div className="size-buttons">
@@ -75,7 +94,7 @@ const ProductTemplate = ({ data }) => {
             </div>
           </div>
 
-          {/* Quantity Selector */}
+          {/* Sélecteur de quantité */}
           <div className="product-quantity">
             <p><strong>Quantité</strong></p>
             <div className="quantity-control">
@@ -85,13 +104,13 @@ const ProductTemplate = ({ data }) => {
             </div>
           </div>
 
-          {/* Add to Cart and PayPal Buttons */}
+          {/* Boutons Ajouter au panier et PayPal */}
           <div className="product-buttons">
             <button className="add-to-cart">Ajouter au panier</button>
             <button className="paypal-button">Acheter avec PayPal</button>
           </div>
 
-          {/* Product Description */}
+          {/* Description du produit */}
           <div className="product-description" dangerouslySetInnerHTML={{ __html: product.Body_HTML }} />
         </div>
       </div>
@@ -101,15 +120,15 @@ const ProductTemplate = ({ data }) => {
 
 export const query = graphql`
   query($handle: String!) {
-    productsCsv(Handle: { eq: $handle }) {
-      Handle
-      Title
-      Body_HTML
-      Variant_Price
-      Image_Src
-      Image_Alt_Text
-      Image_Position
-      Variant_Image
+    allProductsCsv(filter: { Handle: { eq: $handle } }) {
+      nodes {
+        Handle
+        Title
+        Body_HTML
+        Variant_Price
+        Image_Src
+        Image_Alt_Text
+      }
     }
   }
 `;
