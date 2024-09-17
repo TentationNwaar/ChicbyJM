@@ -12,6 +12,32 @@
   text-align: center;
 }
 
+/* Boutons de sélection de couleur */
+.product-colors {
+  margin: 15px 0;
+}
+
+.color-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px; /* Espacement entre les boutons */
+}
+
+.color-button {
+  width: calc(100% / 7 - 10px); /* Largeur pour 7 boutons par ligne */
+  margin-bottom: 10px; /* Espace entre les lignes */
+  text-align: center;
+  padding: 10px;
+  background-color: #f4f4f4; /* Couleur de fond des boutons */
+  border: 1px solid #ccc; /* Bordure */
+  border-radius: 4px; /* Coins arrondis */
+  cursor: pointer;
+}
+
+.color-button.selected {
+  background-color: #ddd; /* Couleur des boutons sélectionnés */
+}
+
 .main-product-image {
   max-width: 80%;
   height: auto;

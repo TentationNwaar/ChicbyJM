@@ -4,25 +4,43 @@ import Layout from '../components/Layout';
 import './product-template.css';
 
 const ProductTemplate = ({ data }) => {
-  // Récupère toutes les lignes du produit
   const productNodes = data.allProductsCsv.nodes;
 
-  // Utilise la première ligne pour les informations du produit
   const product = productNodes[0];
+  
+  // Group images by color (assuming colors are correctly related to images)
+  const imagesByColor = productNodes.reduce((acc, node) => {
+    const color = node.Option1_Value;
+    if (color) {
+      if (!acc[color]) {
+        acc[color] = [];
+      }
+      acc[color].push(node.Image_Src);
+    }
+    return acc;
+  }, {});
 
-  // Récupère toutes les URLs d'images du produit
-  const productImages = productNodes
-    .map(node => node.Image_Src) // Récupère l'URL d'image de chaque ligne
-    .filter(Boolean); // Supprime les lignes sans URL d'image
+  // Get colors from the products
+  const colors = Object.keys(imagesByColor);
 
+  // States
   const [selectedSize, setSelectedSize] = useState('2XS');
   const [quantity, setQuantity] = useState(1);
+  const [selectedColor, setSelectedColor] = useState(colors[0]); // Default color
   const [selectedImage, setSelectedImage] = useState(0);
+
+  // Get the images for the selected color
+  const productImages = imagesByColor[selectedColor] || [];
 
   const sizes = ['2XS', 'XS', 'S', 'M', 'L', 'XL'];
 
   const handleSizeSelect = (size) => {
     setSelectedSize(size);
+  };
+
+  const handleColorSelect = (color) => {
+    setSelectedColor(color);
+    setSelectedImage(0); // Reset the image selection when color changes
   };
 
   const handleQuantityChange = (change) => {
@@ -42,7 +60,6 @@ const ProductTemplate = ({ data }) => {
       <div className="product-container">
         {/* Section Gauche : Images du produit */}
         <div className="product-images">
-          {/* Affiche l'image principale sélectionnée */}
           {productImages.length > 0 && (
             <>
               <img
@@ -51,7 +68,6 @@ const ProductTemplate = ({ data }) => {
                 className="main-product-image"
               />
 
-              {/* Pour les ordinateurs de bureau : Grille des vignettes */}
               <div className="desktop-thumbnails">
                 {productImages.map((image, index) => (
                   <img
@@ -64,7 +80,6 @@ const ProductTemplate = ({ data }) => {
                 ))}
               </div>
 
-              {/* Pour les mobiles : Boutons de navigation du carousel */}
               <div className="carousel-controls">
                 <button onClick={() => handleCarousel('prev')} className="carousel-button left-arrow">❮</button>
                 <button onClick={() => handleCarousel('next')} className="carousel-button right-arrow">❯</button>
@@ -94,6 +109,24 @@ const ProductTemplate = ({ data }) => {
             </div>
           </div>
 
+          {/* Sélecteur de couleur */}
+          {colors.length > 0 && (
+            <div className="product-colors">
+              <p><strong>Couleur</strong></p>
+              <div className="color-buttons">
+                {colors.map(color => (
+                  <button
+                    key={color}
+                    onClick={() => handleColorSelect(color)}
+                    className={`color-button ${selectedColor === color ? 'selected' : ''}`}
+                  >
+                    {color}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* Sélecteur de quantité */}
           <div className="product-quantity">
             <p><strong>Quantité</strong></p>
@@ -104,13 +137,11 @@ const ProductTemplate = ({ data }) => {
             </div>
           </div>
 
-          {/* Boutons Ajouter au panier et PayPal */}
           <div className="product-buttons">
             <button className="add-to-cart">Ajouter au panier</button>
             <button className="paypal-button">Acheter avec PayPal</button>
           </div>
 
-          {/* Description du produit */}
           <div className="product-description" dangerouslySetInnerHTML={{ __html: product.Body_HTML }} />
         </div>
       </div>
@@ -128,6 +159,8 @@ export const query = graphql`
         Variant_Price
         Image_Src
         Image_Alt_Text
+        Option1_Name
+        Option1_Value
       }
     }
   }
