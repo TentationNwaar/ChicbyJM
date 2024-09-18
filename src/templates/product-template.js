@@ -5,71 +5,80 @@ import './product-template.css';
 
 const ProductTemplate = ({ data }) => {
   const productNodes = data.allProductsCsv.nodes;
-
   const product = productNodes[0];
-  
-  // Group images by color (assuming colors are correctly related to images)
-  const imagesByColor = productNodes.reduce((acc, node) => {
-    const color = node.Option1_Value;
-    if (color) {
-      if (!acc[color]) {
-        acc[color] = [];
-      }
-      acc[color].push(node.Image_Src);
-    }
-    return acc;
-  }, {});
 
-  // Get colors from the products
-  const colors = Object.keys(imagesByColor);
+  // Toutes les images du produit
+  const productImages = productNodes.map(node => node.Image_Src).filter(Boolean);
 
-  // States
+  // Récupérer les images pour une couleur donnée
+  const getImagesForColor = (color) => {
+    return productNodes
+      .filter(node => node.Option1_Name === 'Couleur' && node.Option1_Value === color)
+      .map(node => node.Image_Src)
+      .filter(Boolean);
+  };
+
+  // Récupérer toutes les couleurs disponibles pour ce produit
+  const colors = productNodes
+    .filter(node => node.Option1_Name === 'Couleur')
+    .map(node => node.Option1_Value)
+    .filter(Boolean);
+
   const [selectedSize, setSelectedSize] = useState('2XS');
   const [quantity, setQuantity] = useState(1);
-  const [selectedColor, setSelectedColor] = useState(colors[0]); // Default color
   const [selectedImage, setSelectedImage] = useState(0);
-
-  // Get the images for the selected color
-  const productImages = imagesByColor[selectedColor] || [];
+  const [selectedColor, setSelectedColor] = useState(null); // Pas de couleur sélectionnée par défaut
 
   const sizes = ['2XS', 'XS', 'S', 'M', 'L', 'XL'];
 
-  const handleSizeSelect = (size) => {
-    setSelectedSize(size);
-  };
+  const handleSizeSelect = (size) => setSelectedSize(size);
 
   const handleColorSelect = (color) => {
     setSelectedColor(color);
-    setSelectedImage(0); // Reset the image selection when color changes
+    setSelectedImage(0); // Remettre à zéro l'image sélectionnée
   };
 
-  const handleQuantityChange = (change) => {
-    setQuantity(prevQuantity => Math.max(1, prevQuantity + change));
-  };
+  const handleQuantityChange = (change) => setQuantity((prevQuantity) => Math.max(1, prevQuantity + change));
 
   const handleCarousel = (direction) => {
+    const currentImages = reorderImagesByColor();
     if (direction === 'next') {
-      setSelectedImage((prevIndex) => (prevIndex + 1) % productImages.length);
+      setSelectedImage((prevIndex) => (prevIndex + 1) % currentImages.length);
     } else {
-      setSelectedImage((prevIndex) => (prevIndex - 1 + productImages.length) % productImages.length);
+      setSelectedImage((prevIndex) => (prevIndex - 1 + currentImages.length) % currentImages.length);
     }
   };
+
+  // Fonction pour réorganiser les images : d'abord celles de la couleur sélectionnée, puis les autres
+  const reorderImagesByColor = () => {
+    if (!selectedColor) {
+      return productImages; // Aucune couleur sélectionnée, retourner toutes les images
+    }
+
+    const colorImages = getImagesForColor(selectedColor);
+    const otherImages = productImages.filter(image => !colorImages.includes(image));
+
+    return [...colorImages, ...otherImages]; // Combiner les images
+  };
+
+  // Déterminer les images à afficher (réorganisées par la couleur sélectionnée)
+  const displayedImages = reorderImagesByColor();
 
   return (
     <Layout>
       <div className="product-container">
         {/* Section Gauche : Images du produit */}
         <div className="product-images">
-          {productImages.length > 0 && (
+          {displayedImages.length > 0 && (
             <>
               <img
-                src={productImages[selectedImage]}
+                src={displayedImages[selectedImage]}
                 alt={product.Image_Alt_Text || `Image du produit ${selectedImage + 1}`}
                 className="main-product-image"
               />
 
               <div className="desktop-thumbnails">
-                {productImages.map((image, index) => (
+                {displayedImages.map((image, index) => (
                   <img
                     key={index}
                     src={image}
@@ -97,7 +106,7 @@ const ProductTemplate = ({ data }) => {
           <div className="product-sizes">
             <p><strong>Taille</strong></p>
             <div className="size-buttons">
-              {sizes.map(size => (
+              {sizes.map((size) => (
                 <button
                   key={size}
                   onClick={() => handleSizeSelect(size)}
@@ -114,7 +123,7 @@ const ProductTemplate = ({ data }) => {
             <div className="product-colors">
               <p><strong>Couleur</strong></p>
               <div className="color-buttons">
-                {colors.map(color => (
+                {colors.map((color) => (
                   <button
                     key={color}
                     onClick={() => handleColorSelect(color)}
