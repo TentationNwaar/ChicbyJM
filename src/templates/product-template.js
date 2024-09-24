@@ -5,7 +5,16 @@ import './product-template.css';
 
 const ProductTemplate = ({ data }) => {
   const productNodes = data.allProductsCsv.nodes;
-  const product = productNodes[0];
+
+  // Récupérer toutes les couleurs disponibles dans le CSV (sans prendre en compte le Handle ou Option1_Name)
+  const colors = [...new Set(
+    productNodes
+      .map(node => node.Option1_Value && node.Option1_Value.trim()) // Récupérer la valeur de Option1_Value en nettoyant les espaces
+      .filter(Boolean) // Filtrer les valeurs nulles ou vides
+  )];
+
+  // Log des couleurs récupérées
+  console.log('Toutes les couleurs récupérées :', colors);
 
   // Toutes les images du produit
   const productImages = productNodes.map(node => node.Image_Src).filter(Boolean);
@@ -13,16 +22,16 @@ const ProductTemplate = ({ data }) => {
   // Récupérer les images pour une couleur donnée
   const getImagesForColor = (color) => {
     return productNodes
-      .filter(node => node.Option1_Name === 'Couleur' && node.Option1_Value === color)
+      .filter(node => node.Option1_Value === color) // On ne filtre plus par handle
       .map(node => node.Image_Src)
       .filter(Boolean);
   };
 
-  // Récupérer toutes les couleurs disponibles pour ce produit
-  const colors = productNodes
-    .filter(node => node.Option1_Name === 'Couleur')
-    .map(node => node.Option1_Value)
-    .filter(Boolean);
+  // Exemple d'utilisation pour chaque couleur trouvée
+  colors.forEach(color => {
+    const images = getImagesForColor(color);
+    console.log(`Images pour la couleur ${color}:`, images);
+  });
 
   const [selectedSize, setSelectedSize] = useState('2XS');
   const [quantity, setQuantity] = useState(1);
@@ -73,7 +82,7 @@ const ProductTemplate = ({ data }) => {
             <>
               <img
                 src={displayedImages[selectedImage]}
-                alt={product.Image_Alt_Text || `Image du produit ${selectedImage + 1}`}
+                alt={`Image du produit ${selectedImage + 1}`}
                 className="main-product-image"
               />
 
@@ -99,8 +108,8 @@ const ProductTemplate = ({ data }) => {
 
         {/* Section Droite : Informations sur le produit */}
         <div className="product-info">
-          <h1 className="product-title">{product.Title}</h1>
-          <p className="product-price">{product.Variant_Price} CHF</p>
+          <h1 className="product-title">{data.allProductsCsv.nodes[0].Title}</h1> {/* Afficher le titre du premier produit */}
+          <p className="product-price">{data.allProductsCsv.nodes[0].Variant_Price} CHF</p>
 
           {/* Sélecteur de taille */}
           <div className="product-sizes">
@@ -151,7 +160,7 @@ const ProductTemplate = ({ data }) => {
             <button className="paypal-button">Acheter avec PayPal</button>
           </div>
 
-          <div className="product-description" dangerouslySetInnerHTML={{ __html: product.Body_HTML }} />
+          <div className="product-description" dangerouslySetInnerHTML={{ __html: data.allProductsCsv.nodes[0].Body_HTML }} />
         </div>
       </div>
     </Layout>
