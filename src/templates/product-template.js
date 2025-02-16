@@ -6,12 +6,40 @@ import './product-template.css';
 const ProductTemplate = ({ data }) => {
   const productNodes = data.allProductsCsv.nodes;
 
-  // Récupérer toutes les couleurs disponibles dans le CSV (sans prendre en compte le Handle ou Option1_Name)
-  const colors = [...new Set(
-    productNodes
-      .map(node => node.Option1_Value && node.Option1_Value.trim()) // Récupérer la valeur de Option1_Value en nettoyant les espaces
-      .filter(Boolean) // Filtrer les valeurs nulles ou vides
-  )];
+// Fonction pour ajuster le nom des couleurs en fonction de l'image ou d'autres critères
+const adjustColorName = (imageUrl, originalColor) => {
+  if (!imageUrl || originalColor.toLowerCase().includes('default title')) return null; // Ne pas afficher si l'image est absente ou la couleur contient 'default title'
+
+  // Définir des correspondances basées sur des parties d'URL ou d'autres attributs
+  if (imageUrl.includes('maroon')) return 'Bordeaux';
+  if (imageUrl.includes('black')) return 'Noir';
+  if (imageUrl.includes('red')) return 'Rouge';
+  if (imageUrl.includes('navy')) return 'Bleu Marine';
+  if (imageUrl.includes('purple')) return 'Violet';
+  if (imageUrl.includes('royal')) return 'Bleu Roi';
+  if (imageUrl.includes('charcoal')) return 'Anthracite';
+  if (imageUrl.includes('chocolate')) return 'Chocolat Noir';
+  if (imageUrl.includes('cardinal')) return 'Rouge Cardinal';
+  if (imageUrl.includes('rose')) return 'Rose';
+  if (imageUrl.includes('grey') || imageUrl.includes('gray')) return 'Gris Foncé Chiné';
+  if (imageUrl.includes('military')) return 'Vert Militaire';
+  if (imageUrl.includes('orange')) return 'Orange';
+  if (imageUrl.includes('mint')) return 'Vert Menthe';
+
+  // Retour par défaut si aucune règle ne correspond
+  return originalColor;
+};
+
+// Récupérer toutes les couleurs disponibles et ajuster leur nom en fonction de l'image
+const colors = [...new Set(
+  productNodes
+    .map(node => adjustColorName(node.Image_Src, node.Option1_Value && node.Option1_Value.trim())) // Ajuster le nom de la couleur
+    .filter(Boolean) // Filtrer les valeurs nulles ou vides
+)];
+
+// Log des couleurs ajustées
+console.log('Couleurs ajustées selon les images :', colors);
+
 
   // Log des couleurs récupérées
   console.log('Toutes les couleurs récupérées :', colors);

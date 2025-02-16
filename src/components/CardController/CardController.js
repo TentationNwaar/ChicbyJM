@@ -8,7 +8,7 @@ import Drawer from '../Drawer';
 import Icon from '../Icons/Icon';
 
 const CardController = (props) => {
-  const { filters, visible, closeFilter } = props;
+  const { filters, visible, closeFilter, onFilterChange } = props;
   const [category, setCategory] = useState();
   const [filterState, setFilterState] = useState(filters);
 
@@ -70,7 +70,14 @@ const CardController = (props) => {
         </Container>
         <div className={styles.actionContainer}>
           <Button
-            onClick={closeFilter}
+            onClick={() => {
+              // Convertir filterState en un objet plus facile à interpréter
+              // puis l'envoyer au parent
+              if (onFilterChange) {
+                onFilterChange(filterState);
+              }
+              closeFilter();
+            }}
             className={styles.customButtonStyling}
             level={'primary'}
           >
@@ -147,9 +154,18 @@ const CardController = (props) => {
 
             <div className={styles.mobileButtonContainer}>
               {category === undefined && (
-                <Button fullWidth level={'primary'}>
-                  Afficher les résultats : 1234
-                </Button>
+                <Button
+                  onClick={() => {
+                    if (onFilterChange) {
+                      onFilterChange(filterState);
+                    }
+                    closeFilter();
+                  }}
+                  fullWidth
+                  level={'primary'}
+                >
+                Afficher les résultats
+              </Button>
               )}
               {category !== undefined && (
                 <div>
