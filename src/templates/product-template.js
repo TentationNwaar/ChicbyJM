@@ -3,168 +3,164 @@ import { graphql } from 'gatsby';
 import Layout from '../components/Layout';
 import './product-template.css';
 
+/**
+ * Extrait la couleur et la taille d’un nom de variante.
+ * Exemple : "Casquette Snapback JM / Noir - M" donnera { color: "Noir", size: "M" }.
+ */
+function parseVariantName(fullName) {
+  const result = { color: '', size: '' };
+  if (!fullName) return result;
+
+  const parts = fullName.split('/');
+  if (parts.length < 2) return result;
+  
+  // La partie après '/' contient "Couleur - Taille"
+  const details = parts[1].trim();
+  const detailParts = details.split('-');
+  if (detailParts.length >= 1) {
+    result.color = detailParts[0].trim();
+  }
+  if (detailParts.length >= 2) {
+    result.size = detailParts[1].trim();
+  }
+  return result;
+}
+
+function filterProductImages(files = []) {
+  return files.filter(file => {
+    const url = file.preview_url.toLowerCase();
+    return (
+      !url.includes("logo") &&      // Exclure les images avec "logo"
+      !url.includes("mockup") &&    // Exclure les mockups si présents
+      !url.includes("icon") &&      // Exclure les icônes éventuelles
+      (url.includes("front") || url.includes("back") || url.includes("side")) // Prendre les images principales
+    );
+  });
+}
+
 const ProductTemplate = ({ data }) => {
-  const productNodes = data.allProductsCsv.nodes;
+  const product = data.printfulProduct;
+  const variants = product.sync_variants || [];
 
-// Fonction pour ajuster le nom des couleurs en fonction de l'image ou d'autres critères
-const adjustColorName = (imageUrl, originalColor) => {
-  if (!imageUrl || originalColor.toLowerCase().includes('default title')) return null; // Ne pas afficher si l'image est absente ou la couleur contient 'default title'
+  // Extraire toutes les couleurs uniques
+  const availableColors = Array.from(
+    new Set(
+      variants
+        .map(variant => {
+          const { color } = parseVariantName(variant.name);
+          return color;
+        })
+        .filter(Boolean)
+    )
+  );
 
-  // Définir des correspondances basées sur des parties d'URL ou d'autres attributs
-  if (imageUrl.includes('maroon')) return 'Bordeaux';
-  if (imageUrl.includes('black')) return 'Noir';
-  if (imageUrl.includes('red')) return 'Rouge';
-  if (imageUrl.includes('navy')) return 'Bleu Marine';
-  if (imageUrl.includes('purple')) return 'Violet';
-  if (imageUrl.includes('royal')) return 'Bleu Roi';
-  if (imageUrl.includes('charcoal')) return 'Anthracite';
-  if (imageUrl.includes('chocolate')) return 'Chocolat Noir';
-  if (imageUrl.includes('cardinal')) return 'Rouge Cardinal';
-  if (imageUrl.includes('rose')) return 'Rose';
-  if (imageUrl.includes('grey') || imageUrl.includes('gray')) return 'Gris Foncé Chiné';
-  if (imageUrl.includes('military')) return 'Vert Militaire';
-  if (imageUrl.includes('orange')) return 'Orange';
-  if (imageUrl.includes('mint')) return 'Vert Menthe';
+  // État : couleur et taille sélectionnées
+  const [selectedColor, setSelectedColor] = useState(availableColors[0] || null);
+  const [selectedSize, setSelectedSize] = useState(null);
 
-  // Retour par défaut si aucune règle ne correspond
-  return originalColor;
-};
+  // Tailles disponibles pour la couleur sélectionnée
+  const availableSizes = variants
+    .filter(variant => {
+      const { color } = parseVariantName(variant.name);
+      return color.toLowerCase() === selectedColor?.toLowerCase();
+    })
+    .map(variant => parseVariantName(variant.name).size)
+    .filter(Boolean);
 
-// Récupérer toutes les couleurs disponibles et ajuster leur nom en fonction de l'image
-const colors = [...new Set(
-  productNodes
-    .map(node => adjustColorName(node.Image_Src, node.Option1_Value && node.Option1_Value.trim())) // Ajuster le nom de la couleur
-    .filter(Boolean) // Filtrer les valeurs nulles ou vides
-)];
+  // Mettre à jour la taille sélectionnée à chaque fois qu’une nouvelle couleur est choisie
+  React.useEffect(() => {
+    setCurrentImageIndex(0); // Réinitialiser l'image affichée à la première disponible
+  }, [selectedColor]);
 
-// Log des couleurs ajustées
-console.log('Couleurs ajustées selon les images :', colors);
-
-
-  // Log des couleurs récupérées
-  console.log('Toutes les couleurs récupérées :', colors);
-
-  // Toutes les images du produit
-  const productImages = productNodes.map(node => node.Image_Src).filter(Boolean);
-
-  // Récupérer les images pour une couleur donnée
-  const getImagesForColor = (color) => {
-    return productNodes
-      .filter(node => node.Option1_Value === color) // On ne filtre plus par handle
-      .map(node => node.Image_Src)
-      .filter(Boolean);
-  };
-
-  // Exemple d'utilisation pour chaque couleur trouvée
-  colors.forEach(color => {
-    const images = getImagesForColor(color);
-    console.log(`Images pour la couleur ${color}:`, images);
+  const sortedSizes = availableSizes.sort((a, b) => {
+    const sizeOrder = ["2XS", "XS", "S", "M", "L", "XL", "XXL"];
+    return sizeOrder.indexOf(a) - sizeOrder.indexOf(b);
   });
 
-  const [selectedSize, setSelectedSize] = useState('2XS');
-  const [quantity, setQuantity] = useState(1);
-  const [selectedImage, setSelectedImage] = useState(0);
-  const [selectedColor, setSelectedColor] = useState(null); // Pas de couleur sélectionnée par défaut
+  // Variante actuellement sélectionnée
+  const currentVariant = variants.find(variant => {
+    const { color, size } = parseVariantName(variant.name);
+    return (
+      color.toLowerCase() === selectedColor?.toLowerCase() &&
+      size.toLowerCase() === selectedSize?.toLowerCase()
+    );
+  }) || null;
 
-  const sizes = ['2XS', 'XS', 'S', 'M', 'L', 'XL'];
+  // Images : filtrer par couleur et exclure les logos
+  const colorImages = variants
+    .filter(variant => {
+      const { color } = parseVariantName(variant.name);
+      return color.toLowerCase() === selectedColor?.toLowerCase();
+    })
+    .flatMap(variant => filterProductImages(variant.files))
+    .filter(Boolean);
 
-  const handleSizeSelect = (size) => setSelectedSize(size);
+  // Utiliser les images du produit par défaut si aucune image de variante disponible
+  const imagesToDisplay = colorImages.length > 0 ? colorImages : [{ id: 'fallback', preview_url: product.thumbnail_url }];
 
-  const handleColorSelect = (color) => {
-    setSelectedColor(color);
-    setSelectedImage(0); // Remettre à zéro l'image sélectionnée
+  // Carousel d'images
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const nextImage = () => {
+    setCurrentImageIndex((prev) => (prev + 1) % imagesToDisplay.length);
+  };
+  const prevImage = () => {
+    setCurrentImageIndex((prev) => (prev - 1 + imagesToDisplay.length) % imagesToDisplay.length);
   };
 
-  const handleQuantityChange = (change) => setQuantity((prevQuantity) => Math.max(1, prevQuantity + change));
+  // Trouver le prix le plus bas parmi toutes les variantes
+  const minPrice = variants.length ? Math.min(...variants.map(variant => parseFloat(variant.retail_price))) : null;
 
-  const handleCarousel = (direction) => {
-    const currentImages = reorderImagesByColor();
-    if (direction === 'next') {
-      setSelectedImage((prevIndex) => (prevIndex + 1) % currentImages.length);
-    } else {
-      setSelectedImage((prevIndex) => (prevIndex - 1 + currentImages.length) % currentImages.length);
-    }
+  const addToCart = () => {
+    alert(`Ajouté au panier :
+- Produit : ${product.name}
+- Couleur : ${selectedColor}
+- Taille : ${selectedSize}
+- Prix : ${currentVariant?.retail_price} ${currentVariant?.currency}`);
   };
-
-  // Fonction pour réorganiser les images : d'abord celles de la couleur sélectionnée, puis les autres
-  const reorderImagesByColor = () => {
-    if (!selectedColor) {
-      return productImages; // Aucune couleur sélectionnée, retourner toutes les images
-    }
-
-    const colorImages = getImagesForColor(selectedColor);
-    const otherImages = productImages.filter(image => !colorImages.includes(image));
-
-    return [...colorImages, ...otherImages]; // Combiner les images
-  };
-
-  // Déterminer les images à afficher (réorganisées par la couleur sélectionnée)
-  const displayedImages = reorderImagesByColor();
 
   return (
     <Layout>
       <div className="product-container">
-        {/* Section Gauche : Images du produit */}
+        {/* Section Images (Carousel) */}
         <div className="product-images">
-          {displayedImages.length > 0 && (
-            <>
+          {imagesToDisplay.length > 0 && (
+            <div className="carousel">
+              <button onClick={prevImage} className="carousel-button left">❮</button>
               <img
-                src={displayedImages[selectedImage]}
-                alt={`Image du produit ${selectedImage + 1}`}
+                src={imagesToDisplay[currentImageIndex].preview_url}
+                alt={`Image ${currentImageIndex + 1}`}
                 className="main-product-image"
               />
-
-              <div className="desktop-thumbnails">
-                {displayedImages.map((image, index) => (
-                  <img
-                    key={index}
-                    src={image}
-                    alt={`Vignette ${index + 1}`}
-                    className={`thumbnail-image ${selectedImage === index ? 'active' : ''}`}
-                    onClick={() => setSelectedImage(index)}
-                  />
-                ))}
-              </div>
-
-              <div className="carousel-controls">
-                <button onClick={() => handleCarousel('prev')} className="carousel-button left-arrow">❮</button>
-                <button onClick={() => handleCarousel('next')} className="carousel-button right-arrow">❯</button>
-              </div>
-            </>
+              <button onClick={nextImage} className="carousel-button right">❯</button>
+            </div>
           )}
+          <div className="thumbnails">
+            {imagesToDisplay.map((image, index) => (
+              <img
+                key={index}
+                src={image.preview_url}
+                alt={`Miniature ${index + 1}`}
+                className={`thumbnail-image ${index === currentImageIndex ? 'active' : ''}`}
+                onClick={() => setCurrentImageIndex(index)}
+              />
+            ))}
+          </div>
         </div>
 
-        {/* Section Droite : Informations sur le produit */}
+        {/* Section Informations */}
         <div className="product-info">
-          <h1 className="product-title">{data.allProductsCsv.nodes[0].Title}</h1> {/* Afficher le titre du premier produit */}
-          <p className="product-price">{data.allProductsCsv.nodes[0].Variant_Price} CHF</p>
+          <h1 className="product-title">{product.name}</h1>
 
-          {/* Sélecteur de taille */}
-          <div className="product-sizes">
-            <p><strong>Taille</strong></p>
-            <div className="size-buttons">
-              {sizes.map((size) => (
-                <button
-                  key={size}
-                  onClick={() => handleSizeSelect(size)}
-                  className={`size-button ${selectedSize === size ? 'selected' : ''}`}
-                >
-                  {size}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Sélecteur de couleur */}
-          {colors.length > 0 && (
-            <div className="product-colors">
-              <p><strong>Couleur</strong></p>
+          {/* Couleurs disponibles */}
+          {availableColors.length > 0 && selectedColor && (
+            <div className="color-selection">
+              <p><strong>Couleurs disponibles :</strong></p>
               <div className="color-buttons">
-                {colors.map((color) => (
+                {availableColors.map(color => (
                   <button
                     key={color}
-                    onClick={() => handleColorSelect(color)}
-                    className={`color-button ${selectedColor === color ? 'selected' : ''}`}
+                    onClick={() => setSelectedColor(color)}
+                    className={`color-button ${color === selectedColor ? 'selected' : ''}`}
                   >
                     {color}
                   </button>
@@ -173,40 +169,72 @@ console.log('Couleurs ajustées selon les images :', colors);
             </div>
           )}
 
-          {/* Sélecteur de quantité */}
-          <div className="product-quantity">
-            <p><strong>Quantité</strong></p>
-            <div className="quantity-control">
-              <button onClick={() => handleQuantityChange(-1)} className="quantity-button">-</button>
-              <span>{quantity}</span>
-              <button onClick={() => handleQuantityChange(1)} className="quantity-button">+</button>
+          {/* Tailles disponibles */}
+          {availableSizes.length > 0 && selectedSize && (
+            <div className="size-selection">
+              <p><strong>Tailles disponibles :</strong></p>
+              <div className="size-buttons">
+                {availableSizes.map(size => (
+                  <button
+                    key={size}
+                    onClick={() => setSelectedSize(size)}
+                    className={`size-button ${size === selectedSize ? 'selected' : ''}`}
+                  >
+                    {size}
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
-          <div className="product-buttons">
-            <button className="add-to-cart">Ajouter au panier</button>
-            <button className="paypal-button">Acheter avec PayPal</button>
-          </div>
+          {/* Affichage du prix */}
+          <p className="product-price">
+            {currentVariant ? (
+              <>
+                {currentVariant.retail_price} {currentVariant.currency}
+              </>
+            ) : (
+              <>
+                {minPrice ? `${minPrice.toFixed(2)} CHF` : "Prix indisponible"}
+              </>
+            )}
+          </p>
 
-          <div className="product-description" dangerouslySetInnerHTML={{ __html: data.allProductsCsv.nodes[0].Body_HTML }} />
+          {/* Boutons d'action */}
+          <div className="product-actions">
+            <button onClick={addToCart} className="add-to-cart">Ajouter au panier</button>
+          </div>
         </div>
       </div>
     </Layout>
   );
+  {sortedSizes.map(size => (
+    <button
+      key={size}
+      onClick={() => setSelectedSize(size)}
+      className={`size-button ${size === selectedSize ? 'selected' : ''}`}
+    >
+      {size}
+    </button>
+  ))}
 };
 
 export const query = graphql`
-  query($handle: String!) {
-    allProductsCsv(filter: { Handle: { eq: $handle } }) {
-      nodes {
-        Handle
-        Title
-        Body_HTML
-        Variant_Price
-        Image_Src
-        Image_Alt_Text
-        Option1_Name
-        Option1_Value
+  query($id: String!) {
+    printfulProduct(id: { eq: $id }) {
+      id
+      name
+      thumbnail_url
+      sync_variants {
+        id
+        name
+        retail_price
+        currency
+        files {
+          id
+          filename
+          preview_url
+        }
       }
     }
   }

@@ -7,17 +7,25 @@ import Button from '../Button';
 import Drawer from '../Drawer';
 import Icon from '../Icons/Icon';
 
+/**
+ * CardController :
+ * - Affiche la liste des filtres (ex: Couleurs, Tailles, Prix...)
+ * - stocke tout dans un array "filterState"
+ * - Quand on clique "Voir les produits", appelle onFilterChange(filterState)
+ */
 const CardController = (props) => {
   const { filters, visible, closeFilter, onFilterChange } = props;
   const [category, setCategory] = useState();
   const [filterState, setFilterState] = useState(filters);
 
+  // Coche/décoche un item
   const filterTick = (e, categoryIndex, labelIndex) => {
     const filterStateCopy = [...filterState];
     filterStateCopy[categoryIndex].items[labelIndex].value = e.target.checked;
     setFilterState(filterStateCopy);
   };
 
+  // Réinitialiser tous les filtres
   const resetFilter = () => {
     const filterStateCopy = [...filterState];
     for (let x = 0; x < filterStateCopy.length; x++) {
@@ -28,70 +36,57 @@ const CardController = (props) => {
     setFilterState(filterStateCopy);
   };
 
+  // Au clic sur "Voir les produits", on transmet filterState au parent
+  const applyFilters = () => {
+    if (onFilterChange) {
+      onFilterChange(filterState);
+    }
+    closeFilter();
+  };
+
   return (
     <div>
-      <div
-        className={`${styles.webRoot} ${
-          visible === true ? styles.show : styles.hide
-        }`}
-      >
+      {/* --- Mode desktop --- */}
+      <div className={`${styles.webRoot} ${visible ? styles.show : styles.hide}`}>
         <Container>
           <div className={styles.filterContainer}>
-            {filterState &&
-              filterState.map((filter, categoryIndex) => {
-                // if number of filter per category is less than 4 maintain single layout
-                const colNum = filter.items.length >= 4 ? 2 : 1;
-                return (
-                  <div key={`category-${categoryIndex}`}>
-                    <span className={styles.category}>{filter.category}</span>
-                    <div
-                      className={styles.nameContainers}
-                      style={{ gridTemplateColumns: `repeat(${colNum}, 1fr)` }}
-                    >
-                      {filter.items &&
-                        filter.items.map((item, itemIndex) => (
-                          <Checkbox
-                            key={itemIndex}
-                            action={(e) =>
-                              filterTick(e, categoryIndex, itemIndex)
-                            }
-                            label={item.name}
-                            value={item.value}
-                            id={item.name}
-                            name={item.name}
-                            isChecked={item.value}
-                          />
-                        ))}
-                    </div>
+            {filterState?.map((filter, categoryIndex) => {
+              const colNum = filter.items.length >= 4 ? 2 : 1;
+              return (
+                <div key={`category-${categoryIndex}`}>
+                  <span className={styles.category}>{filter.category}</span>
+                  <div
+                    className={styles.nameContainers}
+                    style={{ gridTemplateColumns: `repeat(${colNum}, 1fr)` }}
+                  >
+                    {filter.items?.map((item, itemIndex) => (
+                      <Checkbox
+                        key={itemIndex}
+                        action={(e) => filterTick(e, categoryIndex, itemIndex)}
+                        label={item.name}
+                        value={item.value}
+                        id={item.name}
+                        name={item.name}
+                        isChecked={item.value}
+                      />
+                    ))}
                   </div>
-                );
-              })}
+                </div>
+              );
+            })}
           </div>
         </Container>
         <div className={styles.actionContainer}>
-          <Button
-            onClick={() => {
-              // Convertir filterState en un objet plus facile à interpréter
-              // puis l'envoyer au parent
-              if (onFilterChange) {
-                onFilterChange(filterState);
-              }
-              closeFilter();
-            }}
-            className={styles.customButtonStyling}
-            level={'primary'}
-          >
+          <Button onClick={applyFilters} className={styles.customButtonStyling} level="primary">
             Voir les produits
           </Button>
-          <Button
-            onClick={closeFilter}
-            className={styles.customButtonStyling}
-            level={'secondary'}
-          >
+          <Button onClick={closeFilter} className={styles.customButtonStyling} level="secondary">
             Fermer
           </Button>
         </div>
       </div>
+
+      {/* --- Mode mobile (drawer) --- */}
       <div className={styles.mobileRoot}>
         <Drawer visible={visible} close={closeFilter}>
           <div className={styles.mobileFilterContainer}>
@@ -99,26 +94,22 @@ const CardController = (props) => {
 
             {category === undefined && (
               <div className={styles.mobileFilters}>
-                {filterState?.map((filterItem, categoryIndex) => {
-                  return (
-                    <div
-                      key={categoryIndex}
-                      className={styles.filterItemContainer}
-                      role={'presentation'}
-                      onClick={() =>
-                        setCategory({
-                          ...filterItem,
-                          categoryIndex: categoryIndex,
-                        })
-                      }
-                    >
-                      <span className={styles.filterName}>
-                        {filterItem.category}
-                      </span>
-                      <Icon symbol={'arrow'}></Icon>
-                    </div>
-                  );
-                })}
+                {filterState?.map((filterItem, categoryIndex) => (
+                  <div
+                    key={categoryIndex}
+                    className={styles.filterItemContainer}
+                    role="presentation"
+                    onClick={() =>
+                      setCategory({
+                        ...filterItem,
+                        categoryIndex,
+                      })
+                    }
+                  >
+                    <span className={styles.filterName}>{filterItem.category}</span>
+                    <Icon symbol="arrow" />
+                  </div>
+                ))}
               </div>
             )}
 
@@ -126,55 +117,40 @@ const CardController = (props) => {
               <div className={styles.mobileCategoryContainer}>
                 <div
                   className={styles.mobileHeader}
-                  role={'presentation'}
+                  role="presentation"
                   onClick={() => setCategory(undefined)}
                 >
-                  <Icon symbol={'arrow'}></Icon>
-                  <span className={styles.mobileCategory}>
-                    {category.category}
-                  </span>
+                  <Icon symbol="arrow" />
+                  <span className={styles.mobileCategory}>{category.category}</span>
                 </div>
-                {category.items.map((item, itemIndex) => {
-                  return (
-                    <Checkbox
-                      key={itemIndex}
-                      action={(e) =>
-                        filterTick(e, category.categoryIndex, itemIndex)
-                      }
-                      label={item.name}
-                      value={item.value}
-                      id={item.name}
-                      name={item.name}
-                      isChecked={item.value}
-                    />
-                  );
-                })}
+                {category.items.map((item, itemIndex) => (
+                  <Checkbox
+                    key={itemIndex}
+                    action={(e) => filterTick(e, category.categoryIndex, itemIndex)}
+                    label={item.name}
+                    value={item.value}
+                    id={item.name}
+                    name={item.name}
+                    isChecked={item.value}
+                  />
+                ))}
               </div>
             )}
 
             <div className={styles.mobileButtonContainer}>
               {category === undefined && (
-                <Button
-                  onClick={() => {
-                    if (onFilterChange) {
-                      onFilterChange(filterState);
-                    }
-                    closeFilter();
-                  }}
-                  fullWidth
-                  level={'primary'}
-                >
-                Afficher les résultats
-              </Button>
+                <Button onClick={applyFilters} fullWidth level="primary">
+                  Afficher les résultats
+                </Button>
               )}
               {category !== undefined && (
                 <div>
-                  <Button onClick={closeFilter} fullWidth level={'primary'}>
+                  <Button onClick={closeFilter} fullWidth level="primary">
                     Apply
                   </Button>
                   <div
                     className={styles.clearFilterContainer}
-                    role={'presentation'}
+                    role="presentation"
                     onClick={() => resetFilter()}
                   >
                     <span className={styles.clearFilter}>clear filters</span>

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { graphql, useStaticQuery, Link } from 'gatsby';
 import * as styles from './shop.module.css';
+
 import Banner from '../components/Banner';
 import Breadcrumbs from '../components/Breadcrumbs';
 import CardController from '../components/CardController';
@@ -11,9 +13,9 @@ import LayoutOption from '../components/LayoutOption';
 import ProductCardGrid from '../components/ProductCardGrid';
 import Button from '../components/Button';
 import Config from '../config.json';
-import { graphql, useStaticQuery } from 'gatsby';
 
 const ShopPage = () => {
+  // 1️⃣ Requête GraphQL pour récupérer les produits
   const data = useStaticQuery(graphql`
     query {
       allPrintfulProduct {
@@ -34,57 +36,44 @@ const ShopPage = () => {
     }
   `);
 
-  // Liste complète de produits
+  // 2️⃣ Liste complète de produits
   const products = data.allPrintfulProduct.edges;
 
-  // État local pour l’affichage du panneau de filtre
+  // 3️⃣ États pour la gestion des filtres et du tri
   const [showFilter, setShowFilter] = useState(false);
-
-  // État local pour les filtres activés
   const [activeFilters, setActiveFilters] = useState({});
-
-  // État local pour l’option de tri (ex. 'priceAsc', 'priceDesc', 'alpha', etc.)
   const [sortOption, setSortOption] = useState(null);
 
-  // Fermer le panneau de filtres via ESC
-  const escapeHandler = (e) => {
-    if (e.keyCode === 27) setShowFilter(false);
-  };
+  // 4️⃣ Fermer le panneau de filtres via ESC
   useEffect(() => {
+    const escapeHandler = (e) => {
+      if (e.keyCode === 27) setShowFilter(false);
+    };
     window.addEventListener('keydown', escapeHandler);
     return () => window.removeEventListener('keydown', escapeHandler);
   }, []);
 
-  /**
-   * Fonction pour retirer UNE valeur de filtre (ex. "Rouge" dans la catégorie "couleurs")
-   */
+  // 5️⃣ Fonction pour retirer un filtre actif
   const removeFilter = (categoryName, value) => {
-    console.log("removeFilter déclenché :", categoryName, value);
-  
-    setActiveFilters((prev) => {
-      const newFilters = { ...prev };
-      if (!newFilters[categoryName]) {
-        console.log("La catégorie n’existe pas dans le state:", categoryName);
-        return prev;
-      }
-  
-      // On retire la valeur
-      newFilters[categoryName] = newFilters[categoryName].filter(
-        (val) => val !== value
-      );
-  
-      // Si plus aucune valeur dans la catégorie, on supprime la clé
+    setActiveFilters((prevFilters) => {
+      const newFilters = { ...prevFilters };
+
+      // Vérifier si la catégorie est bien définie
+      if (!newFilters[categoryName]) return prevFilters;
+
+      // Retirer l'élément sélectionné
+      newFilters[categoryName] = newFilters[categoryName].filter((val) => val !== value);
+
+      // Supprimer la catégorie si elle devient vide
       if (newFilters[categoryName].length === 0) {
         delete newFilters[categoryName];
       }
-      console.log("Nouveau state filters:", newFilters);
+
       return newFilters;
     });
   };
 
-  /**
-   * Filtrer les produits en fonction des filtres actifs
-   */
+  // 6️⃣ Filtrer les produits selon les filtres actifs
   const filteredProducts = products.filter(({ node }) => {
     for (const [categoryName, selectedValues] of Object.entries(activeFilters)) {
       if (categoryName.toLowerCase() === 'couleurs') {
@@ -102,54 +91,36 @@ const ShopPage = () => {
         );
         if (!hasSize) return false;
       } else if (categoryName.toLowerCase() === 'type de produits') {
-        const hasType = node.name.toLowerCase().includes(
-          selectedValues[0].toLowerCase()
-        );
+        const hasType = node.name.toLowerCase().includes(selectedValues[0].toLowerCase());
         if (!hasType) return false;
       } else if (categoryName.toLowerCase() === 'prix') {
         const passPrice = node.sync_variants?.some((variant) => {
           const price = parseFloat(variant.retail_price);
           return selectedValues.some((range) => {
-            if (range === 'Moins de 50 CHF') {
-              return price < 50;
-            } else if (range === '50 - 100 CHF') {
-              return price >= 50 && price < 100;
-            } else if (range === '100 - 200 CHF') {
-              return price >= 100 && price < 200;
-            } else if (range === 'Plus de 200 CHF') {
-              return price >= 200;
-            }
+            if (range === 'Moins de 50 CHF') return price < 50;
+            if (range === '50 - 100 CHF') return price >= 50 && price < 100;
+            if (range === '100 - 200 CHF') return price >= 100 && price < 200;
+            if (range === 'Plus de 200 CHF') return price >= 200;
             return false;
           });
         });
         if (!passPrice) return false;
       }
     }
-    return true; // si tous les filtres passent, on garde le produit
+    return true;
   });
 
-  /**
-   * Trier la liste filtrée selon sortOption
-   */
+  // 7️⃣ Trier les produits filtrés selon `sortOption`
   const sortedProducts = [...filteredProducts];
   if (sortOption === 'priceAsc') {
-    sortedProducts.sort((a, b) => {
-      const priceA = getMinPrice(a.node.sync_variants);
-      const priceB = getMinPrice(b.node.sync_variants);
-      return priceA - priceB;
-    });
+    sortedProducts.sort((a, b) => getMinPrice(a.node.sync_variants) - getMinPrice(b.node.sync_variants));
   } else if (sortOption === 'priceDesc') {
-    sortedProducts.sort((a, b) => {
-      const priceA = getMinPrice(a.node.sync_variants);
-      const priceB = getMinPrice(b.node.sync_variants);
-      return priceB - priceA;
-    });
+    sortedProducts.sort((a, b) => getMinPrice(b.node.sync_variants) - getMinPrice(a.node.sync_variants));
   } else if (sortOption === 'alphabet') {
-    sortedProducts.sort((a, b) =>
-      a.node.name.localeCompare(b.node.name, 'fr', { sensitivity: 'base' })
-    );
+    sortedProducts.sort((a, b) => a.node.name.localeCompare(b.node.name, 'fr', { sensitivity: 'base' }));
   }
 
+  // 8️⃣ UI - Nombre d’articles
   const totalItems = products.length;
   const displayedItems = sortedProducts.length;
 
@@ -157,36 +128,20 @@ const ShopPage = () => {
     <Layout>
       <div className={styles.root}>
         <Container size="large" spacing="min">
-          <div className={styles.breadcrumbContainer}>
-            {/* <Breadcrumbs ... /> */}
-          </div>
+          <Banner name="Tous les vêtements" subtitle="Découvrez notre collection complète de vêtements." />
         </Container>
-
-        <Banner
-          name="Tous les vêtements"
-          subtitle="Que vous cherchiez à affiner votre style ou à ajouter une touche unique à votre tenue, chaque pièce allie sophistication, confort et qualité pour toute la famille."
-        />
 
         <Container size="large" spacing="min">
           <div className={styles.metaContainer}>
             <span className={styles.itemCount}>{displayedItems} articles</span>
-
             <div className={styles.controllerContainer}>
-              <div
-                className={styles.iconContainer}
-                role="presentation"
-                onClick={() => setShowFilter(!showFilter)}
-              >
+              <div className={styles.iconContainer} role="presentation" onClick={() => setShowFilter(!showFilter)}>
                 <Icon symbol="filter" />
                 <span>Filtrer</span>
               </div>
-
               <div className={`${styles.iconContainer} ${styles.sortContainer}`}>
                 <Icon symbol="caret" />
-                <select
-                  onChange={(e) => setSortOption(e.target.value)}
-                  style={{ marginLeft: '8px' }}
-                >
+                <select onChange={(e) => setSortOption(e.target.value)} style={{ marginLeft: '8px' }}>
                   <option value="">Trier par</option>
                   <option value="priceAsc">Prix croissant</option>
                   <option value="priceDesc">Prix décroissant</option>
@@ -196,70 +151,48 @@ const ShopPage = () => {
             </div>
           </div>
 
-          <CardController
-            closeFilter={() => setShowFilter(false)}
-            visible={showFilter}
-            filters={Config.filters}
-            onFilterChange={(newFilterState) => {
-              const parsedFilters = parseFilterState(newFilterState);
-              setActiveFilters(parsedFilters);
-            }}
-          />
-
-          {/* Affichage dynamique des filtres actifs via des "chips" cliquables */}
+          {/* Filtres actifs affichés */}
           <div className={styles.chipsContainer}>
             {Object.entries(activeFilters).map(([categoryName, selectedValues]) =>
               selectedValues.map((value) => (
-                <Chip
-                  key={`${categoryName}-${value}`}
-                  name={value}
-                  // Retire ce filtre au clic
-                  onClick={() => removeFilter(categoryName, value)}
-                />
+                <Chip key={`${categoryName}-${value}`} name={value} onClick={() => removeFilter(categoryName, value)} />
               ))
             )}
           </div>
 
+          {/* Liste de produits */}
           <div className={styles.productContainer}>
-            <span className={styles.mobileItemCount}>
-              {displayedItems} produits
-            </span>
-
             <ProductCardGrid data={sortedProducts} />
           </div>
 
-          <div>
-            <ul className={styles.imageGrid}>
-              {sortedProducts.map(({ node }) => {
-                const firstVariant = node.sync_variants?.[0];
-                return (
-                  <li key={node.id}>
-                    <img
-                      src={node.thumbnail_url}
-                      alt={node.name}
-                      style={{ width: '300px', height: 'auto' }}
-                    />
+          {/* Liste d’images cliquables */}
+          <ul className={styles.imageGrid}>
+            {sortedProducts.map(({ node }) => {
+              const firstVariant = node.sync_variants?.[0]; // Première variante disponible
+
+              return (
+                <li key={node.id}>
+                  <Link to={`/product/${node.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]+/g, '')}`}>
+                    <img src={node.thumbnail_url} alt={node.name} style={{ width: '300px', height: 'auto' }} />
                     <h2 style={{ fontSize: '22px' }}>{node.name}</h2>
+
+                    {/* ✅ Ajout de l'affichage du prix */}
                     {firstVariant ? (
-                      <p>
+                      <p className={styles.productPrice}>
                         {firstVariant.retail_price} {firstVariant.currency}
                       </p>
                     ) : (
-                      <p>Prix non disponible</p>
+                      <p className={styles.productPrice}>Prix non disponible</p>
                     )}
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
 
           <div className={styles.loadMoreContainer}>
-            <span>
-              {displayedItems} sur {totalItems}
-            </span>
-            <Button fullWidth level="secondary">
-              Charger plus
-            </Button>
+            <span>{displayedItems} sur {totalItems}</span>
+            <Button fullWidth level="secondary">Charger plus</Button>
           </div>
         </Container>
       </div>
@@ -268,25 +201,10 @@ const ShopPage = () => {
   );
 };
 
-/** parseFilterState : transforme le tableau de CardController => { catégorie: [valeursCochées], ... } */
-function parseFilterState(filterStateArray) {
-  const result = {};
-  filterStateArray.forEach((cat) => {
-    const selectedItems = cat.items
-      .filter((item) => item.value === true)
-      .map((item) => item.name);
-    if (selectedItems.length > 0) {
-      result[cat.category] = selectedItems;
-    }
-  });
-  return result;
-}
-
-/** getMinPrice : renvoie le prix minimal d’un tableau de variants */
+/** Fonction pour obtenir le prix minimal */
 function getMinPrice(variants = []) {
   if (!variants.length) return 0;
-  const prices = variants.map((v) => parseFloat(v.retail_price));
-  return Math.min(...prices);
+  return Math.min(...variants.map((v) => parseFloat(v.retail_price)));
 }
 
 export default ShopPage;

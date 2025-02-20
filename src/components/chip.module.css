@@ -1,13 +1,14 @@
 .chip {
     display: inline-flex;
     align-items: center;
-    padding: 6px 12px;
-    border-radius: 16px;
-    background-color: #eee;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: bold;
     margin: 4px;
+    padding: 6px 10px;
+    font-size: 14px;
+    font-weight: 500;
+    background-color: #eee;
+    border-radius: 16px;
+    cursor: pointer;
+    user-select: none;
   }
   
   .chip:hover {
@@ -16,7 +17,5 @@
   
   .close {
     margin-left: 8px;
-    font-size: 16px;
     font-weight: bold;
-    cursor: pointer;
   }

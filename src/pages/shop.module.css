@@ -102,6 +102,13 @@
     display: none;
 }
 
+.productPrice {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    margin-top: 5px;
+  }
+
 @media (max-width: 1148px) {
 
     .image-grid {
