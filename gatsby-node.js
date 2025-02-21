@@ -144,6 +144,7 @@ exports.sourceNodes = async ({ actions, createNodeId, createContentDigest }) => 
           Authorization: `Bearer ${process.env.PRINTFUL_API_KEY}`,
         },
       });
+
       if (!detailsResponse.ok) {
         console.error(`❌ Erreur lors de la récupération du produit ${product.id}:`,
           detailsResponse.status, detailsResponse.statusText);
@@ -159,11 +160,13 @@ exports.sourceNodes = async ({ actions, createNodeId, createContentDigest }) => 
         ...product,
         sync_product: detailsData.result.sync_product,
         sync_variants: detailsData.result.sync_variants,
+        description: detailsData.result.sync_product?.description || "Aucune description disponible.",
       };
 
       // 3️⃣ Créer un node Gatsby
       createNode({
         ...fullProduct,
+        description: fullProduct.description,
         id: createNodeId(`printful-product-${product.id}`),
         parent: null,
         children: [],

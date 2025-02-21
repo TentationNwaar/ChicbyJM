@@ -160,6 +160,10 @@
   background: #f2f2f2;
 }
 
+.size-selection{
+  margin: 15px 0;
+}
+
 .add-to-cart,
 .paypal-button {
   width: 100%;
@@ -174,16 +178,66 @@
   color: #fff;
   border: none;
   transition: background-color 0.3s;
+  width: 50%;
 }
 
 .add-to-cart:hover {
   background-color: #333;
 }
 
+.product-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-start;
+}
+
 .paypal-button {
   background-color: #ffc439;
   color: #000;
   border: none;
+}
+
+.description-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 40%;
+  height: 100%;
+  background: white;
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.3);
+  transform: translateX(100%);
+  transition: transform 0.3s ease-in-out;
+  z-index: 9999;
+}
+
+.description-overlay.open {
+  transform: translateX(0);
+}
+
+.description-panel {
+  padding: 20px;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.close-description {
+  background: none;
+  border: none;
+  font-size: 24px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+}
+
+.description-button {
+  margin-top: 10px;
+  padding: 10px 15px;
+  border: none;
+  background: black;
+  color: white;
+  cursor: pointer;
 }
 
 /* Mobile view */
