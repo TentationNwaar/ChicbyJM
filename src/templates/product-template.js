@@ -71,6 +71,7 @@ const ProductTemplate = ({ data }) => {
   const [selectedSize, setSelectedSize] = useState(availableSizes[0] || null);
   const [selectedImage, setSelectedImage] = useState(product.thumbnail_url);
   const [isDescriptionOpen, setIsDescriptionOpen] = useState(false);
+  
 
   // 📌 Met à jour l’image et les tailles selon la couleur sélectionnée
   useEffect(() => {
@@ -89,6 +90,33 @@ const ProductTemplate = ({ data }) => {
     }
   }, [selectedColor]);
 
+  const handleAddToCart = () => {
+    const selectedVariant = variants.find(
+      variant =>
+        parseVariantName(variant.name).color === selectedColor &&
+        parseVariantName(variant.name).size === selectedSize
+    );
+  
+    if (!selectedVariant) {
+      alert("Veuillez sélectionner une variante valide.");
+      return;
+    }
+  
+    // ✅ Récupérer l'image correspondant à la couleur sélectionnée
+    const variantImage = getMainProductImage(selectedVariant);
+    const productImage = variantImage.length > 0 ? variantImage[0] : product.thumbnail_url;
+  
+    addToCart({
+      id: selectedVariant.id,
+      name: product.name,
+      color: selectedColor,
+      size: selectedSize,
+      price: parseFloat(selectedVariant.retail_price) || 0,
+      image: productImage, // ✅ Assigne l'image de la couleur sélectionnée
+    });
+  
+    alert("Produit ajouté au panier !");
+  };
   return (
     <Layout>
       <div className="product-container">
@@ -144,11 +172,7 @@ const ProductTemplate = ({ data }) => {
 
           {/* Bouton Ajouter au panier */}
           <div className="product-actions">
-            <button className="add-to-cart" 
-              onClick={() => addToCart(product, selectedColor, selectedSize)}
-            >
-              Ajouter au panier
-            </button>
+          <button className="add-to-cart" onClick={handleAddToCart}>Ajouter au panier</button>
             <button className="description-button" onClick={() => setIsDescriptionOpen(true)}>
               Description
             </button>

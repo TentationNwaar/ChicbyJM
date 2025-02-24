@@ -6,7 +6,13 @@ const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
 
   const addToCart = (product) => {
-    setCart((prevCart) => [...prevCart, { ...product, price: Number(product.price) }]);
+    setCart((prevCart) => [
+      ...prevCart,
+      { 
+        ...product, 
+        price: Number(product.price) || 0 // ✅ Correction ici
+      }
+    ]);
   };
 
   const removeFromCart = (productId) => {

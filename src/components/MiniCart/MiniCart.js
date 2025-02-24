@@ -4,12 +4,10 @@ import { CartContext } from '../../context/CartContext';
 import * as styles from './MiniCart.module.css';
 
 const MiniCart = ({ closeCart }) => {
-  const { cart } = useContext(CartContext) || { cart: [] }; // 🔹 Évite les erreurs si `cart` est undefined
+  const { cart } = useContext(CartContext);
 
-  // 🔹 Sécuriser `reduce` pour éviter une erreur si `cart` est vide ou non défini
-  const total = (cart || []).reduce((sum, item) => sum + (item.price || 0), 0);
-  
-  console.log("Contenu du panier :", cart);
+  // ✅ Calcul du total (évite NaN)
+  const total = cart.reduce((sum, item) => sum + (item.price || 0), 0);
 
   return (
     <div className={styles.miniCart}>
@@ -22,20 +20,26 @@ const MiniCart = ({ closeCart }) => {
         <ul className={styles.cartItems}>
           {cart.map((item, index) => (
             <li key={index} className={styles.cartItem}>
-              {item.image && ( // 🔹 Vérifie si l’image existe avant de l’afficher
-                <img src={item.image} alt={item.name || "Produit"} className={styles.cartImage} />
+              {/* ✅ Ajout de l’image */}
+              {item.image ? (
+                <img src={item.image} alt={item.name} className={styles.cartImage} />
+              ) : (
+                <p>Pas d'image</p>
               )}
-              <div>
-                <p><strong>{item.name || "Produit sans nom"}</strong></p>
+              
+              <div className={styles.itemDetails}>
+                <p><strong>{item.name}</strong></p>
                 {item.color && <p>Couleur : {item.color}</p>}
                 {item.size && <p>Taille : {item.size}</p>}
-                <p>Prix : CHF {typeof item.price === "number" ? item.price.toFixed(2) : "N/A"}</p>
+                {/* ✅ Correction de l'affichage du prix */}
+                <p>Prix : CHF {item.price ? item.price.toFixed(2) : "Non disponible"}</p>
               </div>
             </li>
           ))}
         </ul>
       )}
 
+      {/* ✅ Affichage du total */}
       <div className={styles.cartTotal}>
         <strong>Total : CHF {total.toFixed(2)}</strong>
       </div>
