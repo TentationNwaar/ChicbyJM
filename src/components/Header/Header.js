@@ -132,7 +132,7 @@ const searchSuggestions = [
               aria-label="Cart"
               className={`${styles.iconButton} ${styles.iconContainer} ${styles.bagIconContainer}`}
               onClick={() => {
-                setShowMiniCart(true);
+                setShowMiniCart(!showMiniCart); // ✅ Ouvre/Ferme la mini-fenêtre
                 setMobileMenu(false);
               }}
             >
@@ -142,6 +142,11 @@ const searchSuggestions = [
               </div>
             </button>
             <div className={styles.notificationContainer}>
+            {showMiniCart && (
+              <div className={styles.miniCartContainer}>
+                <MiniCart closeCart={() => setShowMiniCart(false)} />
+              </div>
+            )}
               <AddNotification openCart={() => setShowMiniCart(true)} />
             </div>
           </div>

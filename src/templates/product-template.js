@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { graphql } from 'gatsby';
 import Layout from '../components/Layout';
+import { CartContext } from '../context/CartContext'; // 📌 Importation du contexte panier
 import './product-template.css';
 
 /**
@@ -29,7 +30,7 @@ function getMainProductImage(variant) {
   if (!variant || !variant.files) return [];
 
   return variant.files
-    .filter(file => 
+    .filter(file =>
       file.filename &&
       !file.filename.toLowerCase().includes("logo") &&
       !file.filename.toLowerCase().includes("mockup") &&
@@ -42,6 +43,8 @@ function getMainProductImage(variant) {
 const ProductTemplate = ({ data }) => {
   const product = data.printfulProduct;
   const variants = product.sync_variants || [];
+
+  const { addToCart } = useContext(CartContext); // 📌 Récupération de la fonction d'ajout au panier
 
   console.log("Données récupérées :", product);
 
@@ -63,23 +66,28 @@ const ProductTemplate = ({ data }) => {
     )
   );
 
+  // ✅ États
   const [selectedColor, setSelectedColor] = useState(hasColors ? availableColors[0] : null);
   const [selectedSize, setSelectedSize] = useState(availableSizes[0] || null);
   const [selectedImage, setSelectedImage] = useState(product.thumbnail_url);
-  const [quantity, setQuantity] = useState(1);
   const [isDescriptionOpen, setIsDescriptionOpen] = useState(false);
 
-  // 📌 Mettre à jour l’image principale lorsqu’on change de couleur
+  // 📌 Met à jour l’image et les tailles selon la couleur sélectionnée
   useEffect(() => {
     const matchingVariant = variants.find(variant => parseVariantName(variant.name).color === selectedColor);
+
     if (matchingVariant) {
       const newImage = getMainProductImage(matchingVariant);
       setSelectedImage(newImage.length > 0 ? newImage[0] : product.thumbnail_url);
+
+      // ✅ Filtrer les tailles selon la couleur sélectionnée
+      const sizesForColor = extractedVariants
+        .filter(variant => variant.color === selectedColor)
+        .map(variant => variant.size);
+
+      setSelectedSize(sizesForColor[0] || availableSizes[0]); // Sélectionne la première taille disponible
     }
   }, [selectedColor]);
-
-  const increaseQuantity = () => setQuantity(quantity + 1);
-  const decreaseQuantity = () => setQuantity(quantity > 1 ? quantity - 1 : 1);
 
   return (
     <Layout>
@@ -134,10 +142,16 @@ const ProductTemplate = ({ data }) => {
             </div>
           )}
 
-          {/* Bouton pour ouvrir la description */}
+          {/* Bouton Ajouter au panier */}
           <div className="product-actions">
-            <button className="description-button" onClick={() => setIsDescriptionOpen(true)}>Description</button>
-            <button className="add-to-cart">Ajouter au panier</button>
+            <button className="add-to-cart" 
+              onClick={() => addToCart(product, selectedColor, selectedSize)}
+            >
+              Ajouter au panier
+            </button>
+            <button className="description-button" onClick={() => setIsDescriptionOpen(true)}>
+              Description
+            </button>
           </div>
         </div>
       </div>
@@ -151,39 +165,28 @@ const ProductTemplate = ({ data }) => {
             <p>{product.description}</p>
 
             {/* Guide des tailles */}
-            {product.size_guide && (
+            {product.size_guide && product.size_guide.length > 0 && (
               <div className="size-guide">
                 <h3>Guide des tailles</h3>
                 <table>
                   <thead>
                     <tr>
-                      <th>Taille</th>
-                      <th>Tour de poitrine (cm)</th>
-                      <th>Longueur (cm)</th>
+                      {Object.keys(product.size_guide[0]).map((key) => (
+                        <th key={key}>{key}</th>
+                      ))}
                     </tr>
                   </thead>
                   <tbody>
                     {product.size_guide.map((size, index) => (
                       <tr key={index}>
-                        <td>{size.size}</td>
-                        <td>{size.chest}</td>
-                        <td>{size.length}</td>
+                        {Object.values(size).map((value, i) => (
+                          <td key={i}>{value}</td>
+                        ))}
                       </tr>
                     ))}
                   </tbody>
                 </table>
               </div>
-            )}
-
-            {/* Informations de provenance */}
-            {product.sourcing && (
-              <>
-                <h3>Informations de provenance</h3>
-                <p><strong>Pays d'origine :</strong> {product.sourcing.origin_country}</p>
-                {product.sourcing.materials.length > 0 && (
-                  <p><strong>Matériaux :</strong> {product.sourcing.materials.join(", ")}</p>
-                )}
-              </>
             )}
           </div>
         </div>
@@ -194,28 +197,28 @@ const ProductTemplate = ({ data }) => {
 
 export const query = graphql`
   query($id: String!) {
-  printfulProduct(id: { eq: $id }) {
-    id
-    name
-    description
-    thumbnail_url
-    size_guide {
-      size
-      chest
-      length
-    }
-    sync_variants {
+    printfulProduct(id: { eq: $id }) {
       id
       name
-      retail_price
-      currency
-      files {
-        filename
-        preview_url
+      description
+      thumbnail_url
+      size_guide {
+        size
+        chest
+        length
+      }
+      sync_variants {
+        id
+        name
+        retail_price
+        currency
+        files {
+          filename
+          preview_url
+        }
       }
     }
   }
-}
 `;
 
 export default ProductTemplate;

@@ -1,57 +1,65 @@
-import { Link } from 'gatsby';
-import React from 'react';
+import React, { useContext } from "react";
+import Layout from "../components/Layout";
+import { CartContext } from "../context/CartContext";
+import { Link } from "gatsby";
+import "./cart.css";
 
-import Brand from '../components/Brand';
-import CartItem from '../components/CartItem';
-import Container from '../components/Container';
-import Footer from '../components/Footer';
-import Icon from '../components/Icons/Icon';
-import OrderSummary from '../components/OrderSummary';
-
-import * as styles from './cart.module.css';
-
-const CartPage = (props) => {
-  const sampleCartItem = {
-    image: '/products/pdp1.jpeg',
-    alt: '',
-    name: 'Lambswool Crew Neck Jumper',
-    price: 220,
-    color: 'Anthracite Melange',
-    size: 'XS',
-  };
+const CartPage = () => {
+  const { cart, removeFromCart, updateQuantity } = useContext(CartContext);
 
   return (
-    <div>
-      <div className={styles.contentContainer}>
-        <Container size={'large'} spacing={'min'}>
-          <div className={styles.headerContainer}>
-            <div className={styles.shoppingContainer}>
-              <Link className={styles.shopLink} to={'/shop'}>
-                <Icon symbol={'arrow'}></Icon>
-                <span className={styles.continueShopping}>
-                  Continue Shopping
-                </span>
-              </Link>
-            </div>
-            <Brand />
-            <div className={styles.loginContainer}>
-              <Link to={'/login'}>Login</Link>
-            </div>
+    <Layout>
+      <div className="cart-container">
+        <h1>🛒 Mon Panier</h1>
+
+        {cart.length === 0 ? (
+          <p>Votre panier est vide. <Link to="/">Retour à la boutique</Link></p>
+        ) : (
+          <table className="cart-table">
+            <thead>
+              <tr>
+                <th>Produit</th>
+                <th>Couleur</th>
+                <th>Taille</th>
+                <th>Prix</th>
+                <th>Quantité</th>
+                <th>Total</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {cart.map((item, index) => (
+                <tr key={index}>
+                  <td>
+                    <img src={item.image} alt={item.name} className="cart-image" />
+                    <p>{item.name}</p>
+                  </td>
+                  <td>{item.color}</td>
+                  <td>{item.size}</td>
+                  <td>CHF {item.price}</td>
+                  <td>
+                    <button onClick={() => updateQuantity(index, item.quantity - 1)}>-</button>
+                    {item.quantity}
+                    <button onClick={() => updateQuantity(index, item.quantity + 1)}>+</button>
+                  </td>
+                  <td>CHF {(parseFloat(item.price) * item.quantity).toFixed(2)}</td>
+                  <td>
+                    <button className="remove-button" onClick={() => removeFromCart(index)}>❌</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+
+        {cart.length > 0 && (
+          <div className="cart-summary">
+            <h2>Total : CHF {cart.reduce((acc, item) => acc + parseFloat(item.price) * item.quantity, 0).toFixed(2)}</h2>
+            <button className="checkout-button">Passer à la caisse</button>
           </div>
-          <div className={styles.summaryContainer}>
-            <h3>My Bag</h3>
-            <div className={styles.cartContainer}>
-              <div className={styles.cartItemsContainer}>
-                <CartItem {...sampleCartItem} />
-                <CartItem {...sampleCartItem} />
-              </div>
-              <OrderSummary />
-            </div>
-          </div>
-        </Container>
+        )}
       </div>
-      <Footer />
-    </div>
+    </Layout>
   );
 };
 

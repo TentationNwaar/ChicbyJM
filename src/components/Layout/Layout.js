@@ -6,6 +6,10 @@ import Header from '../Header';
 import Footer from '../Footer';
 import * as styles from './Layout.module.css';
 
+import { Link } from "gatsby";
+
+<Link to="/cart" className="cart-link">🛒 Voir le Panier</Link>
+
 // CSS not modular here to provide global styles
 import './Globals.css';
 

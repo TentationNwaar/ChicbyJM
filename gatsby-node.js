@@ -107,42 +107,46 @@ exports.sourceNodes = async ({ actions, createNodeId, createContentDigest }) => 
       const detailsResponse = await fetch(`https://api.printful.com/sync/products/${product.id}`, {
         headers: { Authorization: `Bearer ${process.env.PRINTFUL_API_KEY}` },
       });
-
+    
       if (!detailsResponse.ok) {
         console.error(`❌ Erreur récupération produit ${product.id}: ${detailsResponse.statusText}`);
         continue;
       }
-
+    
       const detailsData = await detailsResponse.json();
       const productDetails = detailsData.result.sync_product;
-      const variants = detailsData.result.sync_variants || [];
-
-      // ✅ Vérification si une variante est disponible pour récupérer `size_guide`
+    
+      // ✅ 1️⃣ Trouver le modèle de base (product_id)
+      let baseProductId = null;
+      if (detailsData.result.sync_variants.length > 0) {
+        baseProductId = detailsData.result.sync_variants[0].product.variant_id;
+      }
+    
+      // ✅ 2️⃣ Récupérer le guide des tailles depuis Printful
       let sizeGuide = null;
-      if (variants.length > 0) {
-        const firstVariantId = variants[0].variant_id; // ID du premier variant
+      if (baseProductId) {
         try {
-          const sizeResponse = await fetch(`https://api.printful.com/products/${firstVariantId}`, {
+          const sizeResponse = await fetch(`https://api.printful.com/products/${baseProductId}`, {
             headers: { Authorization: `Bearer ${process.env.PRINTFUL_API_KEY}` },
           });
-
+    
           if (sizeResponse.ok) {
             const sizeData = await sizeResponse.json();
-            sizeGuide = sizeData.result.product.dimensions || null; // ⚡ Vérifie si les tailles existent
+            sizeGuide = sizeData.result.product.dimensions || null;
           }
         } catch (error) {
-          console.error(`❌ Erreur récupération tailles pour produit ${product.id}:`, error);
+          console.error(`❌ Erreur récupération guide des tailles pour ${product.id}:`, error);
         }
       }
-
-      // ✅ Création du node Gatsby
+    
+      // ✅ 3️⃣ Ajouter le guide des tailles aux données Gatsby
       createNode({
         id: createNodeId(`printful-product-${product.id}`),
         name: product.name,
         description: productDetails?.description || "Aucune description disponible.",
-        thumbnail_url: product.thumbnail_url || "",
-        sync_variants: variants,
-        size_guide: sizeGuide || [],  // ✅ S'assure que le champ existe toujours
+        thumbnail_url: product.thumbnail_url,
+        sync_variants: detailsData.result.sync_variants,
+        size_guide: sizeGuide, // 📌 Ajout du guide des tailles
         parent: null,
         children: [],
         internal: {
