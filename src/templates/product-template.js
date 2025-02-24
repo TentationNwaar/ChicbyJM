@@ -23,15 +23,18 @@ function parseVariantName(fullName) {
 }
 
 /**
- * Filtre et sélectionne uniquement l'image principale du produit.
+ * Récupère les images principales d’une variante.
  */
-function getMainProductImage(files = []) {
-  return files
+function getMainProductImage(variant) {
+  if (!variant || !variant.files) return [];
+
+  return variant.files
     .filter(file => 
-      !file.filename.toLowerCase().includes("logo") &&  
-      !file.filename.toLowerCase().includes("mockup") && 
-      !file.filename.toLowerCase().includes("preview") && 
-      (file.filename.toLowerCase().includes("front") || file.filename.toLowerCase().includes("main")) 
+      file.filename &&
+      !file.filename.toLowerCase().includes("logo") &&
+      !file.filename.toLowerCase().includes("mockup") &&
+      !file.filename.toLowerCase().includes("preview") &&
+      (file.filename.toLowerCase().includes("front") || file.filename.toLowerCase().includes("main"))
     )
     .map(file => file.preview_url);
 }
@@ -62,23 +65,17 @@ const ProductTemplate = ({ data }) => {
 
   const [selectedColor, setSelectedColor] = useState(hasColors ? availableColors[0] : null);
   const [selectedSize, setSelectedSize] = useState(availableSizes[0] || null);
-  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [selectedImage, setSelectedImage] = useState(product.thumbnail_url);
   const [quantity, setQuantity] = useState(1);
   const [isDescriptionOpen, setIsDescriptionOpen] = useState(false);
 
-  // 📌 Récupérer la description depuis la première variante (si dispo)
-  const productDescription = variants.length > 0 ? variants[0].name : "Aucune description disponible.";
-
-  const mainProductImage = hasColors
-    ? getMainProductImage(
-        variants
-          .filter(variant => parseVariantName(variant.name).color === selectedColor)
-          .flatMap(variant => variant.files)
-      )
-    : getMainProductImage(variants.flatMap(variant => variant.files));
-
+  // 📌 Mettre à jour l’image principale lorsqu’on change de couleur
   useEffect(() => {
-    setSelectedImageIndex(0);
+    const matchingVariant = variants.find(variant => parseVariantName(variant.name).color === selectedColor);
+    if (matchingVariant) {
+      const newImage = getMainProductImage(matchingVariant);
+      setSelectedImage(newImage.length > 0 ? newImage[0] : product.thumbnail_url);
+    }
   }, [selectedColor]);
 
   const increaseQuantity = () => setQuantity(quantity + 1);
@@ -89,22 +86,18 @@ const ProductTemplate = ({ data }) => {
       <div className="product-container">
         {/* Section Images */}
         <div className="product-images-container">
-          {mainProductImage.length > 0 ? (
-            <img 
-              src={mainProductImage[0]} 
-              alt="Image principale du produit" 
-              className="main-product-image" 
-              style={{ width: "500px", height: "500px", objectFit: "cover" }}
-            />
-          ) : (
-            <img src={product.thumbnail_url} alt="Aucune image" className="main-product-image" />
-          )}
+          <img 
+            src={selectedImage} 
+            alt="Image principale du produit" 
+            className="main-product-image" 
+            style={{ width: "500px", height: "500px", objectFit: "cover" }}
+          />
         </div>
 
         {/* Section Informations */}
         <div className="product-info">
           <h1 className="product-title">{productName}</h1>
-          <p className="product-price">CHF 46.00</p>
+          <p className="product-price">CHF {variants[0]?.retail_price || "N/A"}</p>
           <p className="tax-info">Taxes incluses.</p>
 
           {hasColors && (
@@ -153,37 +146,76 @@ const ProductTemplate = ({ data }) => {
       {isDescriptionOpen && (
         <div className={`description-overlay ${isDescriptionOpen ? "open" : ""}`}>
           <div className="description-panel">
-          <button className="close-description" onClick={() => setIsDescriptionOpen(false)}>×</button>
+            <button className="close-description" onClick={() => setIsDescriptionOpen(false)}>×</button>
             <h2>Description</h2>
-            <p>{productDescription}</p>
+            <p>{product.description}</p>
+
+            {/* Guide des tailles */}
+            {product.size_guide && (
+              <div className="size-guide">
+                <h3>Guide des tailles</h3>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Taille</th>
+                      <th>Tour de poitrine (cm)</th>
+                      <th>Longueur (cm)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {product.size_guide.map((size, index) => (
+                      <tr key={index}>
+                        <td>{size.size}</td>
+                        <td>{size.chest}</td>
+                        <td>{size.length}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+
+            {/* Informations de provenance */}
+            {product.sourcing && (
+              <>
+                <h3>Informations de provenance</h3>
+                <p><strong>Pays d'origine :</strong> {product.sourcing.origin_country}</p>
+                {product.sourcing.materials.length > 0 && (
+                  <p><strong>Matériaux :</strong> {product.sourcing.materials.join(", ")}</p>
+                )}
+              </>
+            )}
           </div>
         </div>
       )}
-
     </Layout>
   );
 };
 
 export const query = graphql`
   query($id: String!) {
-    printfulProduct(id: { eq: $id }) {
+  printfulProduct(id: { eq: $id }) {
+    id
+    name
+    description
+    thumbnail_url
+    size_guide {
+      size
+      chest
+      length
+    }
+    sync_variants {
       id
       name
-      description
-      thumbnail_url
-      sync_variants {
-        id
-        name
-        retail_price
-        currency
-        files {
-          id
-          filename
-          preview_url
-        }
+      retail_price
+      currency
+      files {
+        filename
+        preview_url
       }
     }
   }
+}
 `;
 
 export default ProductTemplate;
