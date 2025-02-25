@@ -23,21 +23,19 @@ function parseVariantName(fullName) {
   return result;
 }
 
-/**
- * Récupère les images principales d’une variante.
- */
-function getMainProductImage(variant) {
-  if (!variant || !variant.files) return [];
-
-  return variant.files
-    .filter(file =>
+function getProductImage(product, selectedVariant) {
+  if (selectedVariant && selectedVariant.files && selectedVariant.files.length > 0) {
+    const variantImage = selectedVariant.files.find(file =>
       file.filename &&
       !file.filename.toLowerCase().includes("logo") &&
       !file.filename.toLowerCase().includes("mockup") &&
-      !file.filename.toLowerCase().includes("preview") &&
-      (file.filename.toLowerCase().includes("front") || file.filename.toLowerCase().includes("main"))
-    )
-    .map(file => file.preview_url);
+      !file.filename.toLowerCase().includes("preview")
+    );
+    if (variantImage) {
+      return variantImage.preview_url;
+    }
+  }
+  return product.thumbnail_url; // Image principale du produit par défaut
 }
 
 const ProductTemplate = ({ data }) => {
@@ -75,19 +73,11 @@ const ProductTemplate = ({ data }) => {
 
   // 📌 Met à jour l’image et les tailles selon la couleur sélectionnée
   useEffect(() => {
-    const matchingVariant = variants.find(variant => parseVariantName(variant.name).color === selectedColor);
-
-    if (matchingVariant) {
-      const newImage = getMainProductImage(matchingVariant);
-      setSelectedImage(newImage.length > 0 ? newImage[0] : product.thumbnail_url);
-
-      // ✅ Filtrer les tailles selon la couleur sélectionnée
-      const sizesForColor = extractedVariants
-        .filter(variant => variant.color === selectedColor)
-        .map(variant => variant.size);
-
-      setSelectedSize(sizesForColor[0] || availableSizes[0]); // Sélectionne la première taille disponible
-    }
+    const matchingVariant = variants.find(
+      variant => parseVariantName(variant.name).color === selectedColor
+    );
+  
+    setSelectedImage(getProductImage(product, matchingVariant)); // ✅ Met à jour l’image dynamiquement
   }, [selectedColor]);
 
   const handleAddToCart = () => {
@@ -97,22 +87,21 @@ const ProductTemplate = ({ data }) => {
         parseVariantName(variant.name).size === selectedSize
     );
   
-    if (!selectedVariant) {
-      alert("Veuillez sélectionner une variante valide.");
+    if (!selectedVariant && hasColors) {
+      alert("Veuillez sélectionner une couleur.");
       return;
     }
   
-    // ✅ Récupérer l'image correspondant à la couleur sélectionnée
-    const variantImage = getMainProductImage(selectedVariant);
-    const productImage = variantImage.length > 0 ? variantImage[0] : product.thumbnail_url;
+    // Récupération de l'image correcte
+    const productImage = getProductImage(product, selectedVariant);
   
     addToCart({
-      id: selectedVariant.id,
+      id: selectedVariant?.id || product.id, // Utilise l'ID de la variante si dispo, sinon du produit
       name: product.name,
-      color: selectedColor,
-      size: selectedSize,
-      price: parseFloat(selectedVariant.retail_price) || 0,
-      image: productImage, // ✅ Assigne l'image de la couleur sélectionnée
+      color: selectedColor || "Aucune",
+      size: selectedSize || "Aucune",
+      price: parseFloat(selectedVariant?.retail_price || product.sync_variants[0]?.retail_price) || 0,
+      image: productImage, // ✅ Image correspondant à la sélection
     });
   
     alert("Produit ajouté au panier !");

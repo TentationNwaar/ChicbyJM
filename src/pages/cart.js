@@ -1,61 +1,82 @@
 import React, { useContext } from "react";
-import Layout from "../components/Layout";
 import { CartContext } from "../context/CartContext";
-import { Link } from "gatsby";
-import "./cart.css";
+import Layout from "../components/Layout";
+import * as styles from "./cart.module.css";
 
 const CartPage = () => {
-  const { cart, removeFromCart, updateQuantity } = useContext(CartContext);
+  const { cart, addToCart, removeFromCart, updateQuantity } = useContext(CartContext);
+
+  // ✅ Calcul du total
+  const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
   return (
     <Layout>
-      <div className="cart-container">
-        <h1>🛒 Mon Panier</h1>
+      <div className={styles.cartContainer}>
+        <h1 className={styles.cartTitle}>PANIER</h1>
 
         {cart.length === 0 ? (
-          <p>Votre panier est vide. <Link to="/">Retour à la boutique</Link></p>
+          <p className={styles.emptyCart}>Votre panier est vide.</p>
         ) : (
-          <table className="cart-table">
-            <thead>
-              <tr>
-                <th>Produit</th>
-                <th>Couleur</th>
-                <th>Taille</th>
-                <th>Prix</th>
-                <th>Quantité</th>
-                <th>Total</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
+          <div className={styles.cartContent}>
+            {/* ✅ Liste des articles */}
+            <div className={styles.cartItems}>
               {cart.map((item, index) => (
-                <tr key={index}>
-                  <td>
-                    <img src={item.image} alt={item.name} className="cart-image" />
-                    <p>{item.name}</p>
-                  </td>
-                  <td>{item.color}</td>
-                  <td>{item.size}</td>
-                  <td>CHF {item.price}</td>
-                  <td>
-                    <button onClick={() => updateQuantity(index, item.quantity - 1)}>-</button>
-                    {item.quantity}
-                    <button onClick={() => updateQuantity(index, item.quantity + 1)}>+</button>
-                  </td>
-                  <td>CHF {(parseFloat(item.price) * item.quantity).toFixed(2)}</td>
-                  <td>
-                    <button className="remove-button" onClick={() => removeFromCart(index)}>❌</button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
+                <div key={index} className={styles.cartItem}>
+                  <img src={item.image} alt={item.name} className={styles.cartImage} />
+                  <div className={styles.itemDetails}>
+                    <h2 className={styles.productName}>{item.name}</h2>
+                    <p className={styles.productInfo}>Couleur : {item.color}</p>
+                    <p className={styles.productInfo}>Taille : {item.size}</p>
+                    <p className={styles.productPrice}>CHF {item.price.toFixed(2)}</p>
 
-        {cart.length > 0 && (
-          <div className="cart-summary">
-            <h2>Total : CHF {cart.reduce((acc, item) => acc + parseFloat(item.price) * item.quantity, 0).toFixed(2)}</h2>
-            <button className="checkout-button">Passer à la caisse</button>
+                    {/* ✅ Sélection de quantité */}
+                    <div className={styles.quantitySelector}>
+                      <button
+                        className={styles.quantityButton}
+                        onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                      >
+                        −
+                      </button>
+                      <span className={styles.quantity}>{item.quantity}</span>
+                      <button
+                        className={styles.quantityButton}
+                        onClick={() => addToCart(item)}
+                      >
+                        +
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* ✅ Bouton suppression */}
+                  <button
+                    className={styles.removeButton}
+                    onClick={() => removeFromCart(item.id)}
+                  >
+                    ✖
+                  </button>
+                </div>
+              ))}
+            </div>
+
+            {/* ✅ Section résumé de la commande */}
+            <div className={styles.cartSummary}>
+              <h2>RÉCAPITULATIF</h2>
+              <div className={styles.summaryRow}>
+                <span>Montant de la commande</span>
+                <span>CHF {total.toFixed(2)}</span>
+              </div>
+              <div className={styles.summaryRow}>
+                <span>Frais de livraison</span>
+                <span>GRATUIT</span>
+              </div>
+              <hr />
+              <div className={styles.summaryTotal}>
+                <span><strong>TOTAL</strong></span>
+                <span><strong>CHF {(total).toFixed(2)}</strong></span>
+              </div>
+
+              <button className={styles.checkoutButton}>VERS LA FINALISATION DE LA COMMANDE</button>
+            </div>
           </div>
         )}
       </div>
