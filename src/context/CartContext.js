@@ -2,7 +2,7 @@ import React, { createContext, useState } from 'react';
 
 export const CartContext = createContext();
 
-const CartProvider = ({ children }) => {
+export const CartProvider = ({ children }) => {  // ✅ Assure-toi que c'est bien exporté
   const [cart, setCart] = useState([]);
 
   const addToCart = (product) => {
@@ -31,12 +31,9 @@ const CartProvider = ({ children }) => {
     setCart((currentCart) => currentCart.filter((item) => item.id !== id));
   };
 
-  // ✅ 📌 Assure-toi que `return` est bien dans `CartProvider`
   return (
     <CartContext.Provider value={{ cart, addToCart, removeFromCart, updateQuantity }}>
       {children}
     </CartContext.Provider>
   );
 };
-
-export default CartProvider;

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { graphql } from 'gatsby';
 import Layout from '../components/Layout';
-import { CartContext } from '../context/CartContext'; // 📌 Importation du contexte panier
+import { CartContext } from '../context/CartContext'; 
 import './product-template.css';
 
 /**
@@ -42,9 +42,18 @@ const ProductTemplate = ({ data }) => {
   const product = data.printfulProduct;
   const variants = product.sync_variants || [];
 
-  const { addToCart } = useContext(CartContext); // 📌 Récupération de la fonction d'ajout au panier
+  const isBrowser = typeof window !== "undefined";
+  const cartContext = isBrowser ? useContext(CartContext) : null;
+  const addToCart = cartContext ? cartContext.addToCart : null;
+
+  console.log("Product Data:", product);
+  console.log("Variants:", variants);
 
   console.log("Données récupérées :", product);
+
+  if (!isBrowser) {
+    return null; // 🚀 Empêche l'erreur en SSR en ne rendant rien
+  }
 
   const productName = product.name.split('/')[0];
 
@@ -106,6 +115,12 @@ const ProductTemplate = ({ data }) => {
   
     alert("Produit ajouté au panier !");
   };
+
+  if (!isBrowser) {
+    return <p>Chargement...</p>;
+  }
+
+  
   return (
     <Layout>
       <div className="product-container">

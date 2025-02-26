@@ -7,11 +7,12 @@ require("dotenv").config({
 });
 
 // 📌 1) Créer les pages dynamiques via slug
-exports.createPages = async ({ graphql, actions }) => {
+exports.createPages = async ({ actions, graphql }) => {
   const { createPage } = actions;
 
+  // Exemple de création de pages
   const result = await graphql(`
-    {
+    query {
       allPrintfulProduct {
         nodes {
           id
@@ -22,23 +23,23 @@ exports.createPages = async ({ graphql, actions }) => {
   `);
 
   if (result.errors) {
-    console.error("❌ Erreur GraphQL:", result.errors);
-    return;
+    throw result.errors;
   }
 
-  const productTemplate = require.resolve("./src/templates/product-template.js");
-
   result.data.allPrintfulProduct.nodes.forEach((product) => {
-    const slug = product.name
-      .toLowerCase()
-      .replace(/\s+/g, "-")
-      .replace(/[^\w-]+/g, "");
-
     createPage({
-      path: `/product/${slug}`,
-      component: productTemplate,
-      context: { id: product.id },
+      path: `/en/product/${product.slug}/`,
+      component: require.resolve("./src/templates/product-template.js"),
+      context: {
+        id: product.id,
+      },
     });
+  });
+
+  // 📌 Vérifie si la page "account" est bien définie
+  createPage({
+    path: "/en/account/",
+    component: require.resolve("./src/pages/account.js"),
   });
 };
 
@@ -163,21 +164,10 @@ exports.sourceNodes = async ({ actions, createNodeId, createContentDigest }) => 
 
 exports.createSchemaCustomization = ({ actions }) => {
   const { createTypes } = actions;
+
   createTypes(`
     type PrintfulProduct implements Node {
-      id: ID!
-      name: String!
-      description: String
-      thumbnail_url: String
-      sync_variants: [SyncVariant]
       size_guide: [SizeGuide]
-    }
-
-    type SyncVariant {
-      id: ID!
-      name: String!
-      retail_price: String
-      currency: String
     }
 
     type SizeGuide {
