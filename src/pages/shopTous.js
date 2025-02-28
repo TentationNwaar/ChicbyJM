@@ -23,6 +23,7 @@ const ShopPage = () => {
           node {
             id
             name
+            slug
             thumbnail_url
             sync_variants {
               id
@@ -172,19 +173,19 @@ const ShopPage = () => {
 
               return (
                 <li key={node.id}>
-                  <Link to={`/product/${node.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]+/g, '')}`}>
-                    <img src={node.thumbnail_url} alt={node.name} style={{ width: '300px', height: 'auto' }} />
-                    <h2 style={{ fontSize: '22px' }}>{node.name}</h2>
+                  <Link to={`/en/product/${node.slug}/`}>
+                  <img src={node.thumbnail_url} alt={node.name} style={{ width: '300px', height: 'auto' }} />
+                  <h2 style={{ fontSize: '22px' }}>{node.name}</h2>
 
-                    {/* ✅ Ajout de l'affichage du prix */}
-                    {firstVariant ? (
-                      <p className={styles.productPrice}>
-                        {firstVariant.retail_price} {firstVariant.currency}
-                      </p>
-                    ) : (
-                      <p className={styles.productPrice}>Prix non disponible</p>
-                    )}
-                  </Link>
+                  {/* ✅ Ajout de l'affichage du prix */}
+                  {firstVariant ? (
+                    <p className={styles.productPrice}>
+                      {firstVariant.retail_price} {firstVariant.currency}
+                    </p>
+                  ) : (
+                    <p className={styles.productPrice}>Prix non disponible</p>
+                  )}
+                </Link>
                 </li>
               );
             })}

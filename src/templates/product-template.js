@@ -39,6 +39,9 @@ function getProductImage(product, selectedVariant) {
 }
 
 const ProductTemplate = ({ data }) => {
+  if (!data || !data.printfulProduct) {
+    return <div>Produit non trouvé</div>;
+  }
   const product = data.printfulProduct;
   const variants = product.sync_variants || [];
 

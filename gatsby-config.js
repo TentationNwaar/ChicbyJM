@@ -25,6 +25,13 @@ module.exports = {
         path: `${__dirname}/src/data/`, // Répertoire contenant votre fichier CSV
       },
     },
+    {
+      resolve: `gatsby-plugin-create-client-paths`,
+      options: { 
+        prefixes: [`/product/*`] 
+      },
+    },
+    
     `gatsby-plugin-image`,
     `gatsby-plugin-sharp`,
     `gatsby-transformer-sharp`,
