@@ -55,9 +55,9 @@ exports.createPages = async ({ actions, graphql }) => {
     }
   
     createPage({
-      path: `/product/${node.Handle}/`, // Utilisez node.Handle au lieu de product.slug
+      path: `/en/product/${product.slug}/`,
       component: require.resolve("./src/templates/product-template.js"),
-      context: { handle: node.Handle }, // Passez node.Handle comme contexte
+      context: { id: product.id }, // Ici, vous passez l'ID du produit
     });
   });
 

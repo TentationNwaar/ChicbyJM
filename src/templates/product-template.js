@@ -233,11 +233,6 @@ export const query = graphql`
       name
       description
       thumbnail_url
-      size_guide {
-        size
-        chest
-        length
-      }
       sync_variants {
         id
         name
