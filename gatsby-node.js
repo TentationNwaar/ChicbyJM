@@ -5,7 +5,7 @@ require("dotenv").config({ path: `.env.${process.env.NODE_ENV}` });
 exports.createPages = async ({ actions, graphql }) => {
   const { createPage } = actions;
 
-  // 📌 Génération des pages produits Printful
+  //  Génération des pages produits Printful
   const resultPrintful = await graphql(`
     query {
       allPrintfulProduct {
@@ -25,7 +25,7 @@ exports.createPages = async ({ actions, graphql }) => {
       console.error("⚠️ SLUG UNDEFINED:", product);
       return;
     }
-  
+
     createPage({
       path: `/en/product/${product.slug}/`, // Chemin de la page produit
       component: require.resolve("./src/templates/product-template.js"), // Template de la page produit
@@ -33,42 +33,14 @@ exports.createPages = async ({ actions, graphql }) => {
     });
   });
 
-  // 📌 Génération des pages produits depuis le CSV
-  const resultCSV = await graphql(`
-    query {
-      allProductsCsv {
-        edges {
-          node {
-            Handle
-          }
-        }
-      }
-    }
-  `);
-
-  if (resultCSV.errors) throw resultCSV.errors;
-
-  resultCSV.data.allProductsCsv.edges.forEach(({ node }) => {
-    if (!node.Handle) {
-      console.error("⚠️ HANDLE UNDEFINED:", node);
-      return;
-    }
-  
-    createPage({
-      path: `/en/product/${product.slug}/`,
-      component: require.resolve("./src/templates/product-template.js"),
-      context: { id: product.id }, // Ici, vous passez l'ID du produit
-    });
-  });
-
-  // 📌 Page account
+  //  Page account
   createPage({
     path: "/en/account/",
     component: require.resolve("./src/pages/account.js"),
   });
 };
 
-// 📌 Suppression ESLint & gestion du CSS
+//  Suppression ESLint & gestion du CSS
 exports.onCreateWebpackConfig = ({ stage, actions, getConfig }) => {
   if (stage === "develop" || stage === "build-javascript") {
     const config = getConfig();
@@ -95,12 +67,12 @@ exports.onCreateWebpackConfig = ({ stage, actions, getConfig }) => {
   }
 };
 
-// 📌 Importation des produits Printful
+//  Importation des produits Printful
 exports.sourceNodes = async ({ actions, createNodeId, createContentDigest }) => {
   const { createNode } = actions;
 
   try {
-    console.log("🔄 Récupération des produits depuis Printful...");
+    console.log(" Récupération des produits depuis Printful...");
     let allProducts = [];
     let currentPage = 1;
     let hasMore = true;
