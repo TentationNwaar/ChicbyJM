@@ -110,6 +110,10 @@
     height: 400px;
     object-fit: cover;
   }
+
+  .shooting1 {
+    object-position: top center !important;
+  }
   
   .carouselOverlay {
     position: absolute;

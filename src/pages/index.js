@@ -24,35 +24,36 @@ import RecentImages from "../components/RecentImages"
 const HeroCarousel = () => {
   // Tableau d'images à tester
   const images = [
-    { src: 'collections/carousel/Couverture_JM_petit_logo.jpg', 
+    { src: 'carousel/Shooting1.JPG', 
       alt: 'Image 1',
       title: 'Racontez votre histoire avec style', 
       ctaText: 'Commencer le shopping',
-      ctaLink: '/shop'
+      ctaLink: '/shop',
+      className: 'shooting1'
     },
 
-    { src: 'collections/carousel/CielBleu.jpg', 
+    { src: 'carousel/Shooting2.JPG', 
       alt: 'Image 2',
       title: 'Un vent de fraîcheur dans votre dressing cet été', 
       ctaText: 'Découvrez la collection',
       ctaLink: '/shop' 
     },
 
-    { src: 'collections/carousel/ErableRouge.jpeg', 
+    { src: 'carousel/Shooting3.JPG', 
       alt: 'Image 3',
       title: 'Laissez-vous envoûter par la beauté des feuilles en automne', 
       ctaText: 'Découvrez la collection',
       ctaLink: '/shop'
     },
 
-    { src: 'collections/carousel/FloconDeNeige.jpg', 
+    { src: 'carousel/Shooting4.JPG', 
       alt: 'Image 4',
       title: 'Enveloppez-vous de douceur et de chaleur', 
       ctaText: 'Découvrez la collection',
       ctaLink: '/shop' 
     },
 
-    { src: 'collections/carousel/JardinSecret.jpg', 
+    { src: 'carousel/Shooting5.JPG', 
       alt: 'Image 5',
       title: 'Révélez votre côté fleuri', 
       ctaText: 'Découvrez la collection',
