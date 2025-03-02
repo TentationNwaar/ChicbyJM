@@ -112,7 +112,7 @@
   }
 
   .shooting1 {
-    object-position: top center !important;
+    object-Position: 'top 100% center';
   }
   
   .carouselOverlay {

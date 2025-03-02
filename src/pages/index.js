@@ -24,40 +24,40 @@ import RecentImages from "../components/RecentImages"
 const HeroCarousel = () => {
   // Tableau d'images à tester
   const images = [
-    { src: 'carousel/Shooting1.JPG', 
+    { src: 'carousel/Shooting1.png', 
       alt: 'Image 1',
       title: 'Racontez votre histoire avec style', 
       ctaText: 'Commencer le shopping',
       ctaLink: '/shop',
-      className: 'shooting1'
+      className: styles.shooting1
     },
 
     { src: 'carousel/Shooting2.JPG', 
       alt: 'Image 2',
       title: 'Un vent de fraîcheur dans votre dressing cet été', 
       ctaText: 'Découvrez la collection',
-      ctaLink: '/shop' 
+      ctaLink: '/shop',
     },
 
-    { src: 'carousel/Shooting3.JPG', 
+    { src: 'carousel/Shooting3.png', 
       alt: 'Image 3',
       title: 'Laissez-vous envoûter par la beauté des feuilles en automne', 
       ctaText: 'Découvrez la collection',
-      ctaLink: '/shop'
+      ctaLink: '/shop',
     },
 
     { src: 'carousel/Shooting4.JPG', 
       alt: 'Image 4',
       title: 'Enveloppez-vous de douceur et de chaleur', 
       ctaText: 'Découvrez la collection',
-      ctaLink: '/shop' 
+      ctaLink: '/shop',
     },
 
-    { src: 'carousel/Shooting5.JPG', 
+    { src: 'carousel/Shooting5.png', 
       alt: 'Image 5',
       title: 'Révélez votre côté fleuri', 
       ctaText: 'Découvrez la collection',
-      ctaLink: '/shop'
+      ctaLink: '/shop',
     },
   ];
 
@@ -78,7 +78,7 @@ const HeroCarousel = () => {
           <img
             src={image.src}
             alt={image.alt}
-            className={styles.carouselImage}
+            className={`${styles.carouselImage} ${image.className}`}
           />
           <div className={styles.carouselOverlay}>
             <h2 className={styles.carouselTitle}>{image.title}</h2>
