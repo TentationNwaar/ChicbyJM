@@ -24,7 +24,7 @@ import RecentImages from "../components/RecentImages"
 const HeroCarousel = () => {
   // Tableau d'images à tester
   const images = [
-    { src: 'carousel/Shooting1.png', 
+    { src: 'carousel/Shooting.png', 
       alt: 'Image 1',
       title: 'Racontez votre histoire avec style', 
       ctaText: 'Commencer le shopping',
@@ -119,16 +119,6 @@ const IndexPage = () => {
         <Container>
           <Title name={'Les nouveautés'} link={'/shopTous'} textLink={'Tout voir'} />
           <RecentImages />
-          {/* <ProductCardGrid
-            spacing={true}
-            showSlider
-            height={480}
-            columns={3}
-            data={newArrivals.map(item => ({
-              image: <GatsbyImage image={item.image} alt={item.name} />,
-              name: item.name,
-            }))}
-          /> */}
         </Container>
       </div>
       {/* Promotion */}
