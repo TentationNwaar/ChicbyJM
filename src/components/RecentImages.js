@@ -1,43 +1,41 @@
-import React from "react"
-import { graphql, useStaticQuery } from "gatsby"
-import { GatsbyImage, getImage } from "gatsby-plugin-image"
-import './RecentImages.css'
+import React from "react";
+import { graphql, useStaticQuery } from "gatsby";
+import { Link } from "gatsby";
+import "./RecentImages.css";
 
 const RecentImages = () => {
   const data = useStaticQuery(graphql`
     query {
-      allFile(
-        sort: { fields: [relativePath], order: DESC }
-        filter: { extension: { regex: "/(jpg|jpeg|png)/" } }
-        limit: 3
-      ) {
-        edges {
-          node {
-            childImageSharp {
-              gatsbyImageData(layout: CONSTRAINED, width: 400)
-            }
-            relativePath
-          }
+      allPrintfulProduct(limit: 3, sort: { fields: id, order: DESC }) {
+        nodes {
+          id
+          name
+          slug
+          thumbnail_url
         }
       }
     }
-  `)
+  `);
+
+  const products = data.allPrintfulProduct.nodes;
 
   return (
     <div className="image-gallery">
-      {data.allFile.edges.map(({ node }) => {
-        const image = getImage(node.childImageSharp.gatsbyImageData)
-        return (
-          <GatsbyImage
-            key={node.relativePath}
-            image={image}
-            alt={node.relativePath}
-            className="gallery-image"
-          />
-        )
-      })}
+      {products.length === 0 && <p>Aucun produit trouvé.</p>}
+      {products.map((product) => (
+        <div key={product.id} className="image-container">
+          <Link to={`/en/product/${product.slug}/`}>
+            <img
+              src={product.thumbnail_url || "/placeholder.jpg"}
+              alt={product.name}
+              className="product-image"
+            />
+            <p className="product-name">{product.name}</p>
+          </Link>
+        </div>
+      ))}
     </div>
-  )
-}
+  );
+};
 
-export default RecentImages
+export default RecentImages;

@@ -1,3 +1,9 @@
+require("dotenv").config({
+  path: `.env.${process.env.NODE_ENV}`,
+});
+
+console.log("🔑 Clé API Gatsby (Backend) :", process.env.GATSBY_PRINTFUL_API_KEY);
+
 module.exports = {
   siteMetadata: {
     title: `Chic by JM`,
@@ -9,6 +15,12 @@ module.exports = {
       options: {
         name: `images`,
         path: `${__dirname}/src/images/nouveaute`,
+      },
+    },
+    {
+      resolve: `gatsby-plugin-env-variables`,
+      options: {
+        allowList: ["GATSBY_PRINTFUL_API_KEY"],
       },
     },
     {

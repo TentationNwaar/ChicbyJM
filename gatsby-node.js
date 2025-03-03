@@ -4,6 +4,7 @@ require("dotenv").config({ path: `.env.${process.env.NODE_ENV}` });
 
 exports.createPages = async ({ actions, graphql }) => {
   const { createPage } = actions;
+  console.log("🔑 Clé API dans Gatsby (backend) :", process.env.PRINTFUL_API_KEY);
 
   //  Génération des pages produits Printful
   const resultPrintful = await graphql(`
@@ -13,6 +14,7 @@ exports.createPages = async ({ actions, graphql }) => {
           id
           name
           slug
+          thumbnail_url
         }
       }
     }
@@ -37,11 +39,22 @@ exports.createPages = async ({ actions, graphql }) => {
   createPage({
     path: "/en/account/",
     component: require.resolve("./src/pages/account.js"),
+    context: {
+      id: product.id,
+      thumbnail_url: product.thumbnail_url,
+    },
   });
 };
 
 //  Suppression ESLint & gestion du CSS
 exports.onCreateWebpackConfig = ({ stage, actions, getConfig }) => {
+  actions.setWebpackConfig({
+    plugins: [
+      new (require("webpack")).DefinePlugin({
+        "process.env.PRINTFUL_API_KEY": JSON.stringify(process.env.PRINTFUL_API_KEY),
+      }),
+    ],
+  });
   if (stage === "develop" || stage === "build-javascript") {
     const config = getConfig();
 
