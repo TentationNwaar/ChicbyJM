@@ -8,7 +8,6 @@ const Chip = ({ name, onClick }) => {
       role="button"
       tabIndex={0}
       onClick={() => {
-        console.log("Clique sur la Chip:", name);
         onClick?.(); // Appelle la fonction removeFilter(...) si elle est fournie
       }}
       onKeyDown={(e) => {

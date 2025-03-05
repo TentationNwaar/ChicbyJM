@@ -27,7 +27,7 @@ const [showSearch, setShowSearch] = useState(false);
 const [search, setSearch] = useState('');
 
 const searchRef = createRef();
-const bannerMessage = 'EXCLUSIF : PROFITEZ DE 10 % DE RÉDUCTION SUR TOUTE VOTRE PREMIÈRE COMMANDE AVEC LE CODE JM2024';
+const bannerMessage = 'EXCLUSIF : PROFITEZ DE 10 % DE RÉDUCTION SUR TOUTE VOTRE PREMIÈRE COMMANDE AVEC LE CODE JM2025';
 const searchSuggestions = [
   'T-shirt',
   'School Spirit',

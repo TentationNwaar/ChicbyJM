@@ -91,7 +91,7 @@
     },
     {
       "menuLabel": "Femme",
-      "menuLink": "/shop",
+      "menuLink": "/shopFemme",
       "category": [
         {
           "submenu": [
@@ -146,8 +146,8 @@
       "menuLink": "/shopAccessoire"
     },
     {
-      "menuLabel": "Collections",
-      "menuLink": "/blog",
+      "menuLabel": "Contact",
+      "menuLink": "/support#contact",
       "category": null
     }
   ],

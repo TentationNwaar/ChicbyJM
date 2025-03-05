@@ -7,16 +7,18 @@ import Contact from '../components/Contact';
 import Layout from '../components/Layout/Layout';
 import ThemeLink from '../components/ThemeLink';
 import Policy from '../components/Policy';
+import Shipping from '../components/Shipping'; 
 import Container from '../components/Container';
 
 const SupportPage = (props) => {
   const subpages = [
-    { title: 'Shipping', key: 'shipping' },
-    { title: 'Returns', key: 'returns' },
-    { title: 'Payments & Security', key: 'payments' },
-    { title: 'Terms & Conditions', key: 'terms' },
-    { title: 'Contact Us', key: 'contact' },
-    { title: 'Privacy Policy', key: 'policy' },
+    { title: 'Conditions Générales de Vente', key: 'shipping' },
+    { title: 'FAQ - Questions fréquentes', key: 'returns' },
+    { title: 'Politique de confidentialité', key: 'payments' },
+    { title: 'Politique de retour', key: 'shipping' },
+    { title: 'Contact', key: 'contact' },
+    { title: 'Ne pas vendre ou partager mes informations personnelles', key: 'contact' },
+    { title: 'Do not sell or share my personal information', key: 'policy' },
   ];
 
   const [current, setCurrent] = useState(subpages[4]);
@@ -32,7 +34,7 @@ const SupportPage = (props) => {
         tempElement = <Policy />;
         break;
       case 'shipping':
-        tempElement = <Policy />;
+        tempElement = <Shipping />;
         break;
       case 'returns':
         tempElement = <Policy />;
@@ -73,8 +75,8 @@ const SupportPage = (props) => {
           maxWidth={'650px'}
           name={current.title}
           bgImage={'/support.png'}
-          color={'var(--standard-white)'}
-          height={'350px'}
+          color={'#000000'}
+          height={'100px'}
         />
 
         <div className={styles.navContainer}>

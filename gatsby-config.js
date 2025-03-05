@@ -2,8 +2,6 @@ require("dotenv").config({
   path: `.env.${process.env.NODE_ENV}`,
 });
 
-console.log("🔑 Clé API Gatsby (Backend) :", process.env.GATSBY_PRINTFUL_API_KEY);
-
 module.exports = {
   siteMetadata: {
     title: `Chic by JM`,

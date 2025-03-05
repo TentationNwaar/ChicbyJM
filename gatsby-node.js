@@ -4,7 +4,6 @@ require("dotenv").config({ path: `.env.${process.env.NODE_ENV}` });
 
 exports.createPages = async ({ actions, graphql }) => {
   const { createPage } = actions;
-  console.log("🔑 Clé API dans Gatsby (backend) :", process.env.PRINTFUL_API_KEY);
 
   //  Génération des pages produits Printful
   const resultPrintful = await graphql(`
