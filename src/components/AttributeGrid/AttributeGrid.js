@@ -1,7 +1,6 @@
 import React from 'react';
-
+import { Link } from 'gatsby';
 import Attribute from '../Attribute';
-
 import * as styles from './AttributeGrid.module.css';
 
 const AttributeGrid = (props) => {
@@ -15,7 +14,7 @@ const AttributeGrid = (props) => {
       <Attribute
         icon={'cycle'}
         title={'Retour'}
-        subtitle={<a href="/PolitiqueRetour">Cliquez pour en savoir plus</a>}
+        subtitle={<Link to="/shipping">Cliquez pour en savoir plus</Link>}
       />
       <Attribute
         icon={'creditcard'}

@@ -1,0 +1,78 @@
+.root {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    color: #333;
+  }
+  
+  .root h2 {
+    font-size: 28px;
+    margin-bottom: 30px;
+    text-align: center;
+    color: #000000;
+  }
+  
+  .section {
+    margin-bottom: 30px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+  }
+  
+  .section h4 {
+    font-size: 20px;
+    margin-bottom: 15px;
+    color: #333;
+  }
+  
+  .section p {
+    font-size: 16px;
+    color: #555;
+  }
+  
+  .section a {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  .section a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Styles pour les liens dans le texte */
+  .root a {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  .root a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Styles pour les listes (si vous avez des listes dans le texte) */
+  .root ul,
+  .root ol {
+    margin-left: 20px;
+  }
+  
+  .root li {
+    margin-bottom: 10px;
+  }
+  
+  /* Styles pour les titres de section (si vous avez des sous-titres) */
+  .root h3 {
+    font-size: 22px;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  /* Styles pour les hr (lignes de séparation) */
+  .root hr {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin: 30px 0;
+  }

@@ -7,18 +7,21 @@ import Contact from '../components/Contact';
 import Layout from '../components/Layout/Layout';
 import ThemeLink from '../components/ThemeLink';
 import Policy from '../components/Policy';
-import Shipping from '../components/Shipping'; 
+import Shipping from '../components/Shipping';
+import Faq from '../components/FAQ';  
+import CGV from '../components/CGV';  
+import PDC from '../components/PDC';  
+import InfoPerso from '../components/InfoPerso';  
 import Container from '../components/Container';
 
 const SupportPage = (props) => {
   const subpages = [
-    { title: 'Conditions Générales de Vente', key: 'shipping' },
-    { title: 'FAQ - Questions fréquentes', key: 'returns' },
-    { title: 'Politique de confidentialité', key: 'payments' },
+    { title: 'Conditions Générales de Vente', key: 'CGV' },
+    { title: 'FAQ - Questions fréquentes', key: 'faq' },
+    { title: 'Politique de confidentialité', key: 'PDC' },
     { title: 'Politique de retour', key: 'shipping' },
     { title: 'Contact', key: 'contact' },
-    { title: 'Ne pas vendre ou partager mes informations personnelles', key: 'contact' },
-    { title: 'Do not sell or share my personal information', key: 'policy' },
+    { title: 'Ne pas vendre ou partager mes informations personnelles', key: 'infoPerso' },
   ];
 
   const [current, setCurrent] = useState(subpages[4]);
@@ -36,14 +39,17 @@ const SupportPage = (props) => {
       case 'shipping':
         tempElement = <Shipping />;
         break;
-      case 'returns':
-        tempElement = <Policy />;
+      case 'faq':
+        tempElement = <Faq />;
         break;
-      case 'payments':
-        tempElement = <Policy />;
+      case 'CGV':
+        tempElement = <CGV />;
         break;
-      case 'terms':
-        tempElement = <Policy />;
+      case 'PDC':
+        tempElement = <PDC />;
+        break;
+      case 'infoPerso':
+        tempElement = <InfoPerso />;
         break;
       default:
         break;
@@ -58,14 +64,13 @@ const SupportPage = (props) => {
   useEffect(() => {
     if (props.location.hash !== '' && props.location.hash !== undefined) {
       const hash = props.location.hash.substring(1);
-      const tempCurrent = subpages.filter((detail) => detail.key === hash)[0];
-      if (tempCurrent.key !== current.key) {
+      const tempCurrent = subpages.find((detail) => detail.key === hash);
+  
+      if (tempCurrent && tempCurrent.key !== current.key) {
         setCurrent(tempCurrent);
         window.scrollTo(0, 475);
       }
     }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.location]);
 
   return (

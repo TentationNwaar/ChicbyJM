@@ -38,10 +38,7 @@ exports.createPages = async ({ actions, graphql }) => {
   createPage({
     path: "/en/account/",
     component: require.resolve("./src/pages/account.js"),
-    context: {
-      id: product.id,
-      thumbnail_url: product.thumbnail_url,
-    },
+    context: {},
   });
 };
 
