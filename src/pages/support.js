@@ -8,6 +8,7 @@ import Layout from '../components/Layout/Layout';
 import ThemeLink from '../components/ThemeLink';
 import Policy from '../components/Policy';
 import Shipping from '../components/Shipping';
+import Return from '../pages/PolitiqueRetour.js';
 import Faq from '../components/FAQ';  
 import CGV from '../components/CGV';  
 import PDC from '../components/PDC';  
@@ -19,7 +20,8 @@ const SupportPage = (props) => {
     { title: 'Conditions Générales de Vente', key: 'CGV' },
     { title: 'FAQ - Questions fréquentes', key: 'faq' },
     { title: 'Politique de confidentialité', key: 'PDC' },
-    { title: 'Politique de retour', key: 'shipping' },
+    { title: 'Information sur la livraison', key: 'shipping' },
+    { title: 'Politique de retour', key: 'return' },
     { title: 'Contact', key: 'contact' },
     { title: 'Ne pas vendre ou partager mes informations personnelles', key: 'infoPerso' },
   ];
@@ -38,6 +40,9 @@ const SupportPage = (props) => {
         break;
       case 'shipping':
         tempElement = <Shipping />;
+        break;
+      case 'return':
+        tempElement = <Return />;
         break;
       case 'faq':
         tempElement = <Faq />;

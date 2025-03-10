@@ -146,10 +146,10 @@ const IndexPage = () => {
           subtitle={'Identifiez @chicbyjm pour être mis en avant.'}
         />
         <div className={styles.socialContentGrid}>
-          <img src={toOptimizedImage(`/social/PartFromBanner.png`)} alt={'social media 1'} />
-          <img src={toOptimizedImage(`/social/PartFromBanner2.png`)} alt={'social media 2'} />
-          <img src={toOptimizedImage(`/social/PartFromBanner3.png`)} alt={'social media 3'} />
-          <img src={toOptimizedImage(`/social/PartFromBanner4.png`)} alt={'social media 4'} />
+          <img src={toOptimizedImage(`/socialMedia/SocialMedia1.jpg`)} alt={'social media 1'} />
+          <img src={toOptimizedImage(`/socialMedia/SocialMedia2.jpg`)} alt={'social media 2'} />
+          <img src={toOptimizedImage(`/socialMedia/SocialMedia3.jpg`)} alt={'social media 3'} />
+          <img src={toOptimizedImage(`/socialMedia/SocialMedia4.jpg`)} alt={'social media 4'} />
         </div>
       </div>
       <AttributeGrid />

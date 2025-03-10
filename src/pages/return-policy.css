@@ -1,0 +1,73 @@
+/* Appliquer les styles uniquement à la page de politique de retour */
+.return-policy-page {
+    font-family: Arial, sans-serif;
+    color: #333;
+    line-height: 1.6;
+    margin: 0 auto;
+    padding: 20px;
+    max-width: 900px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+  }
+  
+  /* Titre principal */
+  .return-policy-page h1 {
+    font-size: 2.5em;
+    color: #000000;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  /* Titres des sections */
+  .return-policy-page h2 {
+    font-size: 1.8em;
+    color: #030303;
+    border-bottom: 2px solid #000000;
+    padding-bottom: 5px;
+    margin-top: 30px;
+  }
+  
+  /* Titres des sous-sections */
+  .return-policy-page h3 {
+    font-size: 1.5em;
+    color: #000000;
+    margin-top: 20px;
+  }
+  
+  /* Paragraphes */
+  .return-policy-page p {
+    font-size: 1.1em;
+    margin-bottom: 20px;
+    line-height: 1.6;
+  }
+  
+  /* Listes */
+  .return-policy-page ul {
+    margin-left: 20px;
+  }
+  
+  .return-policy-page li {
+    font-size: 1.1em;
+    margin-bottom: 10px;
+  }
+  
+  /* Lignes de séparation */
+  .return-policy-page hr {
+    border: 1px solid #BDC3C7;
+    margin: 20px 0;
+  }
+  
+  /* Style des liens */
+  .return-policy-page a {
+    color: #000000;
+    text-decoration: none;
+  }
+  
+  .return-policy-page a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Style du container pour une meilleure organisation */
+  .return-policy-page .container {
+    margin-top: 20px;
+  }

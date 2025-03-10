@@ -1,165 +1,176 @@
 .root {
-    width: 100%;
-}
-
-/* special case with the image */
-.root > div {
-    background-position: right;
-}
-
-.navContainer {
-    display: flex;
-    align-items: center;
-    white-space: nowrap;
-    border-bottom: 1px solid var(--bg-light-gray);
-    position: sticky;
-    gap: 48px;
-    top: 150px;
-    background-color: var(--standard-white);
-    overflow-x: auto;
-    padding-left: 32px;
-    padding-right: 32px;
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
-}
-
-.navContainer > div:first-child {
-    margin-left: auto;
-}
-
-.navContainer > div:last-child {
-    margin-right: auto;
-}
-
-.detailContainer {
-    margin-top: 40px;
-}
-
-.detailContainer p{
-    font-family: var(--standard-header);
-    font-weight: normal;
-    font-size: 30px;
-    line-height: 50px;
-    text-align: justify;
-    display: flex;
-    justify-content: center;
-    margin-left: 60px;
-    margin-right: 60px;
-}
-
-.imageContainer {
-    padding-bottom: 100px;
-    padding-top: 20px;
-    min-height: 500px;
+    font-family: 'Arial', sans-serif;
+    background-color: #f9f9f9;
+  }
+  
+  /* Styles pour les sections */
+  .introSection,
+  .historySection,
+  .valuesSection,
+  .sustainabilitySection {
+    padding: 50px 0;
     text-align: center;
-}
+  }
+  
+  .introSection {
+    background-color: #f0f0f0;
+    padding: 5px 0;
+    text-align: left; /* Aligner le texte à gauche */
+    background-color: #f0f0f0;
+  }
 
-.imageContainer img {
-    width: 70%;
-    
-    display: inline-block;
-    object-fit: fill;
-}
+  .introTitle {
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 1px; /* Réduire la marge ici */
+    font-weight: bold;
+    text-align: left;
+  }
 
-.content {
-    display: grid;
-    grid-template-columns: 2fr 3fr;
-    gap: 20px 0px;
-}
+  .introContent {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
 
-.content h3{
-    font-weight: normal;
-    font-size: 52px;
-    line-height: 62px;
-    margin-right: 40px;
-}
+  .introTextContent {
+    flex: 1;
+    padding-right: 40px;
+  }
 
-.content p {
-    font-weight: normal;
-    font-size: 16px;
-    line-height: 26px;
-    margin-bottom: 40px;
-}
-
-.content img {
+  .introImage {
+    width: 500px; /* Ajustez la taille de l'image selon vos besoins */
+    height: 500px;
     object-fit: cover;
-    width: 630px;
-    height: 750px;
-}
+    border-radius: 10px; /* Optionnel : arrondir les coins de l'image */
+  }
+  
+  .introText {
+    font-size: 1.3rem;
+    color: #444;
+    margin-top: 1px;
+    text-align: center;
+    width: 100%;
+  }
 
-.content ol {
-    padding-left: 32px;
-    margin-bottom: 32px;
-}
+  .introImageContent {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end; /* Aligner l'image à droite */
+  }
+  
+  .historySection {
+    background-color: #ffffff;
+  }
+  
+  .valuesSection {
+    background-color: #f5f5f5;
+  }
+  
+  .sustainabilitySection {
+    background-color: #ffffff;
+  }
+  
+  .sectionTitle {
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 30px;
+    font-weight: bold;
+  }
+  
+  p {
+    font-size: 1.1rem;
+    color: #666;
+    line-height: 1.8;
+    max-width: 800px;
+    margin: 0 auto 20px;
+  }
+  
+  ul {
+    list-style-type: none;
+    padding-left: 0;
+  }
+  
+  ul li {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: #333;
+    font-weight: 500;
+  }
+  
+  /* Styles pour l'image parallaxe */
+  .parallaxSection {
+    position: relative;
+    overflow: hidden;
+    height: 60vh; /* Ajustez la hauteur selon vos besoins */
+  }
+  
+  .parallaxImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.5s ease-out;
+  }
+  
+  .parallaxSection:hover .parallaxImage {
+    transform: scale(1.1);
+  }
+  
+  /* Styles pour l'introduction */
+  .introText {
+    font-size: 1.3rem;
+    color: #444;
+    margin-top: 10px;
+  }
+  
+  /* Styles pour le Hero */
+  .hero {
+    width: 100%;
+    height: auto; /* Ajustez la hauteur selon vos besoins */
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: flex;
+    justify-content: left;
+    align-items: flex-start;
+    color: #fff;
+    text-align: left;
+    font-size: 2.5rem;
+    font-weight: bold;
+    padding: 0;
+  }
+  
+  /* Styles pour les médias queries */
+  @media (max-width: 768px) {
 
-.content ol li {
-    font-family: var(--standard-header);
-    font-weight: normal;
-    font-size: 32px;
-    line-height: 52px;
-}
-
-.content ul {
-    margin-bottom: 32px;
-}
-
-/* Hide scrollbar for Chrome, Safari and Opera */
-.navContainer::-webkit-scrollbar {
-    display: none;
-}
-
-@media (max-width:1050px) {
-    .content img {
-        width: 100%;
+    .introContent {
+        flex-direction: column;
     }
 
-    .content h3{
-        margin-right: 24px;
-    }
-}
-
-@media (max-width: 900px) {
-    .content {
-        grid-template-columns: 1fr;
-        gap: 24px 0px;
+    .introImageContent {
+        justify-content: center;
+        margin-top: 20px;
     }
 
-    .content h3{ 
-        font-size: 32px;
-        line-height: 38px;
+    .introImage {
+        width: 250px;
+        height: 250px;
     }
 
-    .content ol li {
-        font-size: 22px;
-        line-height: 42px;
+    .sectionTitle {
+      font-size: 2rem;
     }
-
-    .detailContainer p{
-        font-size: 22px;
-        line-height: 28px;
+  
+    p {
+      font-size: 1rem;
     }
-
-    .imageContainer {
-        min-height: unset;
-        margin: 24px 16px;
-        height: 240px;
+  
+    .hero {
+      height: 30vh;
+      font-size: 2rem;
     }
-
-    .imageContainer img {
-        height: 100%;
-    }
-
-    .detailContainer {
-        margin-top: 32px;
-    }
-}
-
-@media (max-width: 800px) {
-    .navContainer {
-        top: 90px;
-    }
-
-    .imageContainer {
-        padding-bottom: 100px;
-    }
-}
+  }

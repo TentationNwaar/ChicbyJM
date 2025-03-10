@@ -1,18 +1,60 @@
+/* Racine de la page */
 .root {
-    padding: 20px;
-    max-width: 800px;
-    margin: 0 auto;
-  }
-  
-  .section {
-    margin-bottom: 20px;
-  }
-  
-  h2, h3 {
-    color: #333;
-  }
-  
-  ul {
-    list-style-type: disc;
-    margin-left: 20px;
-  }
+  font-family: 'Arial', sans-serif;
+  color: #333;
+  line-height: 1.6;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Sections de la page */
+.section {
+  margin-bottom: 30px;
+}
+
+/* Titres principaux */
+.title {
+  font-size: 2em;
+  color: #2C3E50;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Sous-titres */
+.subtitle {
+  font-size: 1.5em;
+  color: #000000;
+  margin-bottom: 15px;
+  border-bottom: 2px solid #000000;
+  padding-bottom: 5px;
+}
+
+/* Liste d'options */
+.list {
+  margin-left: 20px;
+}
+
+.list li {
+  font-size: 1.1em;
+  margin-bottom: 10px;
+}
+
+/* Lien email avec une couleur différente */
+.emailLink {
+  color: #000000;
+  text-decoration: none;
+}
+
+.emailLink:hover {
+  text-decoration: underline;
+}
+
+/* Améliorer l'espacement entre les paragraphes */
+p {
+  font-size: 1.1em;
+  margin-bottom: 20px;
+}

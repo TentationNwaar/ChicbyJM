@@ -9,13 +9,6 @@ module.exports = {
   },
   plugins: [
     {
-      resolve: `gatsby-source-filesystem`,
-      options: {
-        name: `images`,
-        path: `${__dirname}/src/images/nouveaute`,
-      },
-    },
-    {
       resolve: `gatsby-plugin-env-variables`,
       options: {
         allowList: ["GATSBY_PRINTFUL_API_KEY"],

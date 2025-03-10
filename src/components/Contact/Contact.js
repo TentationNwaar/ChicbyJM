@@ -44,7 +44,10 @@ const Contact = (props) => {
     }
 
     setIsSubmitted(true);
-    setContactForm(initialState);
+    setTimeout(() => {  // Ajoute un délai avant de réinitialiser le formulaire
+      setContactForm(initialState);
+      setIsSubmitted(false);
+    }, 3000); // Message de confirmation visible pendant 3 secondes
   };
 
   return (
@@ -53,21 +56,15 @@ const Contact = (props) => {
         <h4>Envoyez-nous un message</h4>
         <p>
           Notre équipe du service client est à votre disposition pour toutes vos demandes du lundi au vendredi,
-          de 9h à 17h (heure normale de l'Est australien - AEDT).
+          de 9h à 17h (heure normale européenne).
         </p>
         <p>Nous avons hâte de vous lire.</p>
       </div>
 
       <div className={styles.section}>
-        <h4>Téléphone</h4>
-        <p>+1 424 280 4971</p>
-        <p>Lundi à vendredi - de 9h à 17h AEDT</p>
-      </div>
-
-      <div className={styles.section}>
         <h4>Email</h4>
         <p>
-          Vous pouvez nous contacter par email à customerservice@example.com
+          Vous pouvez nous contacter par email à chicbyjm@hotmail.com
           ou via le formulaire ci-dessous :
         </p>
       </div>
