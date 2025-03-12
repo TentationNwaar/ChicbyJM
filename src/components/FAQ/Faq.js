@@ -3,7 +3,7 @@ import * as styles from './Faq.module.css';
 
 const FAQ = () => {
   return (
-    <div className={styles.root}>
+    <div id="faq" className={styles.root}>
       <h2>FAQ - Questions fréquentes</h2>
       
       <div className={styles.section}>

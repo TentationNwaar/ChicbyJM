@@ -1,25 +1,8 @@
 {
-  "currencyList": [
-    { "value": "AUS", "label": "Australia (AUS $)" },
-    { "value": "CAD", "label": "Canada (CAD $)" },
-    { "value": "USD", "label": "United States (US $)" },
-    { "value": "EUR", "label": "Germany (EUR €)" },
-    { "value": "HKD", "label": "Hong Kong (HKD $)" }
-  ],
-  "languageList": [
-    { "value": "english", "label": "English" },
-    { "value": "german", "label": "Deutsch" },
-    { "value": "french", "label": "French" },
-    { "value": "mandarin", "label": "普通话" }
-  ],
+
   "social": {
     "instagram": "https://www.instagram.com/chicby_jm/",
     "tiktok": "https://www.tiktok.com/@chicbyjm"
-  },
-  "paymentOptions": {
-    "visa": true,
-    "mastercard": true,
-    "amex": true
   },
   "footerLinks": [
     {
@@ -32,10 +15,6 @@
         {
           "text": "Contact",
           "link": "/support#contact"
-        },
-        {
-          "text": "Privacy Policy",
-          "link": "/support#policy"
         }
       ]
     },
@@ -44,15 +23,15 @@
       "links": [
         {
           "text": "Conditions Générales de Vente",
-          "link": "/blog"
+          "link": "/support#CGV"
         },
         {
           "text": "FAQ - Questions fréquentes",
-          "link": "/faq"
+          "link": "/support#FAQ"
         },
         
         {
-          "text": "Shipping & Returns",
+          "text": "Livraison et retour",
           "link": "/support#returns"
         }
       ]
