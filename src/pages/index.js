@@ -34,21 +34,21 @@ const HeroCarousel = () => {
 
     { src: 'carousel/Shooting2.JPG', 
       alt: 'Image 2',
-      title: 'Un vent de fraîcheur dans votre dressing cet été', 
+      title: 'Un dressing frais et tendance', 
       ctaText: 'Découvrez la collection',
       ctaLink: '/shop',
     },
 
     { src: 'carousel/Shooting3.png', 
       alt: 'Image 3',
-      title: 'Laissez-vous envoûter par la beauté des feuilles en automne', 
+      title: 'Les couleurs de l’automne', 
       ctaText: 'Découvrez la collection',
       ctaLink: '/shop',
     },
 
     { src: 'carousel/Shooting4.JPG', 
       alt: 'Image 4',
-      title: 'Enveloppez-vous de douceur et de chaleur', 
+      title: 'Douceur et chaleur', 
       ctaText: 'Découvrez la collection',
       ctaLink: '/shop',
     },
@@ -109,7 +109,10 @@ const IndexPage = () => {
       {/* Collection Container */}
       <div className={styles.collectionContainer}>
         <Container size={'large'}>
-          <Title name={'Nouvelle collection'} />
+          {/* Déplacez le titre dans un conteneur séparé */}
+          <div className={styles.titleContainer}>
+            <Title name={'Nouvelle collection'} />
+          </div>
           <ProductCollectionGrid />
         </Container>
       </div>
