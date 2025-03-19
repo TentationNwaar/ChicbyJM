@@ -26,7 +26,7 @@ import RecentImages from "../components/RecentImages"
 const HeroCarousel = () => {
   // Tableau d'images à tester
   const images = [
-    { src: 'carousel/Shooting.png', 
+    { src: 'carousel/Shooting.webp', 
       alt: 'Image 1',
       title: 'Racontez votre histoire avec style', 
       ctaText: 'Commencer le shopping',
@@ -34,28 +34,28 @@ const HeroCarousel = () => {
       className: styles.shooting1
     },
 
-    { src: 'carousel/Shooting2.JPG', 
+    { src: 'carousel/Shooting2.webp', 
       alt: 'Image 2',
       title: 'Un dressing frais et tendance', 
       ctaText: 'Découvrez la collection',
       ctaLink: '/shop',
     },
 
-    { src: 'carousel/Shooting3.png', 
+    { src: 'carousel/Shooting3.webp', 
       alt: 'Image 3',
       title: 'Les couleurs de l’automne', 
       ctaText: 'Découvrez la collection',
       ctaLink: '/shop',
     },
 
-    { src: 'carousel/Shooting4.JPG', 
+    { src: 'carousel/Shooting4.webp', 
       alt: 'Image 4',
       title: 'Douceur et chaleur', 
       ctaText: 'Découvrez la collection',
       ctaLink: '/shop',
     },
 
-    { src: 'carousel/Shooting5.png', 
+    { src: 'carousel/Shooting5.webp', 
       alt: 'Image 5',
       title: 'Révélez votre côté fleuri', 
       ctaText: 'Découvrez la collection',
@@ -111,8 +111,7 @@ const IndexPage = () => {
       {/* Collection Container */}
       <div className={styles.collectionContainer}>
         <Container size={'large'}>
-          {/* Déplacez le titre dans un conteneur séparé */}
-          <div className={styles.titleContainer}>
+          <div className={`${styles.titleContainer} ${styles.newCollectionTitle}`}>
             <Title name={'Nouvelle collection'} />
           </div>
           <ProductCollectionGrid />
@@ -122,13 +121,15 @@ const IndexPage = () => {
       {/* New Arrivals */}
       <div className={styles.newArrivalsContainer}>
         <Container>
-          <Title name={'Les nouveautés'} link={'/shopTous'} textLink={'Tout voir'} />
+          <div className={styles.newArrivalsTitle}> 
+            <Title name={'Les nouveautés'} link={'/shopTous'} textLink={'Tout voir'} />
+          </div>
           <RecentImages />
         </Container>
       </div>
       {/* Promotion */}
       <div className={styles.promotionContainer}>
-        <Hero image={toOptimizedImage('/Banner1_JM.png')} title={`-20% de réduction \n sur les essentiels du moment`} />
+        <Hero image={toOptimizedImage('/Banner1_JM.webp')} title={`-20% de réduction \n sur les essentiels du moment`} />
         <div className={styles.linkContainers}>
           {/* <Link to={'/shop'}>Femme</Link>
           <Link to={'/shop'}>Homme</Link> */}
@@ -151,7 +152,7 @@ const IndexPage = () => {
           subtitle={'Identifiez @chicbyjm pour être mis en avant.'}
         />
         <div className={styles.socialContentGrid}>
-          {['SocialMedia1.jpg', 'SocialMedia2.jpg', 'SocialMedia3.jpg', 'SocialMedia4.jpg'].map((img, index) => (
+          {['SocialMedia1.webp', 'SocialMedia2.webp', 'SocialMedia3.webp', 'SocialMedia4.webp'].map((img, index) => (
             <LazyLoad key={index} height={300} offset={100} once>
               <img src={toOptimizedImage(`/socialMedia/${img}`)} alt={`social media ${index + 1}`} />
             </LazyLoad>

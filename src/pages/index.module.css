@@ -18,7 +18,13 @@
     margin: 10px; /* Optionnel : ajouter de l'espace entre les images */
 }
 
+.newArrivalsTitle {
+    margin-top: 40px; /* Ajustez cette valeur selon vos besoins */
+}
 
+.newCollectionTitle {
+    margin-top: 40px; /* Ajuste selon ton besoin */
+}
 
 @media (max-width: 800px) {
     .socialContentGrid {
