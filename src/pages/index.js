@@ -4,6 +4,8 @@ import AttributeGrid from '../components/AttributeGrid';
 import Container from '../components/Container';
 import Hero from '../components/Hero';
 
+import LazyLoad from 'react-lazyload';
+
 import Layout from '../components/Layout/Layout';
 import ProductCollectionGrid from '../components/ProductCollectionGrid';
 import Quote from '../components/Quote';
@@ -149,10 +151,11 @@ const IndexPage = () => {
           subtitle={'Identifiez @chicbyjm pour être mis en avant.'}
         />
         <div className={styles.socialContentGrid}>
-          <img src={toOptimizedImage(`/socialMedia/SocialMedia1.jpg`)} alt={'social media 1'} />
-          <img src={toOptimizedImage(`/socialMedia/SocialMedia2.jpg`)} alt={'social media 2'} />
-          <img src={toOptimizedImage(`/socialMedia/SocialMedia3.jpg`)} alt={'social media 3'} />
-          <img src={toOptimizedImage(`/socialMedia/SocialMedia4.jpg`)} alt={'social media 4'} />
+          {['SocialMedia1.jpg', 'SocialMedia2.jpg', 'SocialMedia3.jpg', 'SocialMedia4.jpg'].map((img, index) => (
+            <LazyLoad key={index} height={300} offset={100} once>
+              <img src={toOptimizedImage(`/socialMedia/${img}`)} alt={`social media ${index + 1}`} />
+            </LazyLoad>
+          ))}
         </div>
       </div>
       <AttributeGrid />
