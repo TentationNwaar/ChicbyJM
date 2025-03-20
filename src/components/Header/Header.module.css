@@ -1,34 +1,51 @@
+/* Variables CSS pour les couleurs et espacements */
+:root {
+    --standard-white: #ffffff;
+    --standard-black: #000000;
+    --standard-gold: #ffd700;
+    --bg-light-gray: #e0e0e0;
+    --spacing-sm: 8px;
+    --spacing-md: 15px;
+    --spacing-lg: 32px;
+    --font-size-sm: 9px; /* Taille pour .bagNotification span */
+    --font-size-md: 22px; /* Taille pour les liens du menu mobile */
+    --font-size-lg: 28px; /* Taille pour l'icône burger */
+}
+
+/* Styles de base */
 .root {
     position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
     background-color: var(--standard-white);
-    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
     z-index: 50;
 }
 
 .iconButton {
-  border: none;
-  background-color: unset;
-  overflow: visible;
-  text-transform: none;
-  font-family: inherit;
-  font-size: 100%;
-  line-height: 1.15;
-  margin: 0;
-  -webkit-appearance: button;
+    border: none;
+    background-color: transparent;
+    overflow: visible;
+    text-transform: none;
+    font-family: inherit;
+    font-size: 100%;
+    line-height: 1.15;
+    margin: 0;
+    -webkit-appearance: button;
+    cursor: pointer;
 }
 
 .header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    position: relative;
-    padding: 10px 20px; /* Adjust padding to fit your design */
+    padding: 10px 20px;
 }
 
 .headerMessageContainer {
     background-color: var(--standard-black);
-    padding: 8px;
+    padding: var(--spacing-sm);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -36,19 +53,20 @@
 
 .headerMessageContainer span {
     font-weight: 500;
-    font-size: 12px;
-    line-height: 15px;
+    font-size: var(--font-size-sm);
+    line-height: 1.25;
     color: var(--standard-white);
 }
 
-.root .linkContainers {
+/* Navigation desktop */
+.linkContainers {
     display: flex;
 }
 
 .linkContainer {
-    flex: 1; /* This allows the navigation to take up space and push other elements as needed */
+    flex: 1;
     display: flex;
-    justify-content: center; /* Center the navigation links */
+    justify-content: center;
 }
 
 .navContainer {
@@ -61,35 +79,42 @@
     text-align: center;
 }
 
-
 .navLink {
-    margin: 0 15px;
+    margin: 0 var(--spacing-md);
     text-decoration: none;
-    color: #000; /* Adjust the color as needed */
+    color: var(--standard-black);
+    transition: color 0.3s ease;
+}
+
+.navLink:hover {
+    color: var(--standard-gold);
 }
 
 .activeLink {
     border-bottom: 2px solid var(--standard-black);
 }
 
+/* Actions (panier, recherche, etc.) */
 .actionContainers {
     display: flex;
     align-items: center;
-    margin-left: auto; /* Push the action buttons to the right */
+    margin-left: auto;
 }
 
 .actionContainers > * {
-  margin-right: 32px;
-  cursor: pointer;
-  color: var(--standard-black);
+    margin-right: var(--spacing-lg);
+    cursor: pointer;
+    color: var(--standard-black);
+}
+
+.actionContainers > *:last-child {
+    margin-right: 0;
 }
 
 .iconContainer {
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
-    padding: 0;
 }
 
 .iconContainer svg {
@@ -97,28 +122,29 @@
     height: 20px;
 }
 
+/* Menu de recherche */
 .menuContainer {
     position: absolute;
-    background-color: var(--standard-white);
+    top: 100%;
+    left: 0;
     width: 100%;
-
+    background-color: var(--standard-white);
     opacity: 0;
     visibility: hidden;
-    transition: all 0.3s ease-in-out;
-    box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.2);
+    transition: opacity 0.3s ease, visibility 0.3s ease, max-height 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 51;
 }
 
 .show {
-    opacity: 1 !important;
-    visibility: visible !important;
-    max-height: 500px !important;
+    opacity: 1;
+    visibility: visible;
+    max-height: 500px;
 }
 
 .hide {
-    opacity: 0 !important;
-    visibility: hidden !important;
-    max-height: 0px !important;
-    height: 0px;
+    max-height: 0;
+    overflow: hidden;
 }
 
 .searchContainer {
@@ -131,24 +157,22 @@
 
 .searchContainer h4 {
     font-weight: normal;
-    font-size: 32px;
-    line-height: 38px;
+    font-size: var(--font-size-lg);
+    line-height: 1.2;
 }
 
 .searchForm {
-    margin-top: 40px;
-    margin-bottom: 40px;
+    margin: 40px 0;
 }
 
-.searchForm input{
-    width: 95% !important;
-    border-bottom: 1px solid var(--standard-black) !important;
-    border-left: 1px solid transparent !important;
-    border-right: 1px solid transparent !important;
-    border-top: 1px solid transparent !important;
+.searchForm input {
+    width: 95%;
+    padding: 10px;
+    border: none;
+    border-bottom: 1px solid var(--standard-black);
 }
 
-.suggestionContianer {
+.suggestionContainer {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -159,44 +183,34 @@
 .suggestion {
     padding: 14px 20px;
     font-weight: 500;
-    font-size: 14px;
-    line-height: 17px;
+    font-size: var(--font-size-md);
+    line-height: 1.2;
     color: var(--standard-black);
     border: 1px solid var(--bg-light-gray);
     text-transform: capitalize;
-    transition: all ;
     cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
 .suggestion:hover {
-    transition: all 0.3s ease-in-out;
-    color: var(--standard-white);
     background-color: var(--standard-gold);
-    border: 1px solid transparent;
+    color: var(--standard-white);
+    border-color: transparent;
 }
 
+/* Overlay pour les menus */
 .backdrop {
     position: fixed;
-    top: 0px;
-    left: 0px;
+    top: 0;
+    left: 0;
     width: 100vw;
     height: 100vh;
     background-color: transparent;
     z-index: -1;
 }
 
-.notificationContainer {
-    position: relative;
-}
-
-.burgerIcon {
-    display: none;
-}
-
-.mobileMenuContainer {
-    display: none;
-}
-
+/* Notifications (panier) */
+.notificationContainer,
 .bagIconContainer {
     position: relative;
 }
@@ -205,62 +219,113 @@
     position: absolute;
     bottom: -5px;
     right: -5px;
-
     width: 14px;
     height: 14px;
     background-color: var(--standard-gold);
     border-radius: 50%;
-
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.bagNotification span{
+.bagNotification span {
     color: var(--standard-white);
-    font-size: 9px;
+    font-size: var(--font-size-sm);
 }
 
+/* Menu mobile (hamburger) */
+.burgerIcon {
+    display: none;
+    font-size: var(--font-size-lg);
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.burgerIcon:hover,
+.burgerIcon:focus {
+    transform: scale(1.1);
+}
+
+.burgerIcon svg {
+    width: 20px;
+    height: 20px;
+}
+
+.mobileMenuContainer {
+    display: none;
+}
+
+.drawerContainer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(8px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transform: translateY(-100%);
+    transition: transform 0.3s ease-in-out;
+    z-index: 1000;
+    padding: var(--spacing-lg);
+}
+
+.drawerOpen {
+    transform: translateY(0);
+}
+
+/* Navigation Mobile */
+.mobileNavigation {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.mobileNavigation a {
+    font-size: var(--font-size-md);
+    color: var(--standard-white);
+    text-decoration: none;
+    margin: var(--spacing-md) 0;
+    transition: color 0.3s ease;
+}
+
+.mobileNavigation a:hover,
+.mobileNavigation a:focus {
+    color: var(--standard-gold);
+}
+
+/* Bouton de Fermeture */
+.closeButton {
+    position: absolute;
+    top: var(--spacing-md);
+    right: var(--spacing-md);
+    font-size: 30px;
+    background: none;
+    border: none;
+    color: var(--standard-white);
+    cursor: pointer;
+    aria-label: "Fermer le menu";
+}
+
+.closeButton:hover,
+.closeButton:focus {
+    transform: scale(1.2);
+}
+
+/* Media queries pour la version mobile */
 @media (max-width: 800px) {
-    .mobileMenuContainer {
-        display: block;
-    }
-
-    .navContainer {
-        position: static;
-        transform: none;
-        justify-content: flex-end;
-        display: none; /* Hide on smaller screens if using mobile navigation */
-    }
-
-    .linkContainer {
-      display: none;
-    }
-
+    .mobileMenuContainer,
     .burgerIcon {
         display: block;
     }
 
-    .burgerIcon svg {
-        width: 20px;
-        height: 20px;
-    }
-
-    .hideOnMobile {
-        display: none;
-    }
-
+    .navContainer,
+    .linkContainer,
     .actionContainers {
-        display: none; /* Hide action buttons on smaller screens */
-    }
-
-    .actionContainers > * {
-        margin-right: 16px;
-        cursor: pointer;
-    }
-
-    .actionContainers > *:last-child {
-        margin-right: 0px;
+        display: none;
     }
 
     .header {
@@ -269,11 +334,11 @@
 
     .searchContainer {
         width: auto;
-        padding: 0px 32px;
+        padding: 0 var(--spacing-lg);
     }
 
     .searchContainer h4 {
-        font-size: 32px;
-        line-height: 42px;
-    }    
+        font-size: var(--font-size-lg);
+        line-height: 1.3;
+    }
 }

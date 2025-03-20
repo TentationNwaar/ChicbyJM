@@ -181,6 +181,68 @@ p {
   font-weight: 600;
 }
 
+/* Styles de base pour les headerLinks */
+.headerLinks {
+    display: flex;
+    justify-content: center; /* Centre les liens horizontalement */
+    align-items: center;
+}
+
+.headerLinks a {
+    text-decoration: none;
+    color: var(--standard-black); /* Couleur du texte */
+    margin: 0 15px; /* Espacement entre les liens */
+    font-size: 16px; /* Taille de la police */
+    font-weight: 500; /* Poids de la police */
+    transition: color 0.3s ease; /* Transition pour l'effet de survol */
+    padding: 8px 12px; /* Ajout d'un peu de padding */
+    border-radius: 4px; /* Bords arrondis (optionnel) */
+}
+
+.headerLinks a:hover,
+.headerLinks a:focus {
+    color: var(--standard-gold); /* Couleur au survol/focus */
+    background-color: rgba(0, 0, 0, 0.05); /* Fond clair au survol/focus (optionnel) */
+}
+
+/* Styles pour le menu déroulant "Shopping" (optionnel) */
+.shoppingMenu {
+    position: relative;
+}
+
+.shoppingMenu ul {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: var(--standard-white);
+    padding: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+}
+
+.shoppingMenu:hover ul,
+.shoppingMenu:focus-within ul {
+    display: block;
+}
+
+.shoppingMenu ul li {
+    list-style: none;
+    padding: 8px 12px;
+}
+
+.shoppingMenu ul li a {
+    display: block;
+    margin: 0;
+}
+
+/* Media query pour mobile */
+@media (max-width: 800px){
+    .headerLinks{
+        display: none;
+    }
+}
+
 @media only screen and (max-width: 767px) {
   h1,
   .h1 {
