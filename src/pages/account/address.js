@@ -14,51 +14,47 @@ import { isAuth } from '../../helpers/general';
 import Button from '../../components/Button';
 
 const AddressPage = (props) => {
-  const address1 = {
-    name: 'John Doe',
-    address: '123 Steam Mill Lane, Haymerket',
-    state: 'NSW',
-    postal: '2000',
-    country: 'Australia',
-    company: '',
-  };
-
-  const address2 = {
-    name: 'John Doe',
-    address: '123 Steam Mill Lane, Haymerket',
-    state: 'NSW',
-    postal: '2000',
-    country: 'Australia',
-    company: 'Matter Design',
-  };
-
-  const [addressList] = useState([address1, address2]);
+  const [addressList, setAddressList] = useState([]);  // Liste vide au départ
   const [showForm, setShowForm] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
+  const [addressToDelete, setAddressToDelete] = useState(null);  // L'adresse à supprimer
 
   if (isAuth() === false) {
     navigate('/login');
   }
+
+  const addAddress = (newAddress) => {
+    setAddressList([...addressList, newAddress]);  // Ajoute la nouvelle adresse à la liste
+  };
+
+  const removeAddress = (address) => {
+    setAddressList(addressList.filter(item => item !== address));  // Supprime l'adresse de la liste
+  };
 
   return (
     <Layout>
       <AccountLayout>
         <Breadcrumbs
           crumbs={[
-            { link: '/', label: 'Home' },
-            { link: '/account', label: 'Account' },
-            { link: '/account/address', label: 'Addresses' },
+            { link: '/', label: 'Accueil' },
+            { link: '/account', label: 'Mon compte' },
+            { link: '/account/address', label: 'Adresses' },
           ]}
         />
-        <h1>Addresses</h1>
+        <h1>Adresses</h1>
 
         {showForm === false && (
           <div className={styles.addressListContainer}>
-            {addressList.map((address) => {
+            {addressList.map((address, index) => {
               return (
                 <AddressCard
+                  key={index}  // Ajoutez une clé unique pour chaque adresse
                   showForm={() => setShowForm(true)}
-                  showDeleteForm={() => setShowDelete(true)}
+                  showDeleteForm={() => {
+                    setShowDelete(true);
+                    setAddressToDelete(address);  // Définit l'adresse à supprimer
+                  }}
+                  removeAddress={removeAddress}  // Passe la fonction removeAddress à AddressCard
                   {...address}
                 />
               );
@@ -69,28 +65,30 @@ const AddressPage = (props) => {
               onClick={() => setShowForm(true)}
             >
               <Icon symbol={'plus'}></Icon>
-              <span>new address</span>
+              <span>Nouvelle adresse</span>
             </div>
           </div>
         )}
 
         {showForm === true && (
-          <AddressForm closeForm={() => setShowForm(false)} />
+          <AddressForm closeForm={() => setShowForm(false)} addAddress={addAddress} />
         )}
       </AccountLayout>
+
+      {/* Modal de confirmation de suppression */}
       <Modal visible={showDelete} close={() => setShowDelete(false)}>
         <div className={styles.confirmDeleteContainer}>
-          <h4>Delete Address?</h4>
+          <h4>Supprimer l'adresse ?</h4>
           <p>
-            Are you sure you want to delete this address? You cannot undo this
-            action once you press <strong>'Delete'</strong>
+            Êtes-vous sûr de vouloir supprimer cette adresse ? Cette action ne
+            peut pas être annulée une fois que vous avez appuyé sur <strong>'Supprimer'</strong>
           </p>
           <div className={styles.actionContainer}>
-            <Button onClick={() => setShowDelete(false)} level={'primary'}>
-              Delete
+            <Button onClick={() => { removeAddress(addressToDelete); setShowDelete(false); }} level={'primary'}>
+              Supprimer
             </Button>
             <Button onClick={() => setShowDelete(false)} level={'secondary'}>
-              Cancel
+              Annuler
             </Button>
           </div>
         </div>

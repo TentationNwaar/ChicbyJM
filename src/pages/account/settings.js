@@ -52,7 +52,7 @@ const SettingsPage = (props) => {
       if (validateEmail(updateForm.email) !== true) {
         validForm = false;
         tempError.email =
-          'Please use a valid email address, such as user@example.com.';
+          'Veuillez utiliser une adresse e-mail valide, telle que utilisateur@exemple.com.';
       }
     }
 
@@ -60,12 +60,12 @@ const SettingsPage = (props) => {
       if (validateStrongPassword(updateForm.password) === false) {
         validForm = false;
         tempError.password =
-          'Password must have at least 8 characters, 1 lowercase, 1 uppercase and 1 numeric character.';
+          'Le mot de passe doit contenir au moins 8 caractères, 1 minuscule, 1 majuscule et 1 caractère numérique.';
       }
 
       if (updateForm.password !== updateForm.confirmPassword) {
         validForm = false;
-        tempError.confirmPassword = 'Confirm password not the same.';
+        tempError.confirmPassword = 'Les mots de passe ne correspondent pas.';
       }
     }
 
@@ -83,12 +83,12 @@ const SettingsPage = (props) => {
       <AccountLayout>
         <Breadcrumbs
           crumbs={[
-            { link: '/', label: 'Home' },
-            { link: '/account', label: 'Account' },
-            { link: '/account/settings', label: 'Settings' },
+            { link: '/', label: 'Accueil' },
+            { link: '/account', label: 'Compte' },
+            { link: '/account/settings', label: 'Paramètres' },
           ]}
         />
-        <h1>Settings</h1>
+        <h1>Paramètres</h1>
         <div>
           <form onSubmit={(e) => handleSubmit(e)} noValidate>
             <div className={styles.nameSection}>
@@ -97,33 +97,33 @@ const SettingsPage = (props) => {
                 value={updateForm.firstName}
                 handleChange={(id, e) => handleChange(id, e)}
                 type={'input'}
-                labelName={'First Name'}
+                labelName={'Prénom'}
               />
               <FormInputField
                 id={'lastName'}
                 value={updateForm.lastName}
                 handleChange={(id, e) => handleChange(id, e)}
                 type={'input'}
-                labelName={'Last Name'}
+                labelName={'Nom'}
               />
               <FormInputField
                 id={'email'}
                 value={updateForm.email}
                 handleChange={(id, e) => handleChange(id, e)}
                 type={'email'}
-                labelName={'Email'}
+                labelName={'E-mail'}
                 error={error.email}
               />
             </div>
             <div className={styles.passwordContainer}>
-              <h2>Change Password</h2>
+              <h2>Changer le mot de passe</h2>
               <div className={styles.passwordSection}>
                 <FormInputField
                   id={'password'}
                   value={updateForm.password}
                   handleChange={(id, e) => handleChange(id, e)}
                   type={'password'}
-                  labelName={'New Password'}
+                  labelName={'Nouveau mot de passe'}
                   error={error.password}
                 />
                 <FormInputField
@@ -131,11 +131,11 @@ const SettingsPage = (props) => {
                   value={updateForm.confirmPassword}
                   handleChange={(id, e) => handleChange(id, e)}
                   type={'password'}
-                  labelName={'Confirm Password'}
+                  labelName={'Confirmer le mot de passe'}
                   error={error.confirmPassword}
                 />
                 <Button level={'primary'} type={'submit'}>
-                  update
+                  mettre à jour
                 </Button>
               </div>
             </div>

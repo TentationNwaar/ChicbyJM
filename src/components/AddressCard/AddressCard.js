@@ -22,10 +22,10 @@ const AddressCard = (props) => {
       <span>{country}</span>
       <div className={styles.actionContainer}>
         <span role={'presentation'} onClick={showForm}>
-          Edit
+          Modifier
         </span>
         <span role={'presentation'} onClick={showDeleteForm}>
-          Remove
+          Supprimer
         </span>
       </div>
     </div>

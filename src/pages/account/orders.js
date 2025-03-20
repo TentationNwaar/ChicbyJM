@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import * as styles from './orders.module.css';
 
 import AccountLayout from '../../components/AccountLayout/AccountLayout';
@@ -8,98 +8,60 @@ import OrderItem from '../../components/OrderItem/OrderItem';
 import { isAuth } from '../../helpers/general';
 import { navigate } from 'gatsby';
 
+// Simulons une fonction d'API pour récupérer les commandes
+const fetchOrders = async (userId) => {
+  // Remplacez cette logique par un vrai appel API
+  // Exemple d'appel API pour récupérer les commandes de l'utilisateur
+  // const response = await fetch(`/api/orders/${userId}`);
+  // return await response.json();
+
+  return []; // Retourner un tableau vide pour le moment, jusqu'à ce que vous ayez des données réelles
+};
+
 const OrderPage = (props) => {
   if (isAuth() === false) {
     navigate('/login');
   }
 
-  const sampleOrder1 = {
-    id: '2',
-    orderPlaced: 'Oct 12, 2021',
-    lastUpdate: 'Oct 12, 2021',
-    status: 'pending',
-    items: [
-      {
-        image: '/products/shirt1.jpg',
-        alt: 'order 1 product 1',
-        name: 'Lambswool Crew Neck Jumper',
-        quantity: '2',
-        price: '100',
-      },
-      {
-        image: '/products/shirt2.jpg',
-        alt: 'order 1 product 2',
-        name: 'Lambswool Crew Neck Jumper',
-        quantity: '1',
-        price: '300',
-      },
-    ],
-    shippingAddress: {
-      name: 'John Doe',
-      address: '1 Steam Mill Lane, Haymerket',
-      postal: '2000',
-      state: 'NSW',
-      country: 'Australia',
-    },
-    billingAddress: {
-      name: 'John Doe',
-      address: '1 Steam Mill Lane, Haymerket',
-      postal: '2000',
-      state: 'NSW',
-      country: 'Australia',
-    },
-  };
+  const [orders, setOrders] = useState([]);
 
-  const sampleOrder2 = {
-    id: '1',
-    orderPlaced: 'Oct 11, 2021',
-    lastUpdate: 'Oct 11, 2021',
-    status: 'pending',
-    items: [
-      {
-        image: '/products/shirt1.jpg',
-        alt: 'order 1 product 1',
-        name: 'Lambswool Crew Neck Jumper',
-        quantity: '2',
-        price: '100',
-      },
-    ],
-    shippingAddress: {
-      name: 'John Doe',
-      address: '1 Steam Mill Lane, Haymerket',
-      postal: '2000',
-      state: 'NSW',
-      country: 'Australia',
-    },
-    billingAddress: {
-      name: 'John Doe',
-      address: '1 Steam Mill Lane, Haymerket',
-      postal: '2000',
-      state: 'NSW',
-      country: 'Australia',
-    },
-  };
+  useEffect(() => {
+    // Remplacer par la logique pour obtenir l'ID de l'utilisateur
+    const userId = 'user123'; // Remplacez par un ID utilisateur réel
+    const getOrders = async () => {
+      const fetchedOrders = await fetchOrders(userId);
+      setOrders(fetchedOrders);
+    };
+
+    getOrders();
+  }, []);
 
   return (
     <Layout>
       <AccountLayout>
         <Breadcrumbs
           crumbs={[
-            { link: '/', label: 'Home' },
-            { link: '/account', label: 'Account' },
-            { link: '/account/orders/', label: 'Orders' },
+            { link: '/', label: 'Accueil' },
+            { link: '/account', label: 'Mon compte' },
+            { link: '/account/orders/', label: 'Commandes' },
           ]}
         />
-        <h1>Orders</h1>
+        <h1>Commandes</h1>
         <div className={`${styles.tableHeaderContainer} ${styles.gridStyle}`}>
-          <span className={styles.tableHeader}>Order #</span>
-          <span className={styles.tableHeader}>Order Placed</span>
-          <span className={styles.tableHeader}>Last Update</span>
-          <span className={styles.tableHeader}>Status</span>
+          <span className={styles.tableHeader}>Commande #</span>
+          <span className={styles.tableHeader}>Date de commande</span>
+          <span className={styles.tableHeader}>Dernière mise à jour</span>
+          <span className={styles.tableHeader}>Statut</span>
         </div>
 
-        <OrderItem order={sampleOrder1} headerStyling={styles.gridStyle} />
-        <OrderItem order={sampleOrder2} headerStyling={styles.gridStyle} />
+        {/* Afficher dynamiquement les commandes */}
+        {orders.length > 0 ? (
+          orders.map((order) => (
+            <OrderItem key={order.id} order={order} headerStyling={styles.gridStyle} />
+          ))
+        ) : (
+          <p>Aucune commande trouvée.</p>
+        )}
       </AccountLayout>
     </Layout>
   );

@@ -5,7 +5,7 @@ import Button from '../Button';
 import FormInputField from '../FormInputField';
 
 const AddressForm = (props) => {
-  const { closeForm } = props;
+  const { closeForm, addAddress } = props;  // Ajoutez la fonction addAddress
 
   const initialState = {
     name: '',
@@ -36,6 +36,7 @@ const AddressForm = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setErrorForm(errorState);
+    addAddress(form);  // Ajoutez l'adresse au parent
     closeForm();
   };
 
@@ -47,7 +48,7 @@ const AddressForm = (props) => {
           value={form.name}
           handleChange={(id, e) => handleChange(id, e)}
           type={'input'}
-          labelName={'Name'}
+          labelName={'Nom'}
           error={errorForm.name}
         />
         <FormInputField
@@ -55,7 +56,7 @@ const AddressForm = (props) => {
           value={form.address}
           handleChange={(id, e) => handleChange(id, e)}
           type={'input'}
-          labelName={'Address'}
+          labelName={'Adresse'}
           error={errorForm.address}
         />
         <FormInputField
@@ -63,7 +64,7 @@ const AddressForm = (props) => {
           value={form.country}
           handleChange={(id, e) => handleChange(id, e)}
           type={'input'}
-          labelName={'Country'}
+          labelName={'Pays'}
           error={errorForm.country}
         />
         <FormInputField
@@ -71,7 +72,7 @@ const AddressForm = (props) => {
           value={form.state}
           handleChange={(id, e) => handleChange(id, e)}
           type={'input'}
-          labelName={'State'}
+          labelName={'État'}
           error={errorForm.state}
         />
         <FormInputField
@@ -79,7 +80,7 @@ const AddressForm = (props) => {
           value={form.postal}
           handleChange={(id, e) => handleChange(id, e)}
           type={'number'}
-          labelName={'Postal Code'}
+          labelName={'Code postal'}
           error={errorForm.postal}
         />
         <FormInputField
@@ -87,12 +88,12 @@ const AddressForm = (props) => {
           value={form.address}
           handleChange={(id, e) => handleChange(id, e)}
           type={'input'}
-          labelName={'Street'}
+          labelName={'Rue'}
           error={errorForm.address}
         />
         <div className={styles.actionContainers}>
           <Button fullWidth type={'submit'} level={'primary'}>
-            Save
+            Sauvegarder
           </Button>
           <Button
             fullWidth
@@ -100,7 +101,7 @@ const AddressForm = (props) => {
             onClick={closeForm}
             level={'secondary'}
           >
-            Cancel
+            Annuler
           </Button>
         </div>
       </form>

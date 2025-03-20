@@ -35,14 +35,14 @@ const LoginPage = (props) => {
 
     if (validateEmail(loginForm.email) !== true) {
       tempError.email =
-        'Please use a valid email address, such as user@example.com.';
+        'Veuillez utiliser une adresse e-mail valide, comme user@example.com.';
       validForm = false;
     } else {
       tempError.email = '';
     }
 
     if (isEmpty(loginForm.password) === true) {
-      tempError.password = 'Field required';
+      tempError.password = 'Champ requis';
       validForm = false;
     } else {
       tempError.password = '';
@@ -51,14 +51,14 @@ const LoginPage = (props) => {
     if (validForm === true) {
       setErrorForm(errorState);
 
-      //mock login
+      // Connexion simulée
       if (loginForm.email !== 'error@example.com') {
         navigate('/account');
         window.localStorage.setItem('key', 'sampleToken');
       } else {
         window.scrollTo(0, 0);
         setErrorMessage(
-          'There is no such account associated with this email address'
+          'Aucun compte n\'est associé à cette adresse e-mail'
         );
       }
     } else {
@@ -79,9 +79,9 @@ const LoginPage = (props) => {
 
       <div className={styles.root}>
         <div className={styles.loginFormContainer}>
-          <h1 className={styles.loginTitle}>Login</h1>
+          <h1 className={styles.loginTitle}>Connexion</h1>
           <span className={styles.subtitle}>
-            Please enter your e-mail and password
+            Veuillez entrer votre e-mail et votre mot de passe
           </span>
           <form
             noValidate
@@ -93,7 +93,7 @@ const LoginPage = (props) => {
               value={loginForm.email}
               handleChange={(id, e) => handleChange(id, e)}
               type={'email'}
-              labelName={'Email'}
+              labelName={'E-mail'}
               error={errorForm.email}
             />
 
@@ -102,26 +102,26 @@ const LoginPage = (props) => {
               value={loginForm.password}
               handleChange={(id, e) => handleChange(id, e)}
               type={'password'}
-              labelName={'Password'}
+              labelName={'Mot de passe'}
               error={errorForm.password}
             />
             <div className={styles.forgotPasswordContainer}>
               <Link to={'/forgot'} className={styles.forgotLink}>
-                Forgot Password
+                Mot de passe oublié
               </Link>
             </div>
 
             <Button fullWidth type={'submit'} level={'primary'}>
-              LOG IN
+              SE CONNECTER
             </Button>
-            <span className={styles.createLink}>New Customer? </span>
+            <span className={styles.createLink}>Nouveau client ? </span>
             <Button
               type={'button'}
               onClick={() => navigate('/signup')}
               fullWidth
               level={'secondary'}
             >
-              create an account
+              créer un compte
             </Button>
           </form>
         </div>

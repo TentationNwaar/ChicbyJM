@@ -10,23 +10,23 @@ const AccountSuccessPage = (props) => {
     <Layout disablePaddingBottom>
       <Container size={'medium'}>
         <div className={styles.root}>
-          <h1>Account Created</h1>
+          <h1>Compte créé</h1>
           <p>
-            We've sent you a confirmation link to active your account. Please
-            check your email and verify it.
+            Nous vous avons envoyé un lien de confirmation pour activer votre compte. Veuillez
+            vérifier votre e-mail et le valider.
           </p>
           <div className={styles.actionContainer}>
             <ActionCard
-              title={'Accounts'}
+              title={'Comptes'}
               icon={'user'}
-              subtitle={'Check your account settings'}
+              subtitle={'Vérifiez les paramètres de votre compte'}
               link={'/account/settings'}
             />
 
             <ActionCard
-              title={'Shop'}
+              title={'Boutique'}
               icon={'bag'}
-              subtitle={'Continue Shopping'}
+              subtitle={'Continuer vos achats'}
               link={'/shop'}
             />
           </div>

@@ -22,13 +22,13 @@ const RecentlyViewedPage = (props) => {
       <AccountLayout>
         <Breadcrumbs
           crumbs={[
-            { link: '/', label: 'Home' },
-            { link: '/account', label: 'Account' },
-            { link: '/account/viewed', label: 'Recently Viewed' },
+            { link: '/', label: 'Accueil' },
+            { link: '/account', label: 'Mon compte' },
+            { link: '/account/viewed', label: 'Produits récemment vus' },
           ]}
         />
         <div className={styles.root}>
-          <h1>Recently Viewed</h1>
+          <h1>Produits vus récemment</h1>
           <div className={styles.gridContainer}>
             <ProductCardGrid
               spacing={true}
