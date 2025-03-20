@@ -1,10 +1,17 @@
-/* Conteneur principal */
-.container {
-    max-width: 100%;
-    overflow-x: hidden;
+/* ========== Global Styles ========== */
+* {
+    box-sizing: border-box;
 }
 
-/* Styles pour les images des réseaux sociaux */
+body {
+    overflow-x: hidden; /* Désactiver le défilement horizontal */
+}
+
+.container {
+    max-width: 100%;
+}
+
+/* ========== Social Content Grid ========== */
 .socialContentGrid {
     display: flex;
     flex-wrap: wrap;
@@ -12,30 +19,38 @@
 }
 
 .socialContentGrid img {
-    width: 300px; /* Augmenter la taille fixe pour les images en desktop */
-    height: auto; /* Maintenir le ratio d'aspect */
-    border-radius: 10px; /* Optionnel : ajouter des coins arrondis */
-    margin: 10px; /* Optionnel : ajouter de l'espace entre les images */
-}
-
-.newArrivalsTitle {
-    margin-top: 40px; /* Ajustez cette valeur selon vos besoins */
-}
-
-.newCollectionTitle {
-    margin-top: 40px; /* Ajuste selon ton besoin */
+    width: 300px;
+    height: auto;
+    border-radius: 10px;
+    margin: 10px;
 }
 
 @media (max-width: 800px) {
     .socialContentGrid {
-        flex-direction: column; /* Empiler les images en colonne sur mobile */
-        align-items: center; /* Centrer les images */
+        flex-direction: column;
+        align-items: center;
     }
 
     .socialContentGrid img {
         width: 100%; /* Rendre les images responsives sur mobile */
-        height: auto; /* Maintenir le ratio d'aspect */
     }
+}
+
+/* ========== Section Titles ========== */
+.newArrivalsTitle, .newCollectionTitle {
+    margin-top: 40px;
+}
+
+/* ========== Fade In Animation ========== */
+.fadeIn {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.fadeInVisible {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 /* ========== Carousel ========== */
@@ -52,11 +67,6 @@
     border-radius: 10px;
 }
 
-.titleContainer {
-    margin-bottom: 20px; /* Ajustez cette valeur selon vos besoins */
-}
-
-/* Overlay couvrant toute la photo */
 .carouselOverlay {
     position: absolute;
     top: 0;
@@ -67,22 +77,20 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background: rgba(0, 0, 0, 0.5); /* Assombrissement plus homogène */
+    background: rgba(0, 0, 0, 0.5);
     color: white;
     text-align: center;
     border-radius: 10px;
 }
 
-/* Titres en blanc */
 .carouselTitle {
     font-family: 'Poppins', sans-serif;
     font-size: 2.2rem;
     font-weight: bold;
     margin-bottom: 1rem;
-    color: white; /* Forcer le blanc */
+    color: white;
 }
 
-/* Bouton */
 .carouselButton {
     background-color: var(--standard-gold);
     color: black;
@@ -99,17 +107,7 @@
     background-color: #e6b800;
 }
 
-/* Désactiver le défilement horizontal */
-body {
-    overflow-x: hidden;
-}
-
-/* Assurez-vous que tous les éléments respectent la largeur de l'écran */
-* {
-    box-sizing: border-box;
-}
-
-/* ========== Responsive ========== */
+/* ========== Responsive Adjustments ========== */
 @media (max-width: 800px) {
     .carouselImage {
         height: 350px;

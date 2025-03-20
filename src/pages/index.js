@@ -1,66 +1,38 @@
 import * as React from 'react';
-
-import AttributeGrid from '../components/AttributeGrid';
-import Container from '../components/Container';
-import Hero from '../components/Hero';
-
+import { motion } from 'framer-motion';
+import { navigate } from 'gatsby';
 import LazyLoad from 'react-lazyload';
 
 import Layout from '../components/Layout/Layout';
-import ProductCollectionGrid from '../components/ProductCollectionGrid';
-import Quote from '../components/Quote';
+import Hero from '../components/Hero';
 import Title from '../components/Title';
-
-import * as styles from './index.module.css';
-
-import { Link, navigate } from 'gatsby';
-import { toOptimizedImage } from '../helpers/general';
+import Quote from '../components/Quote';
+import Container from '../components/Container';
+import ProductCollectionGrid from '../components/ProductCollectionGrid';
+import AttributeGrid from '../components/AttributeGrid';
+import RecentImages from '../components/RecentImages';
 
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
-import RecentImages from "../components/RecentImages"
+import * as styles from './index.module.css';
+import { toOptimizedImage } from '../helpers/general';
 
-// Création du carousel d'image
+// Animation d'apparition
+const fadeInAnimation = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } },
+};
+
+// Hero Carousel
 const HeroCarousel = () => {
-  // Tableau d'images à tester
   const images = [
-    { src: 'carousel/Shooting.webp', 
-      alt: 'Image 1',
-      title: 'Racontez votre histoire avec style', 
-      ctaText: 'Commencer le shopping',
-      ctaLink: '/shop',
-      className: styles.shooting1
-    },
-
-    { src: 'carousel/Shooting2.webp', 
-      alt: 'Image 2',
-      title: 'Un dressing frais et tendance', 
-      ctaText: 'Découvrez la collection',
-      ctaLink: '/shop',
-    },
-
-    { src: 'carousel/Shooting3.webp', 
-      alt: 'Image 3',
-      title: 'Les couleurs de l’automne', 
-      ctaText: 'Découvrez la collection',
-      ctaLink: '/shop',
-    },
-
-    { src: 'carousel/Shooting4.webp', 
-      alt: 'Image 4',
-      title: 'Douceur et chaleur', 
-      ctaText: 'Découvrez la collection',
-      ctaLink: '/shop',
-    },
-
-    { src: 'carousel/Shooting5.webp', 
-      alt: 'Image 5',
-      title: 'Révélez votre côté fleuri', 
-      ctaText: 'Découvrez la collection',
-      ctaLink: '/shop',
-    },
+    { src: 'carousel/Shooting.webp', alt: 'Image 1', title: 'Racontez votre histoire avec style', ctaText: 'Commencer le shopping', ctaLink: '/shopTous' },
+    { src: 'carousel/Shooting2.webp', alt: 'Image 2', title: 'Un dressing frais et tendance', ctaText: 'Découvrez la collection homme', ctaLink: '/shopHomme' },
+    { src: 'carousel/Shooting3.webp', alt: 'Image 3', title: 'Une mode pour tous', ctaText: 'Découvrez la collection enfant', ctaLink: '/shopEnfant' },
+    { src: 'carousel/Shooting4.webp', alt: 'Image 4', title: 'Douceur et chaleur', ctaText: 'Découvrez la section femme', ctaLink: '/shopFemme' },
+    { src: 'carousel/Shooting5.webp', alt: 'Image 5', title: 'Complétez votre style', ctaText: 'Découvrez les accessoires', ctaLink: '/shopAccessoire' },
   ];
 
   const settings = {
@@ -74,20 +46,13 @@ const HeroCarousel = () => {
   };
 
   return (
-    <Slider {...settings}>
+    <Slider {...settings} className={styles.heroCarousel}>
       {images.map((image, index) => (
         <div key={index} className={styles.carouselSlide}>
-          <img
-            src={image.src}
-            alt={image.alt}
-            className={`${styles.carouselImage} ${image.className}`}
-          />
+          <img src={image.src} alt={image.alt} className={styles.carouselImage} />
           <div className={styles.carouselOverlay}>
             <h2 className={styles.carouselTitle}>{image.title}</h2>
-            <button 
-              className={styles.carouselButton} 
-              onClick={() => navigate(image.ctaLink)}
-            >
+            <button className={styles.carouselButton} onClick={() => navigate(image.ctaLink)}>
               {image.ctaText}
             </button>
           </div>
@@ -97,60 +62,53 @@ const HeroCarousel = () => {
   );
 };
 
-
-// Les nouveautés
+// **Page Index**
 const IndexPage = () => {
-  const goToShop = () => {
-    navigate('/shop');
-  };
-
   return (
     <Layout disablePaddingBottom>
       <HeroCarousel />
 
-      {/* Collection Container */}
-      <div className={styles.collectionContainer}>
-        <Container size={'large'}>
-          <div className={`${styles.titleContainer} ${styles.newCollectionTitle}`}>
-            <Title name={'Nouvelle collection'} />
-          </div>
+      {/* Nouvelle collection */}
+      <motion.div 
+        className={`${styles.newCollectionTitle} `} 
+        initial="hidden" 
+        whileInView="visible" 
+        viewport={{ once: true }} 
+        variants={fadeInAnimation}
+      >
+        <Container size="large">
+          <Title name="Nouvelle collection" />
           <ProductCollectionGrid />
         </Container>
-      </div>
+      </motion.div>
 
-      {/* New Arrivals */}
-      <div className={styles.newArrivalsContainer}>
+      {/* Les nouveautés */}
+      <motion.div 
+        className={`${styles.newArrivalsTitle}`} 
+        initial="hidden" 
+        whileInView="visible" 
+        viewport={{ once: true }} 
+        variants={fadeInAnimation}
+      >
         <Container>
-          <div className={styles.newArrivalsTitle}> 
-            <Title name={'Les nouveautés'} link={'/shopTous'} textLink={'Tout voir'} />
-          </div>
+          <Title name="Les nouveautés" link="/shopTous" textLink="Tout voir" />
           <RecentImages />
         </Container>
-      </div>
+      </motion.div>
+
       {/* Promotion */}
-      <div className={styles.promotionContainer}>
-        <Hero image={toOptimizedImage('/Banner1_JM.webp')} title={`-20% de réduction \n sur les essentiels du moment`} />
-        <div className={styles.linkContainers}>
-          {/* <Link to={'/shop'}>Femme</Link>
-          <Link to={'/shop'}>Homme</Link> */}
-        </div>
-      </div>
+      <motion.div className={styles.promotionContainer} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInAnimation}>
+        <Hero image={toOptimizedImage('/Banner1_JM.webp')} title="-20% de réduction\n sur les essentiels du moment" />
+      </motion.div>
 
-      {/* Quote */}
-      <Quote
-        bgColor={'var(--standard-light-grey)'}
-        title={'A propos de JM'}
-        quote={
-          '“Le confort et l\'élégance incarnent les piliers fondamentaux de notre approche, car nous croyons fermement que chaque expérience mérite d\'être à la fois agréable et raffinée.”'
-        }
-      />
+      {/* Citation */}
+      <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInAnimation}>
+        <Quote bgColor="var(--standard-light-grey)" title="A propos de JM" quote="“Le confort et l'élégance incarnent les piliers fondamentaux de notre approche, car nous croyons fermement que chaque expérience mérite d'être à la fois agréable et raffinée.”" />
+      </motion.div>
 
-      {/* Social Media */}
-      <div className={styles.socialContainer}>
-        <Title
-          name={'Stylisé par Vous'}
-          subtitle={'Identifiez @chicbyjm pour être mis en avant.'}
-        />
+      {/* Réseaux sociaux */}
+      <motion.div className={styles.socialContainer} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInAnimation}>
+        <Title name="Stylisé par Vous" subtitle="Identifiez @chicbyjm pour être mis en avant." />
         <div className={styles.socialContentGrid}>
           {['SocialMedia1.webp', 'SocialMedia2.webp', 'SocialMedia3.webp', 'SocialMedia4.webp'].map((img, index) => (
             <LazyLoad key={index} height={300} offset={100} once>
@@ -158,10 +116,11 @@ const IndexPage = () => {
             </LazyLoad>
           ))}
         </div>
-      </div>
+      </motion.div>
+
       <AttributeGrid />
     </Layout>
   );
-}
+};
 
 export default IndexPage;
