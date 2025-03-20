@@ -8,74 +8,64 @@ import Layout from '../components/Layout/Layout';
 import FormInputField from '../components/FormInputField/FormInputField';
 import Button from '../components/Button';
 
-const LoginPage = (props) => {
-  const initialState = {
-    email: '',
-    password: '',
-  };
-
-  const errorState = {
-    email: '',
-    password: '',
-  };
-
-  const [loginForm, setLoginForm] = useState(initialState);
-  const [errorForm, setErrorForm] = useState(errorState);
+const LoginPage = () => {
+  const [loginForm, setLoginForm] = useState({ email: '', password: '' });
+  const [errorForm, setErrorForm] = useState({ email: '', password: '' });
   const [errorMessage, setErrorMessage] = useState('');
 
   const handleChange = (id, e) => {
-    const tempForm = { ...loginForm, [id]: e };
-    setLoginForm(tempForm);
+    setLoginForm({ ...loginForm, [id]: e });
+  };
+
+  const loginUser = async () => {
+    try {
+      const response = await fetch('https://mon-api.com/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: loginForm.email, password: loginForm.password }),
+      });
+
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message || 'Erreur de connexion');
+
+      localStorage.setItem('token', data.token);
+      navigate('/account'); // Redirection vers l'espace client
+    } catch (error) {
+      setErrorMessage(error.message);
+    }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     let validForm = true;
-    const tempError = { ...errorForm };
+    let tempError = { email: '', password: '' };
 
-    if (validateEmail(loginForm.email) !== true) {
-      tempError.email =
-        'Veuillez utiliser une adresse e-mail valide, comme user@example.com.';
+    if (!validateEmail(loginForm.email)) {
+      tempError.email = 'Veuillez entrer un e-mail valide.';
       validForm = false;
-    } else {
-      tempError.email = '';
     }
 
-    if (isEmpty(loginForm.password) === true) {
+    if (isEmpty(loginForm.password)) {
       tempError.password = 'Champ requis';
       validForm = false;
-    } else {
-      tempError.password = '';
     }
 
-    if (validForm === true) {
-      setErrorForm(errorState);
-
-      // Connexion simulée
-      if (loginForm.email !== 'error@example.com') {
-        navigate('/account');
-        window.localStorage.setItem('key', 'sampleToken');
-      } else {
-        window.scrollTo(0, 0);
-        setErrorMessage(
-          'Aucun compte n\'est associé à cette adresse e-mail'
-        );
-      }
+    if (validForm) {
+      setErrorForm({ email: '', password: '' });
+      loginUser(); // Appel API pour la connexion
     } else {
-      setErrorMessage('');
       setErrorForm(tempError);
+      setErrorMessage('');
     }
   };
 
   return (
-    <Layout disablePaddingBottom={true}>
-      <div
-        className={`${styles.errorContainer} ${
-          errorMessage !== '' ? styles.show : ''
-        }`}
-      >
-        <span className={styles.errorMessage}>{errorMessage}</span>
-      </div>
+    <Layout disablePaddingBottom>
+      {errorMessage && (
+        <div className={`${styles.errorContainer} ${styles.show}`}>
+          <span className={styles.errorMessage}>{errorMessage}</span>
+        </div>
+      )}
 
       <div className={styles.root}>
         <div className={styles.loginFormContainer}>
@@ -83,45 +73,38 @@ const LoginPage = (props) => {
           <span className={styles.subtitle}>
             Veuillez entrer votre e-mail et votre mot de passe
           </span>
-          <form
-            noValidate
-            className={styles.loginForm}
-            onSubmit={(e) => handleSubmit(e)}
-          >
+          <form className={styles.loginForm} onSubmit={handleSubmit} noValidate>
             <FormInputField
-              id={'email'}
+              id="email"
               value={loginForm.email}
-              handleChange={(id, e) => handleChange(id, e)}
-              type={'email'}
-              labelName={'E-mail'}
+              handleChange={handleChange}
+              type="email"
+              labelName="E-mail"
               error={errorForm.email}
             />
 
             <FormInputField
-              id={'password'}
+              id="password"
               value={loginForm.password}
-              handleChange={(id, e) => handleChange(id, e)}
-              type={'password'}
-              labelName={'Mot de passe'}
+              handleChange={handleChange}
+              type="password"
+              labelName="Mot de passe"
               error={errorForm.password}
             />
+
             <div className={styles.forgotPasswordContainer}>
-              <Link to={'/forgot'} className={styles.forgotLink}>
-                Mot de passe oublié
+              <Link to="/forgot" className={styles.forgotLink}>
+                Mot de passe oublié ?
               </Link>
             </div>
 
-            <Button fullWidth type={'submit'} level={'primary'}>
-              SE CONNECTER
+            <Button fullWidth type="submit" level="primary">
+              Se connecter
             </Button>
-            <span className={styles.createLink}>Nouveau client ? </span>
-            <Button
-              type={'button'}
-              onClick={() => navigate('/signup')}
-              fullWidth
-              level={'secondary'}
-            >
-              créer un compte
+
+            <span className={styles.createLink}>Nouveau client ?</span>
+            <Button onClick={() => navigate('/signup')} fullWidth level="secondary">
+              Créer un compte
             </Button>
           </form>
         </div>

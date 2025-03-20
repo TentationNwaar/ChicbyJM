@@ -52,13 +52,13 @@ const SignupPage = (props) => {
 
     if (validateEmail(signupForm.email) !== true) {
       tempError.email =
-        'Veuillez utiliser une adresse e-mail valide, comme user@example.com.';
+        'Veuillez utiliser une adresse e-mail valide, telle que utilisateur@exemple.com.';
       validForm = false;
     }
 
     if (validateStrongPassword(signupForm.password) !== true) {
       tempError.password =
-        'Le mot de passe doit contenir au moins 8 caractères, 1 minuscule, 1 majuscule et 1 chiffre.';
+        'Le mot de passe doit comporter au moins 8 caractères, 1 minuscule, 1 majuscule et 1 caractère numérique.';
       validForm = false;
     }
 
@@ -66,7 +66,7 @@ const SignupPage = (props) => {
       setErrorForm(errorState);
       navigate('/accountSuccess');
       window.localStorage.setItem('key', 'sampleToken');
-      //create account endpoint
+      //point de terminaison de création de compte
     } else {
       setErrorForm(tempError);
     }
@@ -78,7 +78,7 @@ const SignupPage = (props) => {
         <div className={styles.signupFormContainer}>
           <h1 className={styles.title}>Créer un compte</h1>
           <span className={styles.subtitle}>
-            Veuillez entrer les informations ci-dessous :
+            Veuillez saisir les informations ci-dessous :
           </span>
           <form
             noValidate
@@ -99,7 +99,7 @@ const SignupPage = (props) => {
               value={signupForm.lastName}
               handleChange={(id, e) => handleChange(id, e)}
               type={'input'}
-              labelName={'Nom'}
+              labelName={'Nom de famille'}
               error={errorForm.lastName}
             />
 
@@ -124,7 +124,7 @@ const SignupPage = (props) => {
             <Button fullWidth type={'submit'} level={'primary'}>
               créer un compte
             </Button>
-            <span className={styles.reminder}>Vous avez un compte ?</span>
+            <span className={styles.reminder}>Vous avez un compte ?</span>
             <Button
               type={'button'}
               onClick={() => navigate('/login')}
