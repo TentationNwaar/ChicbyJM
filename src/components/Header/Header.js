@@ -151,6 +151,15 @@ const searchSuggestions = [
             </div>
           </div>
 
+          <div className={styles.mobileIconsContainer}>
+          <Link aria-label="User" to={isAuth() ? '/account/orders/' : '/login'} className={styles.iconContainer}>
+            <Icon symbol="user" />
+          </Link>
+          <button aria-label="Cart" className={`${styles.iconButton} ${styles.iconContainer}`} onClick={() => setShowMiniCart(!showMiniCart)}>
+            <Icon symbol="bag" />
+          </button>
+        </div>
+
           <div
             role={'presentation'}
             onClick={() => {
