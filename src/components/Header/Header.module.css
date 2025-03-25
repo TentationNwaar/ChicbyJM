@@ -373,6 +373,26 @@ body, html {
     display: block; /* Affiche l'overlay lorsque le drawer est ouvert */
 }
 
+.miniCartDrawer {
+    width: auto !important;
+    max-width: 90% !important;
+    height: auto !important;
+    max-height: 80vh !important;
+    overflow: visible !important;
+    background: transparent !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+:global(.Drawer-module--content--41faf) {
+    max-width: 0 !important;
+  }
+
+:global(.Drawer-module--iconContainer--250fe) {
+    display: none !important;
+}
+
 @media (min-width: 801px) {
     .drawerOverlay {
       display: none; /* Cache l'overlay sur desktop */

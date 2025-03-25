@@ -174,10 +174,8 @@ const Header = (prop) => {
             <div className={`${styles.drawerOverlay} ${showMiniCart ? styles.drawerOverlayVisible : ''}`} onClick={() => setShowMiniCart(false)} />
           )}
           {isMobile ? (
-            <Drawer visible={showMiniCart} close={() => setShowMiniCart(false)}>
-              <div className={styles.miniCartContainer}> {/* Ajout du miniCartContainer ici */}
-                <MiniCart closeCart={() => setShowMiniCart(false)} />
-              </div>
+            <Drawer visible={showMiniCart} close={() => setShowMiniCart(false)} customClass={styles.miniCartDrawer}>
+              <MiniCart closeCart={() => setShowMiniCart(false)} />
             </Drawer>
           ) : (
             showMiniCart && (
