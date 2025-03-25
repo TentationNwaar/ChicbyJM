@@ -2,12 +2,19 @@ import React, { useContext } from 'react';
 import { Link } from 'gatsby';
 import { CartContext } from '../../context/CartContext';
 import * as styles from './MiniCart.module.css';
+import { useEffect } from 'react';
 
 const MiniCart = ({ closeCart }) => {
   const { cart } = useContext(CartContext);
 
   // ✅ Calcul du total (évite NaN)
   const total = cart.reduce((sum, item) => sum + (item.price || 0), 0);
+
+  useEffect(() => {
+    console.log('MiniCart monté');
+  
+    return () => console.log('MiniCart démonté');
+  }, []);
 
   return (
     <div className={styles.miniCart}>
