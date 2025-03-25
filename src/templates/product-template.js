@@ -118,31 +118,41 @@ const ProductTemplate = ({ data }) => {
     }
   }, [selectedColor, selectedSize, variants, product]);
 
-  // Ajout du produit au panier
   const handleAddToCart = () => {
-    const selectedVariant = variants.find(
-      (variant) =>
-        parseVariantName(variant.name).color === selectedColor &&
-        parseVariantName(variant.name).size === selectedSize
-    );
-
-    if (!selectedVariant) {
-      alert("Veuillez sélectionner une couleur et une taille valides.");
-      return;
-    }
-
-    const productImage = getProductImage(product, selectedVariant);
-
-    addToCart({
-      id: selectedVariant.id,
-      name: product.name,
-      color: selectedColor || "Aucune",
-      size: selectedSize || "Aucune",
-      price: parseFloat(selectedVariant.retail_price || product.sync_variants[0].retail_price) || 0,
-      image: productImage,
+    // Si aucune couleur ou taille n'est sélectionnée, utilisez la première variante disponible
+    const selectedVariant = variants.find((variant) => {
+      const variantName = parseVariantName(variant.name);
+      return (
+        (!selectedColor || variantName.color === selectedColor) &&
+        (!selectedSize || variantName.size === selectedSize)
+      );
     });
-
-    alert("Produit ajouté au panier !");
+  
+    // Si aucune variante correspondante n'est trouvée, utiliser la première variante disponible
+    if (!selectedVariant) {
+      alert("Produit ajouté au panier sans couleur ni taille spécifiées.");
+      const defaultVariant = variants[0]; // Utilisation de la première variante disponible.
+      addToCart({
+        id: defaultVariant.id,
+        name: product.name,
+        color: selectedColor || "Aucune",
+        size: selectedSize || "Aucune",
+        price: parseFloat(defaultVariant.retail_price || product.sync_variants[0].retail_price) || 0,
+        image: getProductImage(product, defaultVariant),
+      });
+      alert("Produit ajouté au panier !");
+    } else {
+      const productImage = getProductImage(product, selectedVariant);
+      addToCart({
+        id: selectedVariant.id,
+        name: product.name,
+        color: selectedColor || "Aucune",
+        size: selectedSize || "Aucune",
+        price: parseFloat(selectedVariant.retail_price || product.sync_variants[0].retail_price) || 0,
+        image: productImage,
+      });
+      alert("Produit ajouté au panier !");
+    }
   };
 
   return (

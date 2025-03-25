@@ -324,23 +324,9 @@ body, html {
     overflow-x: hidden;
 }
 
-
 .drawerContainer {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    background: transparent; /* Suppression du fond sombre */
-    backdrop-filter: none; /* Suppression de l'effet de flou */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    transform: translateY(-100%);
-    transition: transform 0.3s ease-in-out;
-    z-index: 1000;
-    padding: 0; /* Suppression du padding */
+    display: flex !important;
+    transform: translateY(0) !important;
 }
   
 .drawerOpen {
@@ -407,21 +393,6 @@ body, html {
         max-width: 100%;
         background-color: white;
     }
-
-    .drawerOverlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        background: rgba(0, 0, 0, 0.5);
-    }
-
-    .drawerContainer {
-        align-items: flex-start !important; /* Aligner le MiniCart en haut */
-        justify-content: flex-start !important; /* Aligner le MiniCart à gauche */
-        padding-top: 50px !important; /* Ajuster l'espacement en haut */
-      }
 
     /* Styles pour le MiniCart à l'intérieur du Drawer */
     .drawerContainer .miniCartContainer {

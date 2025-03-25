@@ -1,9 +1,11 @@
 /* General layout for the product page */
 .product-container {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: flex-start;
   padding: 20px;
+  gap: 20px; /* Espacement entre les sections */
 }
 
 .product-images {
@@ -19,23 +21,30 @@
 
 .color-buttons {
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px; /* Espacement entre les boutons */
+  flex-wrap: wrap; /* Permet aux boutons de se déplacer sur plusieurs lignes si nécessaire */
+  gap: 8px; /* Espacement entre les boutons */
+  justify-content: flex-start;
 }
 
 .color-button {
-  width: calc(100% / 7 - 10px); /* Largeur pour 7 boutons par ligne */
-  margin-bottom: 10px; /* Espace entre les lignes */
-  text-align: center;
-  padding: 10px;
-  background-color: #f4f4f4; /* Couleur de fond des boutons */
-  border: 1px solid #ccc; /* Bordure */
-  border-radius: 4px; /* Coins arrondis */
+  padding: 8px 16px; /* Adaptation de l'espace à l'intérieur des boutons */
+  font-size: 14px; /* Taille de texte modérée */
+  border-radius: 20px; /* Coins arrondis pour un look moderne */
+  background-color: #f4f4f4; /* Couleur de fond par défaut */
+  border: 1px solid #ccc; /* Bordure subtile */
   cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s; /* Animation au survol */
 }
 
 .color-button.selected {
-  background-color: #ddd; /* Couleur des boutons sélectionnés */
+  background-color: #b59f66; /* Couleur de fond quand la couleur est sélectionnée */
+  color: white; /* Texte en blanc pour plus de contraste */
+  border-color: #b59f66; /* Bordure qui se coordonne avec la couleur de fond */
+}
+
+.color-button:hover {
+  background-color: #e0e0e0; /* Changement de couleur au survol */
+  transform: scale(1.05); /* Légère augmentation de la taille au survol */
 }
 
 .main-product-image {
@@ -113,19 +122,21 @@
 }
 
 .product-title {
-  font-size: 1.8rem;
+  font-size: 2rem;
   font-weight: bold;
+  color: #333;
+  margin-bottom: 15px;
 }
 
 .product-price {
-  font-size: 1.4rem;
-  color: #555;
-  margin: 10px 0;
+  font-size: 1.6rem;
+  color: #b59f66;
+  margin-bottom: 20px;
 }
 
 .product-sizes,
 .product-quantity {
-  margin: 15px 0;
+  margin: 20px 0;
 }
 
 .size-buttons {
@@ -134,17 +145,26 @@
 }
 
 .size-button {
-  padding: 10px 15px;
-  border: 1px solid #ddd;
-  background: #fff;
+  padding: 12px 20px;
+  border: 2px solid #ddd;
+  background-color: #fff;
+  color: #333;
+  font-size: 1rem;
+  border-radius: 25px; /* Coins plus arrondis */
   cursor: pointer;
   transition: all 0.3s;
+  font-weight: bold;
 }
 
 .size-button.selected {
-  background-color: #000;
-  color: #fff;
-  font-weight: bold;
+  background-color: #b59f66;
+  color: white;
+  border-color: #b59f66;
+}
+
+.size-button:hover {
+  background-color: #e0e0e0; /* Changement de couleur au survol */
+  transform: scale(1.05); /* Légère augmentation de la taille au survol */
 }
 
 .quantity-control {
@@ -167,22 +187,36 @@
 .add-to-cart,
 .paypal-button {
   width: 100%;
-  padding: 15px;
+  padding: 18px;
   margin: 15px 0;
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border-radius: 5px;
 }
 
 .add-to-cart {
-  background-color: #000;
-  color: #fff;
+  width: 100%;
+  padding: 18px;
+  margin: 15px 0;
+  cursor: pointer;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border-radius: 25px; /* Coins arrondis */
+  background-color: #b59f66; /* Couleur de fond verte */
+  color: white; /* Texte blanc */
   border: none;
-  transition: background-color 0.3s;
-  width: 50%;
+  transition: background-color 0.3s, transform 0.2s; /* Animation douce */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Ombre subtile */
 }
 
 .add-to-cart:hover {
-  background-color: #333;
+  background-color: #b59f66; /* Fond légèrement plus foncé au survol */
+  transform: scale(1.05); /* Effet de zoom au survol */
+}
+
+.add-to-cart:active {
+  transform: scale(0.98); /* Effet de contraction au clic */
 }
 
 .product-actions {
@@ -193,7 +227,7 @@
 }
 
 .paypal-button {
-  background-color: #ffc439;
+  background-color: #b59f66;
   color: #000;
   border: none;
 }
@@ -202,7 +236,7 @@
   position: fixed;
   top: 0;
   right: 0;
-  width: 40%;
+  width: 50%; /* Plus large pour un effet moderne */
   height: 100%;
   background: white;
   box-shadow: -2px 0 10px rgba(0, 0, 0, 0.3);
@@ -216,34 +250,78 @@
 }
 
 .description-panel {
-  padding: 20px;
+  padding: 30px;
   height: 100%;
   overflow-y: auto;
+  font-family: 'Arial', sans-serif;
 }
 
 .close-description {
   background: none;
   border: none;
-  font-size: 24px;
+  font-size: 28px;
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 15px;
+  right: 15px;
   cursor: pointer;
+  color: #4CAF50; /* Couleur de fermeture en vert */
 }
 
 .description-button {
   margin-top: 10px;
-  padding: 10px 15px;
-  border: none;
-  background: black;
-  color: white;
+  padding: 12px 20px;
+  border: 2px solid #b59f66;
+  background: #fff;
+  color: #b59f66;
   cursor: pointer;
+  font-size: 1rem;
+  border-radius: 25px; /* Coins arrondis */
+  font-weight: bold;
+  transition: all 0.3s ease; /* Transition douce pour l'effet */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ombre légère */
+}
+
+.description-button:active {
+  transform: scale(0.98); /* Effet de contraction au clic */
+}
+
+.description-button:hover {
+  background-color: #b59f66; /* Fond vert au survol */
+  color: white; /* Texte en blanc au survol */
+  transform: scale(1.05); /* Effet de zoom au survol */
+}
+
+.product-images-container img {
+  width: 100%; /* L'image prend toute la largeur disponible */
+  max-width: 100%; /* S'assurer que l'image ne dépasse pas la largeur du conteneur */
+  height: auto; /* Maintenir le ratio de l'image */
+  object-fit: contain; /* L'image s'ajuste sans être coupée */
+  border-radius: 10px; /* Coins arrondis pour un look moderne */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Ombre subtile pour donner de la profondeur */
+  margin: 0 auto; /* Centrer l'image */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Transition douce pour le zoom */
+}
+
+.product-images-container img:hover {
+  transform: scale(1.05); /* Zoom léger au survol */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15); /* Ombre plus marquée au survol */
 }
 
 /* Mobile view */
 @media (max-width: 768px) {
+
+  .description-button {
+    width: 100%; /* Bouton description plus large sur mobile */
+    font-size: 1.1rem;
+    padding: 14px 20px;
+  }
+  
   .carousel-controls {
     display: flex; /* Show arrows on mobile */
+  }
+
+  .product-images-container img {
+    max-width: 100%; /* Réduit la taille de l'image sur les écrans mobiles */
   }
 
   .product-container {
@@ -264,6 +342,22 @@
   .desktop-thumbnails {
     display: none; /* Hide thumbnails on mobile */
   }
+
+  .size-button {
+    padding: 10px 18px;
+    font-size: 0.9rem;
+  }
+
+  .add-to-cart {
+    width: 100%; /* Garder le bouton plein écran sur mobile */
+    font-size: 1.1rem;
+  }
+
+  .add-to-cart,
+  .paypal-button {
+    font-size: 1rem;
+    width: 80%; /* Moins large sur mobile */
+  }
 }
 
 /* Desktop view */
@@ -274,5 +368,19 @@
 
   .carousel-controls {
     display: none; /* Hide carousel arrows on desktop */
+  }
+}
+
+@media (max-width: 480px) {
+  .product-images-container img {
+    max-width: 80%; /* Image encore plus petite sur les très petits écrans */
+  }
+
+  .product-title {
+    font-size: 1.6rem;
+  }
+
+  .product-price {
+    font-size: 1.4rem;
   }
 }
