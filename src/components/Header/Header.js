@@ -17,7 +17,7 @@ import * as styles from './Header.module.css';
 
 const Header = (prop) => {
   const [showMiniCart, setShowMiniCart] = useState(false);
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 800);
+  const [isMobile, setIsMobile] = useState(false);
   const [mobileMenu, setMobileMenu] = useState(false);
   const [showMenu, setShowMenu] = useState(true);
   const [menu, setMenu] = useState();
@@ -69,6 +69,10 @@ const Header = (prop) => {
     }
   }, [showSearch]);
 
+  useEffect(() => {
+    console.log("mobileMenu state:", mobileMenu);
+  }, [mobileMenu]);
+
   // Applique les styles dynamiquement au MiniCart en fonction de `showMiniCart`
   useEffect(() => {
     const miniCart = document.getElementById('miniCartContainer');
@@ -86,12 +90,16 @@ const Header = (prop) => {
   }, [showMiniCart]);
 
   useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setIsMobile(window.innerWidth <= 800);
+    
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 800);
     };
 
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
+  }
   }, []);
 
   return (

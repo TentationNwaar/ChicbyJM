@@ -44,7 +44,7 @@ const MobileNavigation = ({ close }) => {
             <Link
               to={navObject.menuLink}
               className={styles.mobileLink}
-              onClick={handleClose} // Ferme le menu au clic
+              onClick={() => setTimeout(handleClose, 200)}
             >
               {navObject.menuLabel}
             </Link>
