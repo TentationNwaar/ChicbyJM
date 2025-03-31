@@ -235,20 +235,27 @@
 
 /* Menu mobile (hamburger) */
 .burgerIcon {
-    display: none;
-    font-size: var(--font-size-lg);
+    display: none; /* Caché par défaut */
     cursor: pointer;
-    transition: transform 0.3s ease;
+    font-size: 24px;
+    padding: 10px;
+    position: absolute;
+    right: 15px; /* Garde l’icône à droite */
+    top: 70%;
+    transform: translateY(-50%); /* Centrage vertical */
+    z-index: 100;
 }
 
 .burgerIcon:hover,
 .burgerIcon:focus {
-    transform: scale(1.1);
+  top: 70%; /* Assure le bon alignement même au survol */
+  transform: translateY(-50%);
 }
 
 .burgerIcon svg {
     width: 20px;
     height: 20px;
+    pointer-events: none;
 }
 
 .mobileMenuContainer {
@@ -412,14 +419,38 @@ body, html {
         display: block;
     }
 
+    .burgerIcon {
+        display: block; /* Visible uniquement en mobile */
+    }
+
     .navContainer,
     .linkContainer,
     .actionContainers {
         display: none;
     }
 
+    .actionContainers {
+        display: flex;
+        justify-content: flex-end; /* Aligner les icônes à droite */
+        align-items: center;
+        margin-left: 120px; /* Supprime le margin-left:auto */
+    }
+
+    .iconContainer.userIcon {
+        margin-left: 5px; /* Ajustez cette valeur pour contrôler l'espacement */
+    }
+
+    .actionContainers > * {
+        margin-right: 12px; /* Ajustez cette valeur pour contrôler l'espacement */
+    }
+
+    .actionContainers > *:last-child {
+        margin-right: 0; /* Supprime la marge pour le dernier élément */
+    }
+
     .header {
-        justify-content: space-between;
+        padding: 10px 110px; /* Augmentez le padding pour agrandir la hauteur en mobile */
+        min-height: 70px; /* Ajustez la hauteur minimale pour mobile */
     }
 
     .searchContainer {
@@ -430,6 +461,16 @@ body, html {
     .searchContainer h4 {
         font-size: var(--font-size-lg);
         line-height: 1.3;
+    }
+
+    .logo {
+        position: absolute; /* Position absolue pour placement précis */
+        left: 0; /* Aligne à gauche */
+        transform: none; /* Supprime le décalage horizontal */
+        width: auto;
+        height: auto;
+        margin-left: 10px;
+        margin-top: 10px;
     }
 }
 

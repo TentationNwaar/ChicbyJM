@@ -43,12 +43,8 @@ const Drawer = ({
         role={'presentation'}
         onClick={close}
       >
-        <div
-          className={`${styles.iconContainer} ${
-            hideCross === true ? styles.hide : ''
-          }`}
-        >
-          <Icon symbol={'cross'}></Icon>
+        <div className={`${styles.iconContainer} ${hideCross === true ? styles.hide : ''}`}>
+          <Icon symbol={'cross'} />
         </div>
       </div>
 

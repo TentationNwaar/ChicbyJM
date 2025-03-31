@@ -4,16 +4,15 @@ import { Link, navigate } from 'gatsby';
 import { isAuth } from '../../helpers/general';
 
 import AddNotification from '../AddNotification';
-import Brand from '../Brand';
 import Container from '../Container';
 import Config from '../../config.json';
 import Drawer from '../Drawer';
-import ExpandedMenu from '../ExpandedMenu';
 import FormInputField from '../FormInputField/FormInputField';
 import Icon from '../Icons/Icon';
 import MiniCart from '../MiniCart';
 import MobileNavigation from '../MobileNavigation';
 import * as styles from './Header.module.css';
+import logo from '../../../static/Logo_JM_Transparent.png'; 
 
 const Header = (prop) => {
   const [showMiniCart, setShowMiniCart] = useState(false);
@@ -109,7 +108,9 @@ const Header = (prop) => {
       </div>
       <Container size={'large'} spacing={'min'}>
         <div className={styles.header}>
-          <Brand />
+        <div className={styles.logo} role="presentation" onClick={() => navigate('/')}>
+        <img src={logo} alt="Logo JM" width="60" height="60" />
+      </div>
 
           <div className={styles.navContainer}>
             <nav
@@ -149,7 +150,7 @@ const Header = (prop) => {
             <Link
               aria-label="Orders"
               to={isAuth() ? '/login' : '/account/orders/'}
-              className={`${styles.iconContainer} ${styles.hideOnMobile}`}
+              className={`${styles.iconContainer} ${styles.hideOnMobile} ${styles.userIcon}`}
             >
               <Icon symbol="user" />
             </Link>
@@ -221,7 +222,7 @@ const Header = (prop) => {
       </Container>
 
       {mobileMenu && (
-        <Drawer visible={mobileMenu} close={() => setMobileMenu(false)}>
+        <Drawer visible={mobileMenu} close={() => setMobileMenu(false)} hideCross={true}>
           <MobileNavigation close={() => setMobileMenu(false)} />
         </Drawer>
       )}
