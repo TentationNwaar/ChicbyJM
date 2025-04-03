@@ -37,14 +37,16 @@ const Drawer = ({
     `}
     >
       <div
-        className={`${styles.overlay} ${
-          visible === true ? styles.showOverlay : styles.hide
-        }`}
+        className={`${styles.overlay} ${visible ? styles.showOverlay : styles.hide}`}
         role={'presentation'}
-        onClick={close}
+        onClick={() => {
+          console.log("Drawer overlay clicked!");
+          close(); // Ferme le drawer
+          setTimeout(close, 300); // Double sécurité après animation
+        }}
       >
-        <div className={`${styles.iconContainer} ${hideCross === true ? styles.hide : ''}`}>
-          <Icon symbol={'cross'} />
+        <div className={`${styles.iconContainer} ${hideCross ? styles.hide : ''}`}>
+          <Icon symbol={'cross'} onClick={close} />
         </div>
       </div>
 

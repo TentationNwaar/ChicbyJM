@@ -10,12 +10,6 @@ const MiniCart = ({ closeCart }) => {
   // ✅ Calcul du total (évite NaN)
   const total = cart.reduce((sum, item) => sum + (item.price || 0), 0);
 
-  useEffect(() => {
-    console.log('MiniCart monté');
-  
-    return () => console.log('MiniCart démonté');
-  }, []);
-
   return (
     <div className={styles.miniCart}>
       <button className={styles.closeButton} onClick={closeCart}>×</button>

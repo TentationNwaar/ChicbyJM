@@ -18,25 +18,20 @@ const Header = (prop) => {
   const [showMiniCart, setShowMiniCart] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [mobileMenu, setMobileMenu] = useState(false);
-  const [showMenu, setShowMenu] = useState(true);
-  const [menu, setMenu] = useState();
-  const [activeMenu, setActiveMenu] = useState();
   const [showSearch, setShowSearch] = useState(false);
   const [search, setSearch] = useState('');
+  const [crossVisible, setCrossVisible] = useState(false);
+
+  // Définir le message de la bannière
+  const bannerMessage = "Bienvenue sur notre site ! Profitez de nos promotions.";
 
   const searchRef = createRef();
-  const bannerMessage = 'EXCLUSIF : PROFITEZ DE 10 % DE RÉDUCTION SUR TOUTE VOTRE PREMIÈRE COMMANDE AVEC LE CODE JM2025';
   const searchSuggestions = ['T-shirt', 'School Spirit', 'Ciel bleu'];
 
   const handleHover = (navObject) => {
     if (navObject.category) {
-      setShowMenu(true);
-      setMenu(navObject.category);
       setShowSearch(false);
-    } else {
-      setMenu(undefined);
     }
-    setActiveMenu(navObject.menuLabel);
   };
 
   const handleSearch = (e) => {
@@ -45,85 +40,50 @@ const Header = (prop) => {
     setShowSearch(false);
   };
 
-  // Désactive le menu actif quand `showMenu` est caché
-  useEffect(() => {
-    if (!showMenu) setActiveMenu(false);
-  }, [showMenu]);
+  // Gérer le menu mobile
+  const handleCloseMobileMenu = () => {
+    setMobileMenu(false);
+    setCrossVisible(false);
+  };
 
-  // Cache le menu lors du scroll
-  useEffect(() => {
-    const onScroll = () => {
-      setShowMenu(false);
-      setShowSearch(false);
-      setActiveMenu(undefined);
-    };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
-
-  // Focus sur la barre de recherche quand elle est activée
-  useEffect(() => {
-    if (showSearch) {
-      setTimeout(() => searchRef.current?.focus(), 250);
-    }
-  }, [showSearch]);
-
-  useEffect(() => {
-    console.log("mobileMenu state:", mobileMenu);
-  }, [mobileMenu]);
-
-  // Applique les styles dynamiquement au MiniCart en fonction de `showMiniCart`
-  useEffect(() => {
-    const miniCart = document.getElementById('miniCartContainer');
-    if (miniCart) {
-      if (showMiniCart && window.innerWidth <= 800) {
-        miniCart.style.display = 'block';
-        miniCart.style.opacity = '1';
-        miniCart.style.visibility = 'visible';
-      } else {
-        miniCart.style.display = 'none';
-        miniCart.style.opacity = '0';
-        miniCart.style.visibility = 'hidden';
-      }
-    }
-  }, [showMiniCart]);
+  const toggleMobileMenu = () => {
+    setMobileMenu(!mobileMenu);
+    setCrossVisible(true);
+  };
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
       setIsMobile(window.innerWidth <= 800);
     
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 800);
-    };
+      const handleResize = () => {
+        setIsMobile(window.innerWidth <= 800);
+      };
 
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
+    }
   }, []);
 
   return (
     <div className={styles.root}>
+      {/* Affichage du message de bannière */}
       <div className={styles.headerMessageContainer}>
         <span>{bannerMessage}</span>
       </div>
+      
       <Container size={'large'} spacing={'min'}>
         <div className={styles.header}>
-        <div className={styles.logo} role="presentation" onClick={() => navigate('/')}>
-        <img src={logo} alt="Logo JM" width="60" height="60" />
-      </div>
+          <div className={styles.logo} role="presentation" onClick={() => navigate('/')}>
+            <img src={logo} alt="Logo JM" width="60" height="60" />
+          </div>
 
+          {/* Menu de navigation principal */}
           <div className={styles.navContainer}>
-            <nav
-              role="presentation"
-              onMouseLeave={() => setShowMenu(false)}
-            >
+            <nav role="presentation">
               {Config.headerLinks.map((navObject) => (
                 <Link
                   key={navObject.menuLink}
-                  onMouseEnter={() => handleHover(navObject)}
-                  className={`${styles.navLink} ${
-                    activeMenu === navObject.menuLabel ? styles.activeLink : ''
-                  }`}
+                  className={styles.navLink}
                   to={navObject.menuLink}
                 >
                   {navObject.menuLabel}
@@ -132,6 +92,7 @@ const Header = (prop) => {
             </nav>
           </div>
 
+          {/* Actions : recherche, favoris, commandes, panier */}
           <div className={styles.actionContainers}>
             <button
               aria-label="Search"
@@ -161,21 +122,6 @@ const Header = (prop) => {
             >
               <Icon symbol="bag" />
             </button>
-            <div className={styles.notificationContainer}>
-            {isMobile && showMiniCart && (
-            <div className={styles.miniCartContainer}>
-              <MiniCart closeCart={() => setShowMiniCart(false)} />
-            </div>
-          )}
-              <div
-                id="miniCartContainer"
-                className={`${styles.miniCartContainer} ${
-                  showMiniCart ? styles.miniCartMobileVisible : ''
-                }`}
-              >
-              </div>
-              <AddNotification openCart={() => setShowMiniCart(true)} />
-            </div>
           </div>
 
           {/* Affichage du MiniCart en fonction du type d'appareil */}
@@ -194,6 +140,7 @@ const Header = (prop) => {
             )
           )}
 
+          {/* Icônes mobiles */}
           <div className={styles.mobileIconsContainer}>
             <Link
               aria-label="User"
@@ -211,9 +158,10 @@ const Header = (prop) => {
             </button>
           </div>
 
+          {/* Menu burger mobile */}
           <div
             role="presentation"
-            onClick={() => setMobileMenu(!mobileMenu)}
+            onClick={toggleMobileMenu}
             className={styles.burgerIcon}
           >
             <Icon symbol={mobileMenu ? 'cross' : 'burger'} />
@@ -221,12 +169,14 @@ const Header = (prop) => {
         </div>
       </Container>
 
+      {/* Affichage du Drawer avec la navigation mobile */}
       {mobileMenu && (
-        <Drawer visible={mobileMenu} close={() => setMobileMenu(false)} hideCross={true}>
-          <MobileNavigation close={() => setMobileMenu(false)} />
+        <Drawer visible={mobileMenu} close={handleCloseMobileMenu} hideCross={!crossVisible}>
+          <MobileNavigation close={handleCloseMobileMenu} />
         </Drawer>
       )}
 
+      {/* Affichage de la recherche */}
       {showSearch && (
         <div className={styles.searchContainer}>
           <form onSubmit={handleSearch}>

@@ -14,17 +14,22 @@ const MobileNavigation = ({ close }) => {
     setTimeout(() => setMenuClass(styles.menuOpen), 10);
   }, []);
 
+  useEffect(() => {
+    console.log("MobileNavigation mounted!"); // 🔍 Vérifie si MobileNavigation est bien monté
+  }, []);
+
   const handleClose = () => {
+    console.log("Closing MobileNavigation...");
     setMenuClass(styles.menuClose);
-    setTimeout(close, 300); // Attends la fin de l'animation avant de fermer
+  
+    setTimeout(() => {
+      console.log("Timeout reached, closing menu!");
+      close(); // Ferme le menu après l'animation
+    }, 300);
   };
 
   return (
     <div className={`${styles.root} ${menuClass}`}>
-      <button className={styles.closeButton} onClick={handleClose}>
-        ✖
-      </button>
-
       <nav className={styles.mobileNavContainer}>
         {depth > 0 && (
           <div
@@ -61,6 +66,10 @@ const MobileNavigation = ({ close }) => {
             )}
           </div>
         ))}
+
+        <button className={styles.closeButton} onClick={handleClose}>
+          ✖
+        </button>
 
         {depth === 1 && subMenu && subMenu.map((category) => (
           <div key={category.categoryLabel}>
