@@ -233,6 +233,33 @@
     font-size: var(--font-size-sm);
 }
 
+.overlay {
+    position: fixed;
+    inset: 0;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 99;
+}
+
+.mobileMenuVisible {
+    z-index: 999;
+    /* Assure-toi que ce menu passe par-dessus l'overlay */
+    position: fixed;
+    top: 0;
+    right: 0;
+    background: white;
+    width: 70%;
+    height: 100%;
+    padding: 2rem;
+}
+
+.overlay.visible {
+    display: block;  /* Affiche l'overlay lorsque mobileMenu est true */
+}
+
 /* Menu mobile (hamburger) */
 .burgerIcon {
     display: none; /* Caché par défaut */
@@ -262,6 +289,58 @@
     display: none;
 }
 
+.mobileMenu {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 80%;
+    max-width: 300px;
+    height: 100vh;
+    background: #fff;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1rem 1.5rem;
+}
+  
+.mobileMenuHeader {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.mobileMenu ul {
+    list-style: none;
+    padding: 2rem;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: center;
+    font-family: 'Poppins', sans-serif; /* ou Inter, Montserrat, etc. */
+}
+
+.mobileMenu li a {
+    font-size: 1.2rem;
+    text-decoration: none;
+    color: #111;
+    transition: all 0.2s ease;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+.mobileMenu li a:hover {
+    color: #c596ff; /* couleur personnalisée */
+    text-decoration: underline;
+    transform: scale(1.05);
+}
+
+.mobileMenu li {
+    margin: 1rem 0;
+    font-size: 1.2rem;
+    text-align: center;
+}
+
 .drawerOpen {
     transform: translateY(0);
 }
@@ -289,14 +368,41 @@
 /* Bouton de Fermeture */
 .closeButton {
     position: absolute;
-    top: var(--spacing-md);
-    right: var(--spacing-md);
-    font-size: 30px;
+    top: 1rem;
+    right: 1rem;
     background: none;
     border: none;
-    color: var(--standard-white);
+    z-index: 1000;
+    font-size: 1.8rem;
     cursor: pointer;
-    aria-label: "Fermer le menu";
+}
+
+.mobileMenuList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    font-family: 'Poppins', sans-serif;
+}
+
+
+.mobileMenuList li a {
+    font-size: 1.2rem;
+    text-decoration: none;
+    color: #111;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+  
+.mobileMenuList li a:hover {
+    color: #a855f7;
+    text-decoration: underline;
+    transform: scale(1.05);
 }
 
 .closeButton:hover,
@@ -433,7 +539,7 @@ body, html {
         display: flex;
         justify-content: flex-end; /* Aligner les icônes à droite */
         align-items: center;
-        margin-left: 107px; /* Supprime le margin-left:auto */
+        margin-left: 80px; /* Supprime le margin-left:auto */
     }
 
     .iconContainer.userIcon {

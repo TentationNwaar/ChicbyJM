@@ -6,13 +6,13 @@ import { isAuth } from '../../helpers/general';
 import AddNotification from '../AddNotification';
 import Container from '../Container';
 import Config from '../../config.json';
-import Drawer from '../Drawer';
 import FormInputField from '../FormInputField/FormInputField';
 import Icon from '../Icons/Icon';
 import MiniCart from '../MiniCart';
-import MobileNavigation from '../MobileNavigation';
+import Drawer from '../Drawer';
 import * as styles from './Header.module.css';
 import logo from '../../../static/Logo_JM_Transparent.png'; 
+import { motion, AnimatePresence } from 'framer-motion';
 
 const Header = (prop) => {
   const [showMiniCart, setShowMiniCart] = useState(false);
@@ -23,7 +23,7 @@ const Header = (prop) => {
   const [crossVisible, setCrossVisible] = useState(false);
 
   // Définir le message de la bannière
-  const bannerMessage = "Bienvenue sur notre site ! Profitez de nos promotions.";
+  const bannerMessage = "BIENVENUE SUR CHIC BY JM !";
 
   const searchRef = createRef();
   const searchSuggestions = ['T-shirt', 'School Spirit', 'Ciel bleu'];
@@ -171,9 +171,52 @@ const Header = (prop) => {
 
       {/* Affichage du Drawer avec la navigation mobile */}
       {mobileMenu && (
-        <Drawer visible={mobileMenu} close={handleCloseMobileMenu} hideCross={!crossVisible}>
-          <MobileNavigation close={handleCloseMobileMenu} />
-        </Drawer>
+        <>
+          <div
+            className={styles.overlay}
+            onClick={handleCloseMobileMenu}
+          />
+
+          <motion.nav
+            initial={{ x: '100%' }}
+            animate={{ x: 0 }}
+            exit={{ x: '100%' }}
+            transition={{ duration: 0.3, ease: 'easeInOut' }}
+            className={styles.mobileMenu}
+          >
+            <div className={styles.mobileMenuHeader}>
+              <button
+                aria-label="Fermer le menu"
+                className={styles.closeButton}
+                onClick={handleCloseMobileMenu}
+              >
+                <Icon symbol="cross" />
+              </button>
+            </div>
+
+            <ul className={styles.mobileMenuList}>
+              {[
+                { label: 'Shopping', path: '/shopTous' },
+                { label: 'Homme', path: '/shopHomme' },
+                { label: 'Femme', path: '/shopFemme' },
+                { label: 'Enfant', path: '/shopEnfant' },
+                { label: 'Accessoires', path: '/shopAccessoire' },
+                { label: 'Contact', path: '/support#contact' },
+              ].map((item, i) => (
+                <motion.li
+                  key={item.path}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.05 }}
+                >
+                  <Link to={item.path} onClick={handleCloseMobileMenu}>
+                    {item.label}
+                  </Link>
+                </motion.li>
+              ))}
+            </ul>
+          </motion.nav>
+        </>
       )}
 
       {/* Affichage de la recherche */}

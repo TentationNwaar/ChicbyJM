@@ -28,7 +28,7 @@ const fadeInAnimation = {
 // Hero Carousel
 const HeroCarousel = () => {
   const images = [
-    { src: 'carousel/Shooting.webp', alt: 'Image 1', title: 'Racontez votre histoire avec style', ctaText: 'Commencer le shopping', ctaLink: '/shopTous' },
+    { src: 'carousel/Shooting.webp', alt: 'Image 1', title: 'Votre histoire, votre style', ctaText: 'Commencer le shopping', ctaLink: '/shopTous' },
     { src: 'carousel/Shooting2.webp', alt: 'Image 2', title: 'Un dressing frais et tendance', ctaText: 'Découvrez la collection homme', ctaLink: '/shopHomme' },
     { src: 'carousel/Shooting3.webp', alt: 'Image 3', title: 'Une mode pour tous', ctaText: 'Découvrez la collection enfant', ctaLink: '/shopEnfant' },
     { src: 'carousel/Shooting4.webp', alt: 'Image 4', title: 'Douceur et chaleur', ctaText: 'Découvrez la section femme', ctaLink: '/shopFemme' },
