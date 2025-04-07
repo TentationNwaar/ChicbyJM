@@ -1,7 +1,8 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import PropTypes from 'prop-types';
-
+import { useContext } from 'react';
+import { UserContext } from '../../context/UserContext';
 import Header from '../Header';
 import Footer from '../Footer';
 import * as styles from './Layout.module.css';
@@ -13,7 +14,9 @@ import { Link } from "gatsby";
 // CSS not modular here to provide global styles
 import './Globals.css';
 
+
 const Layout = ({ props, children, disablePaddingBottom = false }) => {
+  const { user } = useContext(UserContext);
   return (
     <>
       <Helmet>
@@ -32,6 +35,14 @@ const Layout = ({ props, children, disablePaddingBottom = false }) => {
       </Helmet>
 
       <Header />
+      {/* Barre utilisateur (ajout) */}
+      <div className={styles.userBar}>
+        {user ? (
+          <p>Connecté en tant que {user.email} | <Link to="/account">Mon compte</Link></p>
+        ) : (
+          <p><Link to="/login">Se connecter</Link></p>
+        )}
+      </div>
       <main
         className={`${styles.main} ${
           disablePaddingBottom === true ? styles.disablePaddingBottom : ''

@@ -3,6 +3,13 @@
     padding-bottom: 150px;
 }
 
+.userBar {
+    padding: 0.5rem 1rem;
+    background-color: #f3f3f3;
+    font-size: 0.9rem;
+    text-align: right;
+}
+
 .disablePaddingBottom {
     padding-bottom: 0px !important;
 }

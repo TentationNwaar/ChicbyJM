@@ -1,6 +1,6 @@
 import React from 'react';
-import { CartProvider } from './src/context/CartContext'; // ✅ Vérifie le bon chemin
+import { UserProvider } from './src/context/UserContext';
 
 export const wrapRootElement = ({ element }) => (
-  <CartProvider>{element}</CartProvider>
+  <UserProvider>{element}</UserProvider>
 );

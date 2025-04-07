@@ -22,6 +22,7 @@
     "@fortawesome/react-fontawesome": "^0.2.2",
     "@mui/icons-material": "^5.16.14",
     "@mui/material": "^5.16.14",
+    "@supabase/supabase-js": "^2.49.4",
     "ajv": "^8.17.1",
     "ajv-keywords": "^5.1.0",
     "axios": "^1.8.1",

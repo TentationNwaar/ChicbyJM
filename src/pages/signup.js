@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { navigate } from 'gatsby';
+import { supabase } from '../lib/supabaseClient';
 import {
   validateEmail,
   validateStrongPassword,
@@ -35,7 +36,7 @@ const SignupPage = (props) => {
     setSignupForm(tempForm);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     let validForm = true;
     const tempError = { ...errorState };
@@ -64,8 +65,23 @@ const SignupPage = (props) => {
 
     if (validForm === true) {
       setErrorForm(errorState);
+      const { data, error } = await supabase.auth.signUp({
+        email: signupForm.email,
+        password: signupForm.password,
+        options: {
+          data: {
+            firstName: signupForm.firstName,
+            lastName: signupForm.lastName,
+          },
+        },
+      });
+      
+      if (error) {
+        console.error(error.message);
+        return; // tu peux aussi afficher un message d'erreur ici
+      }
+      
       navigate('/accountSuccess');
-      window.localStorage.setItem('key', 'sampleToken');
       //point de terminaison de création de compte
     } else {
       setErrorForm(tempError);

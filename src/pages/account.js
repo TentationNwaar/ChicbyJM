@@ -1,7 +1,8 @@
 import React, { useContext } from 'react';
-import { CartContext } from '../context/CartContext'; // ✅ Vérifie le bon chemin
+import { UserContext } from '../context/UserContext';
 
 const AccountPage = () => {
+  const { user } = useContext(UserContext);
   if (typeof window === 'undefined') {
     return null; // ✅ Empêche Gatsby de planter en mode build
   }
@@ -10,8 +11,12 @@ const AccountPage = () => {
 
   return (
     <div>
-      <h1>Mon Compte</h1>
-      <p>Bienvenue sur votre page de compte.</p>
+      <h1>Mon compte</h1>
+      {user ? (
+        <p>Bienvenue {user.email}</p>
+      ) : (
+        <p>Veuillez vous connecter pour accéder à votre compte.</p>
+      )}
     </div>
   );
 };

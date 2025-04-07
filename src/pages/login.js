@@ -7,6 +7,7 @@ import AttributeGrid from '../components/AttributeGrid/AttributeGrid';
 import Layout from '../components/Layout/Layout';
 import FormInputField from '../components/FormInputField/FormInputField';
 import Button from '../components/Button';
+import { supabase } from '../lib/supabaseClient';
 
 const LoginPage = () => {
   const [loginForm, setLoginForm] = useState({ email: '', password: '' });
@@ -18,21 +19,27 @@ const LoginPage = () => {
   };
 
   const loginUser = async () => {
-    try {
-      const response = await fetch('https://mon-api.com/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: loginForm.email, password: loginForm.password }),
-      });
-
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.message || 'Erreur de connexion');
-
-      localStorage.setItem('token', data.token);
-      navigate('/account'); // Redirection vers l'espace client
-    } catch (error) {
+    const { email, password } = loginForm;
+  
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+  
+    if (error) {
       setErrorMessage(error.message);
+    } else {
+      // Tu peux aussi stocker les infos utilisateur si besoin
+      localStorage.setItem('user', JSON.stringify(data.user));
+      localStorage.setItem('access_token', data.session.access_token);
+      navigate('/account');
     }
+
+    if (!data.user.confirmed_at) {
+      setErrorMessage('Veuillez confirmer votre e-mail avant de vous connecter.');
+      return;
+    }
+
   };
 
   const handleSubmit = (e) => {
