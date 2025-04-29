@@ -7,14 +7,12 @@ export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isLoadingUser, setIsLoadingUser] = useState(true);
 
-  // 🔍 1. Récupération initiale de l'utilisateur
+  // 🔍 Récupération initiale de l'utilisateur
   useEffect(() => {
+    if (typeof window === 'undefined') return; // Protection côté serveur (build)
+
     const fetchUser = async () => {
       const { data: { user }, error } = await supabase.auth.getUser();
-
-      console.log('🔍 [fetchUser] user =', user);
-      if (error) console.error('❌ [fetchUser] error =', error);
-
       setUser(user || null);
       setIsLoadingUser(false);
     };
@@ -22,24 +20,16 @@ export const UserProvider = ({ children }) => {
     fetchUser();
   }, []);
 
-  // ⚡ 2. Suivi des changements d'authentification (login/logout)
+  // ⚡ Suivi des changements d'authentification
   useEffect(() => {
-    const { data: subscription } = supabase.auth.onAuthStateChange((event, session) => {
-      console.log('⚡ [onAuthStateChange] event =', event);
-      console.log('📦 [onAuthStateChange] session =', session);
+    if (typeof window === 'undefined') return; // Protection côté serveur (build)
 
+    const { data: subscription } = supabase.auth.onAuthStateChange((event, session) => {
       if (session) {
         setUser(session.user);
-
-        // 🧪 DEBUG : stocker les tokens localement
-        localStorage.setItem('access_token', session.access_token);
-        localStorage.setItem('refresh_token', session.refresh_token);
       } else {
         setUser(null);
-        localStorage.removeItem('access_token');
-        localStorage.removeItem('refresh_token');
       }
-
       setIsLoadingUser(false);
     });
 
