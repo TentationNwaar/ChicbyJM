@@ -33,13 +33,6 @@ exports.createPages = async ({ actions, graphql }) => {
       context: { id: product.id }, // Passez l'ID du produit comme contexte
     });
   });
-
-  //  Page account
-  createPage({
-    path: "/en/account/",
-    component: require.resolve("./src/pages/account.js"),
-    context: {},
-  });
 };
 
 //  Suppression ESLint & gestion du CSS

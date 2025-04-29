@@ -1,32 +1,55 @@
-// src/context/UserContext.js
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 import { supabase } from '../lib/supabaseClient';
 
-export const UserContext = createContext(null);
+export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [isLoadingUser, setIsLoadingUser] = useState(true);
 
+  // 🔍 1. Récupération initiale de l'utilisateur
   useEffect(() => {
-    // Récupère l'utilisateur actuel au chargement
-    const getUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      setUser(user);
-    };
-    getUser();
+    const fetchUser = async () => {
+      const { data: { user }, error } = await supabase.auth.getUser();
 
-    // Écoute les changements d'authentification
-    const { data: listener } = supabase.auth.onAuthStateChange((event, session) => {
-      setUser(session?.user ?? null);
+      console.log('🔍 [fetchUser] user =', user);
+      if (error) console.error('❌ [fetchUser] error =', error);
+
+      setUser(user || null);
+      setIsLoadingUser(false);
+    };
+
+    fetchUser();
+  }, []);
+
+  // ⚡ 2. Suivi des changements d'authentification (login/logout)
+  useEffect(() => {
+    const { data: subscription } = supabase.auth.onAuthStateChange((event, session) => {
+      console.log('⚡ [onAuthStateChange] event =', event);
+      console.log('📦 [onAuthStateChange] session =', session);
+
+      if (session) {
+        setUser(session.user);
+
+        // 🧪 DEBUG : stocker les tokens localement
+        localStorage.setItem('access_token', session.access_token);
+        localStorage.setItem('refresh_token', session.refresh_token);
+      } else {
+        setUser(null);
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('refresh_token');
+      }
+
+      setIsLoadingUser(false);
     });
 
     return () => {
-      listener.subscription.unsubscribe();
+      subscription?.subscription?.unsubscribe();
     };
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, setUser }}>
+    <UserContext.Provider value={{ user, setUser, isLoadingUser }}>
       {children}
     </UserContext.Provider>
   );
