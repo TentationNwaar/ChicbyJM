@@ -1,0 +1,103 @@
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem;
+    background-color: #fff;
+  }
+  
+  .heading {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 2rem;
+    text-align: center;
+    color: #111;
+  }
+  
+  .section {
+    margin-bottom: 3rem;
+    border-top: 1px solid #eee;
+    padding-top: 2rem;
+  }
+  
+  .sectionTitle {
+    font-size: 1.4rem;
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+    color: #333;
+  }
+  
+  .formGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .label {
+    display: flex;
+    flex-direction: column;
+    font-size: 0.95rem;
+    color: #444;
+  }
+  
+  .input,
+  .inputDisabled {
+    margin-top: 0.5rem;
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border 0.2s ease;
+  }
+  
+  .input:focus {
+    border-color: #111;
+    outline: none;
+  }
+  
+  .inputDisabled {
+    background-color: #f5f5f5;
+    color: #888;
+    cursor: not-allowed;
+  }
+  
+  .buttonRow {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+  }
+  
+  .orderList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .orderItem {
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    background-color: #fafafa;
+  }
+  
+  .noOrders {
+    font-style: italic;
+    color: #666;
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 1rem;
+  }
+  
+  /* Responsive layout */
+  @media (max-width: 768px) {
+    .formGrid {
+      grid-template-columns: 1fr;
+    }
+  
+    .buttonRow {
+      justify-content: center;
+    }
+  }

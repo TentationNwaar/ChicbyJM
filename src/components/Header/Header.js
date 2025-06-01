@@ -1,7 +1,6 @@
-import React, { useState, useEffect, createRef } from 'react';
+import React, { useState, useEffect, createRef, useContext } from 'react';
+import { UserContext } from '../../context/UserContext';
 import { Link, navigate } from 'gatsby';
-
-import { isAuth } from '../../helpers/general';
 
 import AddNotification from '../AddNotification';
 import Container from '../Container';
@@ -12,9 +11,11 @@ import MiniCart from '../MiniCart';
 import Drawer from '../Drawer';
 import * as styles from './Header.module.css';
 import logo from '../../../static/Logo_JM_Transparent.png'; 
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 
-const Header = (prop) => {
+const Header = () => {
+  const { user } = useContext(UserContext);
+
   const [showMiniCart, setShowMiniCart] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [mobileMenu, setMobileMenu] = useState(false);
@@ -22,17 +23,9 @@ const Header = (prop) => {
   const [search, setSearch] = useState('');
   const [crossVisible, setCrossVisible] = useState(false);
 
-  // Définir le message de la bannière
   const bannerMessage = "BIENVENUE SUR CHIC BY JM !";
-
   const searchRef = createRef();
   const searchSuggestions = ['T-shirt', 'School Spirit', 'Ciel bleu'];
-
-  const handleHover = (navObject) => {
-    if (navObject.category) {
-      setShowSearch(false);
-    }
-  };
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -40,7 +33,6 @@ const Header = (prop) => {
     setShowSearch(false);
   };
 
-  // Gérer le menu mobile
   const handleCloseMobileMenu = () => {
     setMobileMenu(false);
     setCrossVisible(false);
@@ -54,7 +46,7 @@ const Header = (prop) => {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       setIsMobile(window.innerWidth <= 800);
-    
+
       const handleResize = () => {
         setIsMobile(window.innerWidth <= 800);
       };
@@ -66,18 +58,16 @@ const Header = (prop) => {
 
   return (
     <div className={styles.root}>
-      {/* Affichage du message de bannière */}
       <div className={styles.headerMessageContainer}>
         <span>{bannerMessage}</span>
       </div>
-      
+
       <Container size={'large'} spacing={'min'}>
         <div className={styles.header}>
-          <div className={styles.logo} role="presentation" onClick={() => navigate('/')}>
+          <div className={styles.logo} role="presentation" onClick={() => navigate('/')}> 
             <img src={logo} alt="Logo JM" width="60" height="60" />
           </div>
 
-          {/* Menu de navigation principal */}
           <div className={styles.navContainer}>
             <nav role="presentation">
               {Config.headerLinks.map((navObject) => (
@@ -92,7 +82,6 @@ const Header = (prop) => {
             </nav>
           </div>
 
-          {/* Actions : recherche, favoris, commandes, panier */}
           <div className={styles.actionContainers}>
             <button
               aria-label="Search"
@@ -109,8 +98,8 @@ const Header = (prop) => {
               <Icon symbol="heart" />
             </Link>
             <Link
-              aria-label="Orders"
-              to={isAuth() ? '/login' : '/account/orders/'}
+              aria-label="User"
+              to={user ? '/account' : '/login'}
               className={`${styles.iconContainer} ${styles.hideOnMobile} ${styles.userIcon}`}
             >
               <Icon symbol="user" />
@@ -124,9 +113,11 @@ const Header = (prop) => {
             </button>
           </div>
 
-          {/* Affichage du MiniCart en fonction du type d'appareil */}
           {isMobile && showMiniCart && (
-            <div className={`${styles.drawerOverlay} ${showMiniCart ? styles.drawerOverlayVisible : ''}`} onClick={() => setShowMiniCart(false)} />
+            <div
+              className={`${styles.drawerOverlay} ${showMiniCart ? styles.drawerOverlayVisible : ''}`}
+              onClick={() => setShowMiniCart(false)}
+            />
           )}
           {isMobile ? (
             <Drawer visible={showMiniCart} close={() => setShowMiniCart(false)} customClass={styles.miniCartDrawer}>
@@ -140,11 +131,10 @@ const Header = (prop) => {
             )
           )}
 
-          {/* Icônes mobiles */}
           <div className={styles.mobileIconsContainer}>
             <Link
               aria-label="User"
-              to={isAuth() ? '/account/orders/' : '/login'}
+              to={user ? '/account' : '/login'}
               className={styles.iconContainer}
             >
               <Icon symbol="user" />
@@ -158,7 +148,6 @@ const Header = (prop) => {
             </button>
           </div>
 
-          {/* Menu burger mobile */}
           <div
             role="presentation"
             onClick={toggleMobileMenu}
@@ -169,13 +158,9 @@ const Header = (prop) => {
         </div>
       </Container>
 
-      {/* Affichage du Drawer avec la navigation mobile */}
       {mobileMenu && (
         <>
-          <div
-            className={styles.overlay}
-            onClick={handleCloseMobileMenu}
-          />
+          <div className={styles.overlay} onClick={handleCloseMobileMenu} />
 
           <motion.nav
             initial={{ x: '100%' }}
@@ -219,7 +204,6 @@ const Header = (prop) => {
         </>
       )}
 
-      {/* Affichage de la recherche */}
       {showSearch && (
         <div className={styles.searchContainer}>
           <form onSubmit={handleSearch}>

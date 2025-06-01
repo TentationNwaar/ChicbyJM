@@ -28,18 +28,28 @@ const LoginPage = () => {
   
     if (error) {
       setErrorMessage(error.message);
-    } else {
-      // Tu peux aussi stocker les infos utilisateur si besoin
-      localStorage.setItem('user', JSON.stringify(data.user));
-      localStorage.setItem('access_token', data.session.access_token);
-      navigate('/account');
+      return;
     }
-
+  
+    if (!data?.user) {
+      setErrorMessage("Erreur inattendue : utilisateur non trouvé.");
+      return;
+    }
+  
     if (!data.user.confirmed_at) {
       setErrorMessage('Veuillez confirmer votre e-mail avant de vous connecter.');
       return;
     }
-
+  
+    localStorage.setItem('user', JSON.stringify(data.user));
+    localStorage.setItem('access_token', data.session.access_token);
+  
+    // 👇 This is the key line to add:
+    console.log('✅ Login success, redirecting to /account');
+    setTimeout(() => {
+      console.log('✅ Redirection vers /account après délai');
+      window.location.href = '/account';
+    }, 500);
   };
 
   const handleSubmit = (e) => {
@@ -120,6 +130,7 @@ const LoginPage = () => {
           <AttributeGrid />
         </div>
       </div>
+      <button onClick={() => window.location.href = '/account'}>🔁 Forcer redirection</button>
     </Layout>
   );
 };

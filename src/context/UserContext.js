@@ -7,13 +7,20 @@ export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isLoadingUser, setIsLoadingUser] = useState(true);
 
-  // 🔍 Récupération initiale de l'utilisateur
+  // 🔍 Récupération initiale de la session utilisateur
   useEffect(() => {
-    if (typeof window === 'undefined') return; // Protection côté serveur (build)
+    if (typeof window === 'undefined') return;
 
     const fetchUser = async () => {
-      const { data: { user }, error } = await supabase.auth.getUser();
-      setUser(user || null);
+      const { data: { session }, error } = await supabase.auth.getSession();
+      console.log('[🔁] Initial session:', session, '| error:', error);
+
+      if (session?.user) {
+        setUser(session.user);
+      } else {
+        setUser(null);
+      }
+
       setIsLoadingUser(false);
     };
 
@@ -22,17 +29,21 @@ export const UserProvider = ({ children }) => {
 
   // ⚡ Suivi des changements d'authentification
   useEffect(() => {
-    if (typeof window === 'undefined') return; // Protection côté serveur (build)
-
+    if (typeof window === 'undefined') return;
+  
     const { data: subscription } = supabase.auth.onAuthStateChange((event, session) => {
-      if (session) {
+      console.log('[👀] Auth state changed → event:', event, '| session:', session);
+  
+      // ⛔ NE PAS toucher au user tant que la session n’est pas claire
+      if ((event === 'SIGNED_IN' || event === 'INITIAL_SESSION') && session) {
         setUser(session.user);
-      } else {
+        setIsLoadingUser(false);
+      } else if (event === 'SIGNED_OUT') {
         setUser(null);
+        setIsLoadingUser(false);
       }
-      setIsLoadingUser(false);
     });
-
+  
     return () => {
       subscription?.subscription?.unsubscribe();
     };
