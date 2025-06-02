@@ -4,7 +4,18 @@ import Layout from "../components/Layout";
 import * as styles from "./cart.module.css";
 
 const CartPage = () => {
-  const { cart, addToCart, removeFromCart, updateQuantity } = useContext(CartContext);
+  const context = useContext(CartContext);
+
+  if (!context) {
+    if (typeof window === 'undefined') {
+      // 🛡 Protection pendant le build statique Gatsby
+      return null;
+    } else {
+      throw new Error('CartContext must be used within a CartProvider');
+    }
+  }
+
+  const { cart, addToCart, removeFromCart, updateQuantity } = context;
 
   // ✅ Calcul du total
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
