@@ -1,6 +1,11 @@
-import React from 'react';
+import * as React from "react";
 import { UserProvider } from './src/context/UserContext';
+import { CartProvider } from './src/context/CartContext';
 
 export const wrapRootElement = ({ element }) => (
-  <UserProvider>{element}</UserProvider>
+  <UserProvider>
+    <CartProvider>
+      {element}
+    </CartProvider>
+  </UserProvider>
 );

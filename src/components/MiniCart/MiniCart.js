@@ -5,7 +5,14 @@ import * as styles from './MiniCart.module.css';
 import { useEffect } from 'react';
 
 const MiniCart = ({ closeCart }) => {
-  const { cart } = useContext(CartContext);
+  const context = useContext(CartContext);
+
+  if (!context) {
+    if (typeof window === 'undefined') return null;
+    throw new Error('CartContext must be used within a CartProvider');
+  }
+
+const { cart } = context;
 
   // ✅ Calcul du total (évite NaN)
   const total = cart.reduce((sum, item) => sum + (item.price || 0), 0);
