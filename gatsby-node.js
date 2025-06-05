@@ -30,7 +30,7 @@ exports.createPages = async ({ actions, graphql }) => {
     createPage({
       path: `/en/product/${product.slug}/`, // Chemin de la page produit
       component: require.resolve("./src/templates/product-template.js"), // Template de la page produit
-      context: { id: product.id }, // Passez l'ID du produit comme contexte
+      context: { id: String(product.id) },
     });
   });
 };
