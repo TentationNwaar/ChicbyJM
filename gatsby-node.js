@@ -157,7 +157,7 @@ exports.createSchemaCustomization = ({ actions }) => {
     }
 
     type SyncVariant {
-      id: Int
+      id: String
       name: String
       retail_price: String
       currency: String
