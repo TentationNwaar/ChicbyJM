@@ -11,7 +11,17 @@ import { Link } from 'gatsby';
 import './Globals.css';
 
 const Layout = ({ children, disablePaddingBottom = false }) => {
-  const { user, loading } = useContext(UserContext);
+  const { user, isLoadingUser } = useContext(UserContext);
+
+if (isLoadingUser) {
+  return (
+    <div className={styles.spinnerContainer}>
+      <LoadingSpinner />
+    </div>
+  );
+}
+
+console.log("LAYOUT USER:", user);
 
   if (loading) {
     return (
@@ -40,7 +50,7 @@ const Layout = ({ children, disablePaddingBottom = false }) => {
       <Header />
       <div className={styles.userBar}>
         {user ? (
-          <p>Connecté en tant que {user.email} | <Link to="/account">Mon compte</Link></p>
+          <p>Connecté en tant que {user?.email} | <Link to="/account">Mon compte</Link></p>
         ) : (
           <p><Link to="/login">Se connecter</Link></p>
         )}

@@ -96,7 +96,12 @@ export const CartProvider = ({ children }) => {
     setCart((currentCart) => currentCart.filter((item) => item.id !== id));
   };
 
-  if (!isReady) return null;
+  if (isLoadingUser) return null;
+  if (!user) return (
+    <CartContext.Provider value={{ cart: [], addToCart: () => {}, updateQuantity: () => {}, removeFromCart: () => {} }}>
+      {children}
+    </CartContext.Provider>
+  );
 
   return (
     <CartContext.Provider value={{ cart, addToCart, updateQuantity, removeFromCart }}>

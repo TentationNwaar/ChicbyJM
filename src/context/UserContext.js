@@ -1,7 +1,10 @@
 import React, { createContext, useEffect, useState } from 'react';
 import { supabase } from '../lib/supabaseClient';
 
-export const UserContext = createContext();
+export const UserContext = createContext({
+  user: null,
+  setUser: () => {},
+});
 
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
