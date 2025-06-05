@@ -32,9 +32,7 @@ export const CartProvider = ({ children }) => {
       if (data?.items) {
         setCart(data.items);
         prevCartRef.current = data.items;
-        console.log('[fetchCart ✅]', data.items);
       } else {
-        console.log('[fetchCart ℹ️] Aucun panier trouvé, initialisation vide.');
         setCart([]); // vide si pas trouvé
         prevCartRef.current = [];
       }

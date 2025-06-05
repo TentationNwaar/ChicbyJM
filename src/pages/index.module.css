@@ -25,6 +25,28 @@ body {
     margin: 10px;
 }
 
+.heroCarousel {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  margin-bottom: 2rem;
+}
+
+.promotionContainer {
+  padding: 2rem;
+  background-color: #f7f7f7;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.socialContainer {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  padding: 1rem 0;
+}
+
 @media (max-width: 800px) {
     .socialContentGrid {
         flex-direction: column;

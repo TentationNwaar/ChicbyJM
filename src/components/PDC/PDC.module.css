@@ -18,6 +18,12 @@
     margin-bottom: 30px;
     text-align: center;
   }
+
+  .section {
+  padding: 2rem 1rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #ddd;
+}
   
   /* Sous-titres */
   .subtitle {

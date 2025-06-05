@@ -97,6 +97,14 @@
     text-align: left;
 }
 
+.emptyCart {
+  text-align: center;
+  font-style: italic;
+  font-size: 16px;
+  color: #888;
+  margin-top: 2rem;
+}
+
 .productInfo,
 .productPrice {
     display: block;         /* ✅ évite comportement inline-center */

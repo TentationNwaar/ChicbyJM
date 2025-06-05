@@ -13,7 +13,6 @@ export const UserProvider = ({ children }) => {
 
     const fetchUser = async () => {
       const { data: { session }, error } = await supabase.auth.getSession();
-      console.log('[🔁] Initial session:', session, '| error:', error);
 
       if (session?.user) {
         setUser(session.user);
@@ -32,7 +31,6 @@ export const UserProvider = ({ children }) => {
     if (typeof window === 'undefined') return;
   
     const { data: subscription } = supabase.auth.onAuthStateChange((event, session) => {
-      console.log('[👀] Auth state changed → event:', event, '| session:', session);
   
       // ⛔ NE PAS toucher au user tant que la session n’est pas claire
       if ((event === 'SIGNED_IN' || event === 'INITIAL_SESSION') && session) {

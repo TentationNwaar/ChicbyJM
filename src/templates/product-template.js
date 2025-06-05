@@ -29,32 +29,20 @@ function parseVariantName(fullName) {
  * Priorise les images de la variante et gère les cas où certaines informations
  * pourraient être manquantes.
  */
-function getProductImage(product, selectedVariant) {
-  if (selectedVariant && selectedVariant.files && selectedVariant.files.length > 0) {
-    const variantImage = selectedVariant.files.find((file) => {
-      const filename = file.filename ? file.filename.toLowerCase() : "";
+function getProductImage(product, variant) {
+  if (!variant || !variant.files) return null;
 
-      // Si le fichier est un "preview-file", on affiche l'image par défaut
-      if (filename.includes("preview-file")) {
-        return false; // ignorer les fichiers preview-file
-      }
-      
-      // On ignore les fichiers logo et mockup
-      return (
-        filename &&
-        !filename.includes("logo") &&
-        !filename.includes("mockup")
-      );
-    });
+  const validImage = variant.files.find((file) => {
+    const filename = file.filename?.toLowerCase() || "";
+    return (
+      file.preview_url &&
+      !filename.includes("mockup") &&
+      !filename.includes("logo") &&
+      !filename.includes("preview-file")
+    );
+  });
 
-    // Si une image variante est trouvée, retourner son URL
-    if (variantImage) {
-      return variantImage.preview_url;
-    }
-  }
-
-  // Retourne l'image principale par défaut si pas de variante spécifique
-  return product.thumbnail_url;
+  return validImage?.preview_url || null;
 }
 
 const ProductTemplate = ({ data }) => {
@@ -98,25 +86,22 @@ const ProductTemplate = ({ data }) => {
 
   // Met à jour l'image sélectionnée chaque fois que la couleur ou la taille change
   useEffect(() => {
-    // Si une couleur et une taille sont sélectionnées, chercher la variante
-    if (selectedColor && selectedSize) {
-      const matchingVariant = variants.find(
-        (variant) =>
-          parseVariantName(variant.name).color === selectedColor &&
-          parseVariantName(variant.name).size === selectedSize
-      );
+  setSelectedImage(product.thumbnail_url); // always fallback to this by default
 
-      // Utiliser l'image de la variante, sinon l'image principale
-      const productImage = matchingVariant
-        ? getProductImage(product, matchingVariant)
-        : product.thumbnail_url;
+  if (selectedColor && selectedSize) {
+    const matchingVariant = variants.find(
+      (variant) => {
+        const parsed = parseVariantName(variant.name);
+        return parsed.color === selectedColor && parsed.size === selectedSize;
+      }
+    );
 
-      setSelectedImage(productImage);
-    } else {
-      // Si aucune couleur ou taille n'est sélectionnée, afficher l'image principale
-      setSelectedImage(product.thumbnail_url);
+    const image = getProductImage(product, matchingVariant);
+    if (image) {
+      setSelectedImage(image);
     }
-  }, [selectedColor, selectedSize, variants, product]);
+  }
+}, [selectedColor, selectedSize, variants, product]);
 
   const handleAddToCart = () => {
     // Si aucune couleur ou taille n'est sélectionnée, utilisez la première variante disponible

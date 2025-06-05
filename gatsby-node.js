@@ -143,10 +143,32 @@ exports.sourceNodes = async ({ actions, createNodeId, createContentDigest }) => 
 };
 
 exports.createSchemaCustomization = ({ actions }) => {
-  actions.createTypes(`
+  const { createTypes } = actions;
+
+  createTypes(`
     type PrintfulProduct implements Node {
+      id: ID!
+      name: String!
+      slug: String!
+      description: String
+      thumbnail_url: String
+      sync_variants: [SyncVariant]
       size_guide: [SizeGuide]
     }
+
+    type SyncVariant {
+      id: Int
+      name: String
+      retail_price: String
+      currency: String
+      files: [SyncFile]
+    }
+
+    type SyncFile {
+      filename: String
+      preview_url: String
+    }
+
     type SizeGuide {
       size: String
       chest: String

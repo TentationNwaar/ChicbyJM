@@ -15,10 +15,7 @@ const ProductCardGrid = (props) => {
     gridTemplateColumns: `repeat(${columns}, 1fr)`,
   };
 
-  console.log("Produits reçus dans ProductCardGrid :", data);
-
   const renderCards = () => {
-    console.log("Données de produits reçues:", data);
     return data.map(({ node }, index) => {
       // Vérifiez que le node et le frontmatter existent
       if (!node || !node.frontmatter) {

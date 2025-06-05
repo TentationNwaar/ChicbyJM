@@ -54,7 +54,6 @@ function addCssClass(cssPath, className) {
   const content = fs.existsSync(cssPath) ? fs.readFileSync(cssPath, 'utf8') : '';
   const updatedContent = `${content}\n.${className} {\n  /* ajouté automatiquement */\n}\n`;
   fs.writeFileSync(cssPath, updatedContent, 'utf8');
-  console.log(`➕ Ajouté .${className} dans ${cssPath}`);
 }
 
 // Analyse tous les fichiers

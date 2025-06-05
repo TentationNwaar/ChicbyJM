@@ -9,12 +9,6 @@ module.exports = {
   },
   plugins: [
     {
-      resolve: `gatsby-plugin-env-variables`,
-      options: {
-        allowList: ["GATSBY_PRINTFUL_API_KEY"],
-      },
-    },
-    {
       resolve: `gatsby-source-filesystem`,
       options: {
         name: `content`,

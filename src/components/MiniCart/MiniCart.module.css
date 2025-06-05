@@ -159,6 +159,14 @@
     scrollbar-width: none;  /* Firefox */
 }
 
+.itemDetails {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin-left: 20px;
+}
+
 @media (max-width: 800px) {
     .titleContainer h4 {
         font-size: 22px;

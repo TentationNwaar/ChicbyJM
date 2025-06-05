@@ -289,6 +289,25 @@
     display: none;
 }
 
+.hideOnMobile {
+  display: none;
+}
+
+.searchSuggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 1rem;
+}
+
+.suggestionItem {
+  background-color: #eee;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
 .mobileMenu {
     position: fixed;
     top: 0;

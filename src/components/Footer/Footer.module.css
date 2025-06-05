@@ -39,6 +39,13 @@
     display: inline-block;
 }
 
+.copyRight {
+  text-align: center;
+  font-size: 14px;
+  padding: 1rem 0;
+  color: #999;
+}
+
 .linkTitle {
     font-size: 18px;
     margin-bottom: 24px;
