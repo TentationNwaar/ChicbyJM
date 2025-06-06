@@ -30,19 +30,29 @@ function parseVariantName(fullName) {
  * pourraient être manquantes.
  */
 function getProductImage(product, variant) {
-  if (!variant || !variant.files) return null;
+  console.log("🔎 Variant files:", variant.files.map(f => f.filename));
+  console.log("🧵 Product variant image test", {
+  name: product.name,
+  selectedColor,
+  selectedSize,
+  selectedImage,
+  fallback: product.thumbnail_url
+});
+  if (!variant || !variant.files || variant.files.length === 0) {
+    return product.thumbnail_url;
+  }
 
   const validImage = variant.files.find((file) => {
     const filename = file.filename?.toLowerCase() || "";
     return (
       file.preview_url &&
-      !filename.includes("mockup") &&
+      filename.includes("front") && // prioritize front-facing full image
       !filename.includes("logo") &&
       !filename.includes("preview-file")
     );
   });
 
-  return validImage?.preview_url || null;
+  return validImage?.preview_url || product.thumbnail_url;
 }
 
 const ProductTemplate = ({ data }) => {
@@ -77,30 +87,60 @@ const ProductTemplate = ({ data }) => {
   );
 
   // États pour la couleur, la taille et l'image sélectionnées
-  const [selectedColor, setSelectedColor] = useState(
-    availableColors.length > 0 ? availableColors[0] : null
-  );
-  const [selectedSize, setSelectedSize] = useState(availableSizes.length > 0 ? availableSizes[0] : null);
+  const [selectedColor, setSelectedColor] = useState(() => {
+    const first = availableColors[0];
+    return first || null;
+  });
+
+  const [selectedSize, setSelectedSize] = useState(() => {
+    const first = availableSizes[0];
+    return first || null;
+  });
   const [selectedImage, setSelectedImage] = useState(product.thumbnail_url);
   const [isDescriptionOpen, setIsDescriptionOpen] = useState(false);
 
   // Met à jour l'image sélectionnée chaque fois que la couleur ou la taille change
   useEffect(() => {
-  setSelectedImage(product.thumbnail_url); // always fallback to this by default
+  if (!selectedColor || !selectedSize) {
+    setSelectedImage(product.thumbnail_url);
+    return;
+  }
 
-  if (selectedColor && selectedSize) {
-    const matchingVariant = variants.find(
-      (variant) => {
-        const parsed = parseVariantName(variant.name);
-        return parsed.color === selectedColor && parsed.size === selectedSize;
-      }
+  const matchingVariant = variants.find((variant) => {
+    const parsed = parseVariantName(variant.name);
+    return (
+      parsed.color?.toLowerCase() === selectedColor.toLowerCase() &&
+      parsed.size?.toLowerCase() === selectedSize.toLowerCase()
     );
+  });
 
-    const image = getProductImage(product, matchingVariant);
-    if (image) {
-      setSelectedImage(image);
+  let image = product.thumbnail_url;
+
+  if (matchingVariant?.files?.length) {
+    console.log("🔎 Variant files:", matchingVariant.files.map(f => f.filename));
+    console.log("🧵 Image debug", {
+      name: product.name,
+      selectedColor,
+      selectedSize,
+      fallback: product.thumbnail_url
+    });
+
+    const validImage = matchingVariant.files.find((file) => {
+      const filename = file.filename?.toLowerCase() || "";
+      return (
+        file.preview_url &&
+        filename.includes("front") && // essaie de choper une vraie mockup
+        !filename.includes("logo") &&
+        !filename.includes("preview-file")
+      );
+    });
+
+    if (validImage?.preview_url && validImage.preview_url !== product.thumbnail_url) {
+      image = validImage.preview_url;
     }
   }
+
+  setSelectedImage(image);
 }, [selectedColor, selectedSize, variants, product]);
 
   const handleAddToCart = () => {
