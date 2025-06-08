@@ -15,7 +15,6 @@ import { motion } from 'framer-motion';
 
 const Header = () => {
   const { user } = useContext(UserContext);
-
   const [showMiniCart, setShowMiniCart] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [mobileMenu, setMobileMenu] = useState(false);
@@ -82,7 +81,41 @@ const Header = () => {
             </nav>
           </div>
 
-          <div className={styles.actionContainers}>
+          {!isMobile && (
+            <div className={styles.actionContainers}>
+              <button
+                aria-label="Search"
+                className={`${styles.iconButton} ${styles.iconContainer}`}
+                onClick={() => setShowSearch(!showSearch)}
+              >
+                <Icon symbol="search" />
+              </button>
+              <Link
+                aria-label="Favorites"
+                to="/account/favorites"
+                className={styles.iconContainer}
+              >
+                <Icon symbol="heart" />
+              </Link>
+              <Link
+                aria-label="User"
+                to={user ? '/account' : '/login'}
+                className={styles.iconContainer}
+              >
+                <Icon symbol="user" />
+              </Link>
+              <button
+                aria-label="Cart"
+                className={`${styles.iconButton} ${styles.iconContainer}`}
+                onClick={() => setShowMiniCart(!showMiniCart)}
+              >
+                <Icon symbol="bag" />
+              </button>
+            </div>
+          )}
+
+          {isMobile && (
+            <div className={styles.mobileIconsContainer}>
             <button
               aria-label="Search"
               className={`${styles.iconButton} ${styles.iconContainer}`}
@@ -93,45 +126,10 @@ const Header = () => {
             <Link
               aria-label="Favorites"
               to="/account/favorites"
-              className={`${styles.iconContainer} ${styles.hideOnMobile}`}
+              className={styles.iconContainer}
             >
               <Icon symbol="heart" />
             </Link>
-            <Link
-              aria-label="User"
-              to={user ? '/account' : '/login'}
-              className={`${styles.iconContainer} ${styles.hideOnMobile} ${styles.userIcon}`}
-            >
-              <Icon symbol="user" />
-            </Link>
-            <button
-              aria-label="Cart"
-              className={`${styles.iconButton} ${styles.iconContainer}`}
-              onClick={() => setShowMiniCart(!showMiniCart)}
-            >
-              <Icon symbol="bag" />
-            </button>
-          </div>
-
-          {isMobile && showMiniCart && (
-            <div
-              className={`${styles.drawerOverlay} ${showMiniCart ? styles.drawerOverlayVisible : ''}`}
-              onClick={() => setShowMiniCart(false)}
-            />
-          )}
-          {isMobile ? (
-            <Drawer visible={showMiniCart} close={() => setShowMiniCart(false)} customClass={styles.miniCartDrawer}>
-              <MiniCart closeCart={() => setShowMiniCart(false)} />
-            </Drawer>
-          ) : (
-            showMiniCart && (
-              <div className={styles.miniCartContainer}>
-                <MiniCart closeCart={() => setShowMiniCart(false)} />
-              </div>
-            )
-          )}
-
-          <div className={styles.mobileIconsContainer}>
             <Link
               aria-label="User"
               to={user ? '/account' : '/login'}
@@ -147,6 +145,7 @@ const Header = () => {
               <Icon symbol="bag" />
             </button>
           </div>
+          )}
 
           <div
             role="presentation"
@@ -158,10 +157,25 @@ const Header = () => {
         </div>
       </Container>
 
+      {isMobile && showMiniCart && (
+        <div className={`${styles.drawerOverlay} ${styles.drawerOverlayVisible}`} onClick={() => setShowMiniCart(false)} />
+      )}
+
+      {isMobile ? (
+        <Drawer visible={showMiniCart} close={() => setShowMiniCart(false)} customClass={styles.miniCartDrawer}>
+          <MiniCart closeCart={() => setShowMiniCart(false)} />
+        </Drawer>
+      ) : (
+        showMiniCart && (
+          <div className={styles.miniCartContainer}>
+            <MiniCart closeCart={() => setShowMiniCart(false)} />
+          </div>
+        )
+      )}
+
       {mobileMenu && (
         <>
           <div className={styles.overlay} onClick={handleCloseMobileMenu} />
-
           <motion.nav
             initial={{ x: '100%' }}
             animate={{ x: 0 }}

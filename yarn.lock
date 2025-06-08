@@ -11978,6 +11978,11 @@ swap-case@^2.0.2:
   dependencies:
     tslib "^2.0.3"
 
+swiper@^11.2.8:
+  version "11.2.8"
+  resolved "https://registry.npmjs.org/swiper/-/swiper-11.2.8.tgz"
+  integrity sha512-S5FVf6zWynPWooi7pJ7lZhSUe2snTzqLuUzbd5h5PHUOhzgvW0bLKBd2wv0ixn6/5o9vwc/IkQT74CRcLJQzeg==
+
 system-architecture@^0.1.0:
   version "0.1.0"
   resolved "https://registry.npmjs.org/system-architecture/-/system-architecture-0.1.0.tgz"

@@ -48,13 +48,6 @@ console.log("LAYOUT USER:", user);
       </Helmet>
 
       <Header />
-      <div className={styles.userBar}>
-        {user ? (
-          <p>Connecté en tant que {user?.email} | <Link to="/account">Mon compte</Link></p>
-        ) : (
-          <p><Link to="/login">Se connecter</Link></p>
-        )}
-      </div>
 
       <main
         className={`${styles.main} ${disablePaddingBottom ? styles.disablePaddingBottom : ''}`}

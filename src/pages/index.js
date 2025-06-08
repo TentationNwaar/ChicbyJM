@@ -98,7 +98,7 @@ const IndexPage = () => {
 
       {/* Promotion */}
       <motion.div className={styles.promotionContainer} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInAnimation}>
-        <Hero image={toOptimizedImage('/Banner1_JM.webp')} title="-20% de réduction\n sur les essentiels du moment" />
+        <Hero image={toOptimizedImage('/Banner1_JM.webp')} title="-20% de réductions sur les essentiels du moment" />
       </motion.div>
 
       {/* Citation */}

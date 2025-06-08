@@ -3,11 +3,9 @@ import { graphql } from "gatsby";
 import Layout from "../components/Layout";
 import { CartContext } from "../context/CartContext";
 import "./product-template.css";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
 
-/**
- * Extrait la couleur et la taille d’un nom de variante.
- * Gère les cas où le nom de la variante peut avoir 2 ou 3 parties.
- */
 function parseVariantName(fullName) {
   const result = { color: "", size: "" };
   if (!fullName) return result;
@@ -24,20 +22,10 @@ function parseVariantName(fullName) {
   return result;
 }
 
-/**
- * Retourne l'URL de l'image du produit en fonction de la variante sélectionnée.
- * Priorise les images de la variante et gère les cas où certaines informations
- * pourraient être manquantes.
- */
+const slugify = (str) =>
+  str.toLowerCase().replace(/[^a-z0-9]/g, "-").replace(/-+/g, "-");
+
 function getProductImage(product, variant) {
-  console.log("🔎 Variant files:", variant.files.map(f => f.filename));
-  console.log("🧵 Product variant image test", {
-  name: product.name,
-  selectedColor,
-  selectedSize,
-  selectedImage,
-  fallback: product.thumbnail_url
-});
   if (!variant || !variant.files || variant.files.length === 0) {
     return product.thumbnail_url;
   }
@@ -46,7 +34,7 @@ function getProductImage(product, variant) {
     const filename = file.filename?.toLowerCase() || "";
     return (
       file.preview_url &&
-      filename.includes("front") && // prioritize front-facing full image
+      filename.includes("front") &&
       !filename.includes("logo") &&
       !filename.includes("preview-file")
     );
@@ -63,19 +51,33 @@ const ProductTemplate = ({ data }) => {
   const product = data.printfulProduct;
   const variants = product.sync_variants || [];
 
+  const productSlug = slugify(product.name);
+  const customImages = [1, 2, 3].map(
+    (i) => `/products/${productSlug}/${i}.jpg`
+  );
+  const allImages = [
+    ...customImages,
+    ...variants
+      .flatMap((variant) => variant.files || [])
+      .filter(
+        (file) =>
+          file.preview_url &&
+          !file.filename.includes("mockup") &&
+          !file.filename.includes("logo")
+      )
+      .map((file) => file.preview_url),
+  ];
+
   const isBrowser = typeof window !== "undefined";
   const cartContext = isBrowser ? useContext(CartContext) : null;
   const addToCart = cartContext ? cartContext.addToCart : null;
 
-  // Si ce n'est pas un rendu côté client, ne rien rendre
   if (!isBrowser) {
     return <p>Chargement...</p>;
   }
 
-  // Données de produit
   const productName = product.name.split("/")[0];
 
-  // Extraction des couleurs et tailles disponibles à partir des variantes
   const extractedVariants = variants.map((variant) =>
     parseVariantName(variant.name)
   );
@@ -86,65 +88,47 @@ const ProductTemplate = ({ data }) => {
     new Set(extractedVariants.map((variant) => variant.size).filter(Boolean))
   );
 
-  // États pour la couleur, la taille et l'image sélectionnées
-  const [selectedColor, setSelectedColor] = useState(() => {
-    const first = availableColors[0];
-    return first || null;
-  });
-
-  const [selectedSize, setSelectedSize] = useState(() => {
-    const first = availableSizes[0];
-    return first || null;
-  });
+  const [selectedColor, setSelectedColor] = useState(() => availableColors[0] || null);
+  const [selectedSize, setSelectedSize] = useState(() => availableSizes[0] || null);
   const [selectedImage, setSelectedImage] = useState(product.thumbnail_url);
   const [isDescriptionOpen, setIsDescriptionOpen] = useState(false);
 
-  // Met à jour l'image sélectionnée chaque fois que la couleur ou la taille change
   useEffect(() => {
-  if (!selectedColor || !selectedSize) {
-    setSelectedImage(product.thumbnail_url);
-    return;
-  }
+    if (!selectedColor || !selectedSize) {
+      setSelectedImage(product.thumbnail_url);
+      return;
+    }
 
-  const matchingVariant = variants.find((variant) => {
-    const parsed = parseVariantName(variant.name);
-    return (
-      parsed.color?.toLowerCase() === selectedColor.toLowerCase() &&
-      parsed.size?.toLowerCase() === selectedSize.toLowerCase()
-    );
-  });
-
-  let image = product.thumbnail_url;
-
-  if (matchingVariant?.files?.length) {
-    console.log("🔎 Variant files:", matchingVariant.files.map(f => f.filename));
-    console.log("🧵 Image debug", {
-      name: product.name,
-      selectedColor,
-      selectedSize,
-      fallback: product.thumbnail_url
-    });
-
-    const validImage = matchingVariant.files.find((file) => {
-      const filename = file.filename?.toLowerCase() || "";
+    const matchingVariant = variants.find((variant) => {
+      const parsed = parseVariantName(variant.name);
       return (
-        file.preview_url &&
-        filename.includes("front") && // essaie de choper une vraie mockup
-        !filename.includes("logo") &&
-        !filename.includes("preview-file")
+        parsed.color?.toLowerCase() === selectedColor.toLowerCase() &&
+        parsed.size?.toLowerCase() === selectedSize.toLowerCase()
       );
     });
 
-    if (validImage?.preview_url && validImage.preview_url !== product.thumbnail_url) {
-      image = validImage.preview_url;
-    }
-  }
+    let image = product.thumbnail_url;
 
-  setSelectedImage(image);
-}, [selectedColor, selectedSize, variants, product]);
+    if (matchingVariant?.files?.length) {
+      const validImage = matchingVariant.files.find((file) => {
+        const filename = file.filename?.toLowerCase() || "";
+        return (
+          file.preview_url &&
+          filename.includes("front") &&
+          !filename.includes("logo") &&
+          !filename.includes("preview-file")
+        );
+      });
+
+      if (validImage?.preview_url && validImage.preview_url !== product.thumbnail_url) {
+        image = validImage.preview_url;
+      }
+    }
+
+    setSelectedImage(image);
+  }, [selectedColor, selectedSize, variants, product]);
 
   const handleAddToCart = () => {
-    // Si aucune couleur ou taille n'est sélectionnée, utilisez la première variante disponible
     const selectedVariant = variants.find((variant) => {
       const variantName = parseVariantName(variant.name);
       return (
@@ -152,38 +136,24 @@ const ProductTemplate = ({ data }) => {
         (!selectedSize || variantName.size === selectedSize)
       );
     });
-  
-    // Si aucune variante correspondante n'est trouvée, utiliser la première variante disponible
-    if (!selectedVariant) {
-      alert("Produit ajouté au panier sans couleur ni taille spécifiées.");
-      const defaultVariant = variants[0]; // Utilisation de la première variante disponible.
-      addToCart({
-        id: defaultVariant.id,
-        name: product.name,
-        color: selectedColor || "Aucune",
-        size: selectedSize || "Aucune",
-        price: parseFloat(defaultVariant.retail_price || product.sync_variants[0].retail_price) || 0,
-        image: getProductImage(product, defaultVariant),
-      });
-      alert("Produit ajouté au panier !");
-    } else {
-      const productImage = getProductImage(product, selectedVariant);
-      addToCart({
-        id: selectedVariant.id,
-        name: product.name,
-        color: selectedColor || "Aucune",
-        size: selectedSize || "Aucune",
-        price: parseFloat(selectedVariant.retail_price || product.sync_variants[0].retail_price) || 0,
-        image: productImage,
-      });
-      alert("Produit ajouté au panier !");
-    }
+
+    const variant = selectedVariant || variants[0];
+
+    addToCart({
+      id: variant.id,
+      name: product.name,
+      color: selectedColor || "Aucune",
+      size: selectedSize || "Aucune",
+      price: parseFloat(variant.retail_price) || 0,
+      image: getProductImage(product, variant),
+    });
+
+    alert("Produit ajouté au panier !");
   };
 
   return (
     <Layout>
       <div className="product-container">
-        {/* Section Images */}
         <div className="product-images-container">
           <img
             src={selectedImage}
@@ -193,18 +163,14 @@ const ProductTemplate = ({ data }) => {
           />
         </div>
 
-        {/* Section Informations */}
         <div className="product-info">
           <h1 className="product-title">{productName}</h1>
           <p className="product-price">CHF {variants[0]?.retail_price || "N/A"}</p>
           <p className="tax-info">Taxes incluses.</p>
 
-          {/* Sélection des couleurs */}
           {availableColors.length > 0 && (
             <div className="color-selection">
-              <p>
-                <strong>Couleur</strong>
-              </p>
+              <p><strong>Couleur</strong></p>
               <div className="color-buttons">
                 {availableColors.map((color) => (
                   <button
@@ -219,12 +185,9 @@ const ProductTemplate = ({ data }) => {
             </div>
           )}
 
-          {/* Sélection des tailles */}
           {availableSizes.length > 0 && (
             <div className="size-selection">
-              <p>
-                <strong>Taille</strong>
-              </p>
+              <p><strong>Taille</strong></p>
               <div className="size-buttons">
                 {availableSizes.map((size) => (
                   <button
@@ -239,22 +202,17 @@ const ProductTemplate = ({ data }) => {
             </div>
           )}
 
-          {/* Bouton Ajouter au panier */}
           <div className="product-actions">
             <button className="add-to-cart" onClick={handleAddToCart}>
               Ajouter au panier
             </button>
-            <button
-              className="description-button"
-              onClick={() => setIsDescriptionOpen(true)}
-            >
+            <button className="description-button" onClick={() => setIsDescriptionOpen(true)}>
               Description
             </button>
           </div>
         </div>
       </div>
 
-      {/* Fenêtre latérale de description */}
       {isDescriptionOpen && (
         <div className={`description-overlay ${isDescriptionOpen ? "open" : ""}`}>
           <div className="description-panel">
@@ -267,7 +225,6 @@ const ProductTemplate = ({ data }) => {
             <h2>Description</h2>
             <p>{product.description}</p>
 
-            {/* Guide des tailles */}
             {product.size_guide && product.size_guide.length > 0 && (
               <div className="size-guide">
                 <h3>Guide des tailles</h3>
