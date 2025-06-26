@@ -1,5 +1,41 @@
 .root {
-    margin-top: 16px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.cardGrid {
+  display: grid;
+  width: 100%;
+  margin-top: 32px;
+  gap: 32px; /* Espace entre les cartes */
+  grid-template-columns: repeat(3, 3fr); /* Par défaut : 4 colonnes */
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.cardImage {
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  object-fit: contain;
+  margin: 0 auto;
+  display: block;
+}
+
+.cardTitle, .productPrice {
+  text-align: center;
+}
+
+.cardTitle {
+  font-size: 20px;
+  font-weight: 600;
+  margin-top: 12px;
 }
 
 .bannerContainer h2 {
@@ -13,11 +49,21 @@
     margin-top: 32px;
 }
 
+.productImage {
+  width: 220px;  /* plus petit que 300px pour un affichage plus compact */
+  height: auto;
+  border-radius: 6px; /* petit arrondi pour un look propre */
+  object-fit: cover;  /* pour forcer le remplissage sans déformation */
+}
+
 .image-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 colonnes de largeur égale */
-    gap: 16px; /* Espacement entre les éléments */
-    text-align: center;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+    justify-items: center;
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
 .image-grid li {
@@ -102,11 +148,17 @@
     display: none;
 }
 
+.image-grid li h2{
+    text-align: center;
+}
+
 .productPrice {
     font-size: 16px;
     font-weight: bold;
     color: #333;
     margin-top: 5px;
+    text-align: center; /* ✅ centre le texte du prix */
+    display: block; /* pour forcer le bloc complet sous le titre */
   }
 
 @media (max-width: 1148px) {
@@ -118,6 +170,10 @@
         text-align: center;
     }
 
+    .cardGrid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
     .image-grid li {
         margin-bottom: 24px; /* Marge en bas de chaque élément */
     }
@@ -126,6 +182,10 @@
 @media (max-width: 800px) {
     .itemCount {
         display: none;
+    }
+
+    .cardGrid {
+        grid-template-columns: repeat(2, 1fr);
     }
 
     .image-grid {
@@ -180,6 +240,13 @@
         width: 100%;
         text-align: center;
     }
+}
+
+
+@media (max-width: 500px) {
+  .cardGrid {
+    grid-template-columns: repeat(1, 1fr);
+  }
 }
 
 @media (max-width: 430px) {

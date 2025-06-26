@@ -141,7 +141,7 @@ const ProductPage = (props) => {
               spacing
               showSlider
               height={400}
-              columns={4}
+              columns={3}
               data={suggestions}
             />
           </div>

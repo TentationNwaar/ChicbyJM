@@ -161,35 +161,24 @@ const ShopPage = () => {
             )}
           </div>
 
-          {/* Liste de produits */}
-          <div className={styles.productContainer}>
-            <ProductCardGrid data={sortedProducts} />
-          </div>
-
           {/* Liste d’images cliquables */}
-          <ul className={styles.imageGrid}>
+          <div className={styles.cardGrid}>
             {sortedProducts.map(({ node }) => {
-              const firstVariant = node.sync_variants?.[0]; // Première variante disponible
+              const firstVariant = node.sync_variants?.[0];
 
               return (
-                <li key={node.id}>
+                <div key={node.id} className={styles.card}>
                   <Link to={`/en/product/${node.slug}/`}>
-                  <img src={node.thumbnail_url} alt={node.name} style={{ width: '300px', height: 'auto' }} />
-                  <h2 style={{ fontSize: '22px' }}>{node.name}</h2>
-
-                  {/* ✅ Ajout de l'affichage du prix */}
-                  {firstVariant ? (
+                    <img src={node.thumbnail_url} alt={node.name} className={styles.cardImage} />
+                    <h2 className={styles.cardTitle}>{node.name}</h2>
                     <p className={styles.productPrice}>
-                      {firstVariant.retail_price} {firstVariant.currency}
+                      {firstVariant ? `${firstVariant.retail_price} ${firstVariant.currency}` : 'Prix non disponible'}
                     </p>
-                  ) : (
-                    <p className={styles.productPrice}>Prix non disponible</p>
-                  )}
-                </Link>
-                </li>
+                  </Link>
+                </div>
               );
             })}
-          </ul>
+          </div>
 
           <div className={styles.loadMoreContainer}>
             <span>{displayedItems} sur {totalItems}</span>

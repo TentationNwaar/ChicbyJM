@@ -21,8 +21,6 @@ if (isLoadingUser) {
   );
 }
 
-console.log("LAYOUT USER:", user);
-
  if (isLoadingUser) {
     return (
       <div className={styles.spinnerContainer}>

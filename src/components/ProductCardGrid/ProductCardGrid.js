@@ -6,55 +6,42 @@ import ProductCard from '../ProductCard';
 import QuickView from '../QuickView';
 import Slider from '../Slider';
 
-
-const ProductCardGrid = (props) => {
+const ProductCardGrid = ({ height, columns = 4, data, spacing = 32, showSlider = false }) => {
   const [showQuickView, setShowQuickView] = useState(false);
-  const { height, columns = 3, data, spacing, showSlider = false } = props;
-  
-  const columnCount = {
+
+  const gridStyle = {
     gridTemplateColumns: `repeat(${columns}, 1fr)`,
+    gap: `${spacing}px`,
   };
 
   const renderCards = () => {
     return data.map(({ node }, index) => {
-      // Vérifiez que le node et le frontmatter existent
-      if (!node || !node.frontmatter) {
-        console.warn(`Node or frontmatter is undefined for node at index ${index}`);
-        return null; // Ignorez ce node s'il est invalide
-      }
+      if (!node || !node.frontmatter) return null;
 
       const { title, price, image } = node.frontmatter;
-
-      // Vérifiez que les données nécessaires existent
-      if (!title || !price || !image) {
-        console.warn(`Missing data in frontmatter for node at index ${index}`);
-        return null; // Ignorez ce node s'il manque des données essentielles
-      }
-
-      // Formater le prix et l'originalPrice en chaînes de caractères
-      const formattedPrice = price && typeof price === 'object' 
-        ? `${price.retail_price} ${price.currency}` 
-        : price;
-
-      const formattedOriginalPrice = node.originalPrice && typeof node.originalPrice === 'object' 
-        ? `${node.originalPrice.retail_price} ${node.originalPrice.currency}` 
-        : node.originalPrice;
-
-      // Formater 'meta' si nécessaire
-      const metaContent = node.meta && Array.isArray(node.meta) 
-        ? node.meta.join(', ') 
-        : node.meta;
+      if (!title || !price || !image) return null;
 
       return (
         <ProductCard
           key={index}
           height={height}
-          price={formattedPrice}
+          price={price && typeof price === 'object' && price.retail_price && price.currency 
+          ? `${price.retail_price} ${price.currency}` 
+          : typeof price === 'string' 
+            ? price 
+            : 'Prix indisponible'}
           imageAlt={title}
           name={title}
           image={image.childImageSharp?.gatsbyImageData}
-          meta={metaContent}
-          originalPrice={formattedOriginalPrice}
+          meta={node.meta}
+          originalPrice={
+            node.originalPrice && typeof node.originalPrice === 'object' &&
+            node.originalPrice.retail_price && node.originalPrice.currency
+              ? `${node.originalPrice.retail_price} ${node.originalPrice.currency}`
+              : typeof node.originalPrice === 'string'
+                ? node.originalPrice
+                : null
+          }
           link={node.fields.slug}
           showQuickView={() => setShowQuickView(true)}
         />
@@ -63,17 +50,16 @@ const ProductCardGrid = (props) => {
   };
 
   return (
-    <div className={styles.root} style={columnCount}>
-      <div
-        className={`${styles.cardGrid} ${
-          showSlider === false ? styles.show : ''
-        }`}
-        style={columnCount}
-      >
+    <div className={styles.root}>
+      <div className={styles.cardGrid} style={{ 
+        display: 'grid',
+        gridTemplateColumns: `repeat(${columns}, 1fr)`,
+        gap: `${spacing}px`
+      }}>
         {data && renderCards()}
       </div>
 
-      {showSlider === true && (
+      {showSlider && (
         <div className={styles.mobileSlider}>
           <Slider spacing={spacing}>{data && renderCards()}</Slider>
         </div>

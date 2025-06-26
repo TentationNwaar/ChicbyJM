@@ -21,6 +21,10 @@ const Header = () => {
   const [showSearch, setShowSearch] = useState(false);
   const [search, setSearch] = useState('');
   const [crossVisible, setCrossVisible] = useState(false);
+  const handleSuggestionClick = (suggestion) => {
+    navigate(`/search?q=${suggestion}`);
+    setShowSearch(false);
+  };
 
   const bannerMessage = "BIENVENUE SUR CHIC BY JM !";
   const searchRef = createRef();
@@ -222,16 +226,27 @@ const Header = () => {
         <div className={styles.searchContainer}>
           <form onSubmit={handleSearch}>
             <FormInputField
+              id="search"
               placeholder="Rechercher"
               value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              handleChange={(id, value) => setSearch(value)} // ✅ voilà ce que ton composant attend
               ref={searchRef}
             />
             <button type="submit">Search</button>
           </form>
           <div className={styles.searchSuggestions}>
             {searchSuggestions.map((suggestion) => (
-              <div key={suggestion} className={styles.suggestionItem}>
+              <div 
+                key={suggestion}
+                role="button"
+                tabIndex="0"
+                className={styles.suggestionItem}
+                onClick={() => {
+                  setSearch(suggestion);
+                  navigate(`/search?q=${suggestion}`);
+                  setShowSearch(false);
+                }}
+              >
                 {suggestion}
               </div>
             ))}

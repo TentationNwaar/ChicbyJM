@@ -27,7 +27,13 @@ const LoginPage = () => {
     });
   
     if (error) {
-      setErrorMessage(error.message);
+      const errorTranslations = {
+        "Invalid login credentials": "Adresse e-mail ou mot de passe incorrect.",
+        "Email not confirmed": "Veuillez confirmer votre e-mail avant de vous connecter.",
+      };
+
+      const translatedMessage = errorTranslations[error.message] || "Une erreur est survenue. Veuillez réessayer.";
+      setErrorMessage(translatedMessage);
       return;
     }
   
@@ -130,7 +136,6 @@ const LoginPage = () => {
           <AttributeGrid />
         </div>
       </div>
-      <button onClick={() => window.location.href = '/account'}>🔁 Forcer redirection</button>
     </Layout>
   );
 };

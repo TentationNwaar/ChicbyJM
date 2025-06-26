@@ -1,35 +1,43 @@
 .root {
-    display: flex;
-    flex-direction: column;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .cardGrid {
-    width: 100%;
-    margin: 0 auto;
-    display: grid;
-    gap: 56px 32px;
+  width: 100%;
+  margin: 0 auto;
+  display: grid;   /* ✅ NE PAS mettre grid-template-columns ici ! */
 }
 
 .mobileSlider {
-    /* display: none; */
+  /* display: none; */
 }
 
 .show {
-    display: grid !important;
+  display: grid !important;
+}
+
+/* Responsive : on laisse le JS gérer columns ! 
+   Donc ces overrides ne sont plus nécessaires OU on peut les remplacer par max-width
+*/
+
+@media (max-width: 1148px) {
+  /* plus de grid-template-columns ici ! */
 }
 
 @media (max-width: 800px) {
-    .mobileSlider {
-        display: block;
-    }
-
-    .cardGrid {
-        display: none;
-    }
-
-    .show {
-        grid-template-columns: 1fr 1fr !important;
-        gap: 24px 12px;
-    }
+  .mobileSlider {
+    display: block;
+  }
+  .cardGrid {
+    display: none;  /* Si tu as un slider mobile OK */
+  }
+  .show {
+    /* Le JS gère columns pour .show aussi */
+  }
 }
 
+@media (max-width: 500px) {
+  /* plus de grid-template-columns ici non plus */
+}

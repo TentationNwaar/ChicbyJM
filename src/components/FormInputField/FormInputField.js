@@ -12,7 +12,7 @@ const FormInputField = React.forwardRef((props, ref) => {
     pattern,
     min,
     max,
-    handleChange,
+    handleChange = () => {},
     placeholder,
     disabled,
     note,

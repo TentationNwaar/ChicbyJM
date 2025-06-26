@@ -444,6 +444,10 @@
     right: 10px;
 }
 
+.iconContainer svg {
+  color: black !important;
+}
+
 .miniCartOpen .miniCartContainer {
     display: block !important;
     width: 100%;
