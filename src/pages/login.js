@@ -37,9 +37,11 @@ const LoginPage = () => {
       return;
     }
   
-    if (!data?.user) {
-      setErrorMessage("Erreur inattendue : utilisateur non trouvé.");
-      return;
+    if (data?.user) {
+      localStorage.setItem('user', JSON.stringify({
+        id: data.user.id,
+        email: data.user.email,
+      }));
     }
   
     if (!data.user.confirmed_at) {
@@ -47,7 +49,13 @@ const LoginPage = () => {
       return;
     }
   
-    localStorage.setItem('user', JSON.stringify(data.user));
+    localStorage.setItem('user', JSON.stringify({
+      id: user.id,
+      email: user.email,
+      // ou tout autre champ utile
+    }));
+
+
     localStorage.setItem('access_token', data.session.access_token);
   
     // 👇 This is the key line to add:

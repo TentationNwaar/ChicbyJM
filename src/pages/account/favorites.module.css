@@ -24,6 +24,19 @@
     max-width: 600px;
 }
 
+.noFavoriteContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 20vh; /* à adapter selon ton layout */
+  width: 100%;
+}
+
+.noFavoriteText {
+  font-size: 16px;
+  text-align: center;
+}
+
 .confirmDeleteContainer h4 {
     font-weight: normal;
 }

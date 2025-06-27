@@ -46,6 +46,7 @@ function validateStrongPassword(password) {
   return /(?=.{8,})(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/.test(password);
 }
 
+
 /**
  * Checks for empty string
  * 
@@ -69,13 +70,12 @@ function isEmpty(input) {
     isAuth()
  */
 function isAuth() {
-  const isBrowser = typeof window !== 'undefined';
-  if (isBrowser) {
-    const token = window.localStorage.getItem('key');
-    if (token) return true;
-    else return false;
-  } else {
-    return true;
+  if (typeof window === 'undefined') return false;
+  const user = localStorage.getItem('user');
+  try {
+    return user && JSON.parse(user)?.email; // ou un autre champ obligatoire
+  } catch {
+    return false;
   }
 }
     function toOptimizedImage(imageUrl) {
