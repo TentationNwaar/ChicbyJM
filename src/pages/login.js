@@ -37,28 +37,19 @@ const LoginPage = () => {
       return;
     }
   
-    if (data?.user) {
-      localStorage.setItem('user', JSON.stringify({
-        id: data.user.id,
-        email: data.user.email,
-      }));
-    }
-  
-    if (!data.user.confirmed_at) {
+    if (!data?.user?.confirmed_at) {
       setErrorMessage('Veuillez confirmer votre e-mail avant de vous connecter.');
       return;
     }
-  
-    localStorage.setItem('user', JSON.stringify({
-      id: user.id,
-      email: user.email,
-      // ou tout autre champ utile
-    }));
 
+    // ✅ Stocker les infos utilisateur
+    localStorage.setItem('user', JSON.stringify({
+      id: data.user.id,
+      email: data.user.email,
+    }));
 
     localStorage.setItem('access_token', data.session.access_token);
   
-    // 👇 This is the key line to add:
     console.log('✅ Login success, redirecting to /account');
     setTimeout(() => {
       console.log('✅ Redirection vers /account après délai');

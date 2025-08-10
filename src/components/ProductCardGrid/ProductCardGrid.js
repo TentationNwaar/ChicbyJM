@@ -9,41 +9,61 @@ import Slider from '../Slider';
 const ProductCardGrid = ({ height, columns = 4, data, spacing = 32, showSlider = false }) => {
   const [showQuickView, setShowQuickView] = useState(false);
 
-  const gridStyle = {
-    gridTemplateColumns: `repeat(${columns}, 1fr)`,
-    gap: `${spacing}px`,
-  };
-
   const renderCards = () => {
-    return data.map(({ node }, index) => {
-      if (!node || !node.frontmatter) return null;
+    if (!Array.isArray(data)) return null;
 
-      const { title, price, image } = node.frontmatter;
-      if (!title || !price || !image) return null;
+    return data.map(({ node }, index) => {
+      if (!node) return null;
+
+      // Detect Printful vs frontmatter shape
+      const isPrintful = !!node.thumbnail_url || !!node.slug;
+
+      // Normalized fields
+      const title = isPrintful
+        ? node.name
+        : node.frontmatter?.title;
+
+      const img =
+        (isPrintful ? node.thumbnail_url : node.frontmatter?.image?.childImageSharp?.gatsbyImageData) || null;
+
+      // Prefer Printful variant price
+      const variant = isPrintful && Array.isArray(node.sync_variants) ? node.sync_variants[0] : null;
+
+      const displayPrice = (isPrintful && variant?.retail_price)
+        ? `${variant.retail_price} ${variant?.currency || ''}`.trim()
+        : (
+            typeof node?.frontmatter?.price === 'object' && node.frontmatter.price?.retail_price
+              ? `${node.frontmatter.price.retail_price} ${node.frontmatter.price.currency || ''}`.trim()
+              : (typeof node?.frontmatter?.price === 'string' ? node.frontmatter.price : '')
+          ) || '';
+
+      const originalPrice =
+        node?.originalPrice && typeof node.originalPrice === 'object' &&
+        node.originalPrice.retail_price && node.originalPrice.currency
+          ? `${node.originalPrice.retail_price} ${node.originalPrice.currency}`
+          : (typeof node?.originalPrice === 'string' ? node.originalPrice : null);
+
+      // Correct product link for Printful pages created in gatsby-node.js
+      const link = isPrintful
+        ? `/en/product/${(node.slug || '').replace(/^\/+|\/+$/g, '')}/`
+        : node.fields?.slug || null;
+
+      // Minimal guards
+      if (!title || !img) return null;
 
       return (
         <ProductCard
-          key={index}
+          key={node.id || index}
           height={height}
-          price={price && typeof price === 'object' && price.retail_price && price.currency 
-          ? `${price.retail_price} ${price.currency}` 
-          : typeof price === 'string' 
-            ? price 
-            : 'Prix indisponible'}
+          price={displayPrice}
           imageAlt={title}
           name={title}
-          image={image.childImageSharp?.gatsbyImageData}
-          meta={node.meta}
-          originalPrice={
-            node.originalPrice && typeof node.originalPrice === 'object' &&
-            node.originalPrice.retail_price && node.originalPrice.currency
-              ? `${node.originalPrice.retail_price} ${node.originalPrice.currency}`
-              : typeof node.originalPrice === 'string'
-                ? node.originalPrice
-                : null
-          }
-          link={node.fields.slug}
+          image={img}
+          meta={''}
+          originalPrice={originalPrice}
+          link={link}
           showQuickView={() => setShowQuickView(true)}
+          productId={node.id}
         />
       );
     });
@@ -51,17 +71,13 @@ const ProductCardGrid = ({ height, columns = 4, data, spacing = 32, showSlider =
 
   return (
     <div className={styles.root}>
-      <div className={styles.cardGrid} style={{ 
-        display: 'grid',
-        gridTemplateColumns: `repeat(${columns}, 1fr)`,
-        gap: `${spacing}px`
-      }}>
-        {data && renderCards()}
+      <div className={styles.cardGrid}>
+        {renderCards()}
       </div>
 
       {showSlider && (
         <div className={styles.mobileSlider}>
-          <Slider spacing={spacing}>{data && renderCards()}</Slider>
+          <Slider spacing={spacing}>{renderCards()}</Slider>
         </div>
       )}
 

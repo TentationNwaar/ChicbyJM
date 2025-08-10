@@ -12,6 +12,13 @@
   grid-template-columns: repeat(3, 3fr); /* Par défaut : 4 colonnes */
 }
 
+.searchLabels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+
 .card {
   display: flex;
   flex-direction: column;

@@ -7,7 +7,9 @@
 .cardGrid {
   width: 100%;
   margin: 0 auto;
-  display: grid;   /* ✅ NE PAS mettre grid-template-columns ici ! */
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
 }
 
 .mobileSlider {
@@ -18,12 +20,52 @@
   display: grid !important;
 }
 
+.priceAndFavorite {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.favoriteButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  color: red;
+}
+
+.productTitle {
+  font-weight: bold;
+  font-size: 21px;
+  text-align: center;
+  margin-top: 12px;
+  margin-bottom: 6px; /* more separation from price */
+  margin-left: 0;
+  margin-right: 0;
+  display: block;
+}
+
+.productPrice {
+  font-weight: bold;
+  font-size: 18px;
+  display: block;
+  text-align: center;
+  color: #333;
+  margin-top: 0;
+}
+
 /* Responsive : on laisse le JS gérer columns ! 
    Donc ces overrides ne sont plus nécessaires OU on peut les remplacer par max-width
 */
 
 @media (max-width: 1148px) {
   /* plus de grid-template-columns ici ! */
+}
+
+@media (max-width: 1024px) {
+  .cardGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (max-width: 800px) {
@@ -35,6 +77,12 @@
   }
   .show {
     /* Le JS gère columns pour .show aussi */
+  }
+}
+
+@media (max-width: 600px) {
+  .cardGrid {
+    grid-template-columns: 1fr;
   }
 }
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { graphql, useStaticQuery, Link } from 'gatsby';
+import { graphql, useStaticQuery } from 'gatsby';
 import * as styles from './shop.module.css';
 
 import Banner from '../components/Banner';
@@ -136,25 +136,6 @@ const ShopPage = () => {
           {/* Liste de produits */}
           <div className={styles.productContainer}>
             <ProductCardGrid data={sortedProducts} />
-          </div>
-
-          {/* Liste d’images cliquables */}
-          <div className={styles.cardGrid}>
-            {sortedProducts.map(({ node }) => {
-              const firstVariant = node.sync_variants?.[0];
-
-              return (
-                <div key={node.id} className={styles.card}>
-                  <Link to={`/en/product/${node.slug}/`}>
-                    <img src={node.thumbnail_url} alt={node.name} className={styles.cardImage} />
-                    <h2 className={styles.cardTitle}>{node.name}</h2>
-                    <p className={styles.productPrice}>
-                      {firstVariant ? `${firstVariant.retail_price} ${firstVariant.currency}` : 'Prix non disponible'}
-                    </p>
-                  </Link>
-                </div>
-              );
-            })}
           </div>
 
           <div className={styles.loadMoreContainer}>

@@ -1,11 +1,12 @@
 const path = require("path");
+const fs = require("fs");
 const fetch = require("node-fetch");
 require("dotenv").config({ path: `.env.${process.env.NODE_ENV}` });
 
-exports.createPages = async ({ actions, graphql }) => {
+exports.createPages = async ({ actions, graphql, reporter }) => {
   const { createPage } = actions;
 
-  //  Génération des pages produits Printful
+  // 1) Pages produits Printful
   const resultPrintful = await graphql(`
     query {
       allPrintfulProduct {
@@ -19,20 +20,67 @@ exports.createPages = async ({ actions, graphql }) => {
     }
   `);
 
-  if (resultPrintful.errors) throw resultPrintful.errors;
+  if (resultPrintful.errors) {
+    reporter.panicOnBuild(`GraphQL error in createPages:`, resultPrintful.errors);
+    return;
+  }
 
-  resultPrintful.data.allPrintfulProduct.nodes.forEach((product) => {
-    if (!product.slug) {
-      console.error("⚠️ SLUG UNDEFINED:", product);
+  const products = resultPrintful?.data?.allPrintfulProduct?.nodes || [];
+  let createdCount = 0;
+
+  products.forEach((product) => {
+    const rawSlug = (product?.slug || "").trim();
+    if (!rawSlug) {
+      reporter.warn(`⚠️  Missing slug for product id=${product?.id} name="${product?.name}" — skipping page creation.`);
       return;
     }
 
+    const safeSlug = rawSlug.replace(/^\/+|\/+$/g, ""); // pas de / en début/fin
+    const productPath = `/en/product/${safeSlug}/`;
+
     createPage({
-      path: `/en/product/${product.slug}/`, // Chemin de la page produit
-      component: require.resolve("./src/templates/product-template.js"), // Template de la page produit
+      path: productPath,
+      component: require.resolve("./src/templates/product-template.js"),
       context: { id: String(product.id) },
     });
+    createdCount++;
   });
+
+  reporter.info(`✅ Product pages created: ${createdCount}`);
+
+  // Redirect any legacy /product/* to /en/product/* so DevLoader never hits a missing page
+  actions.createRedirect({
+    fromPath: `/product/*`,
+    toPath: `/en/product/:splat/`,
+    isPermanent: false,
+    redirectInBrowser: true,
+  });
+
+  // Ensure trailing slash version
+  actions.createRedirect({
+    fromPath: `/en/product/:slug`,
+    toPath: `/en/product/:slug/`,
+    isPermanent: false,
+    redirectInBrowser: true,
+  });
+
+  // 2) Route client-only /account/* (optionnelle, seulement si le fichier existe)
+  const accountCandidatePaths = [
+    path.resolve("./src/pages/account.js"),
+    path.resolve("./src/pages/account/index.js"),
+  ];
+  const accountFile = accountCandidatePaths.find((p) => fs.existsSync(p));
+
+  if (accountFile) {
+    createPage({
+      path: `/account/`,
+      matchPath: `/account/*`,
+      component: accountFile,
+    });
+    reporter.info(`✅ Client-only route enabled at /account/* using ${path.relative(process.cwd(), accountFile)}`);
+  } else {
+    reporter.info(`ℹ️  No src/pages/account(.js|/index.js) — skipping /account/* client route.`);
+  }
 };
 
 //  Suppression ESLint & gestion du CSS
@@ -44,14 +92,16 @@ exports.onCreateWebpackConfig = ({ stage, actions, getConfig }) => {
       }),
     ],
   });
+
   if (stage === "develop" || stage === "build-javascript") {
     const config = getConfig();
 
     const miniCssExtractPlugin = config.plugins.find(
-      (plugin) => plugin.constructor.name === "MiniCssExtractPlugin"
+      (plugin) => plugin.constructor && plugin.constructor.name === "MiniCssExtractPlugin"
     );
     if (miniCssExtractPlugin) miniCssExtractPlugin.options.ignoreOrder = true;
 
+    // Retire eslint-loader s’il traîne
     config.module.rules = config.module.rules.filter((rule) => {
       if (!rule.use) return true;
       if (Array.isArray(rule.use)) return !rule.use.some((u) => u.loader && u.loader.includes("eslint-loader"));
@@ -60,7 +110,7 @@ exports.onCreateWebpackConfig = ({ stage, actions, getConfig }) => {
       return true;
     });
 
-    config.plugins = config.plugins.filter(plugin => {
+    config.plugins = config.plugins.filter((plugin) => {
       const pluginName = plugin.constructor && plugin.constructor.name;
       return !(pluginName && pluginName.includes("ESLint"));
     });
@@ -69,12 +119,12 @@ exports.onCreateWebpackConfig = ({ stage, actions, getConfig }) => {
   }
 };
 
-//  Importation des produits Printful
-exports.sourceNodes = async ({ actions, createNodeId, createContentDigest }) => {
+// Importation des produits Printful
+exports.sourceNodes = async ({ actions, createNodeId, createContentDigest, reporter }) => {
   const { createNode } = actions;
 
   try {
-    console.log(" Récupération des produits depuis Printful...");
+    reporter.info("🛒 Récupération des produits depuis Printful…");
     let allProducts = [];
     let currentPage = 1;
     let hasMore = true;
@@ -84,14 +134,14 @@ exports.sourceNodes = async ({ actions, createNodeId, createContentDigest }) => 
         headers: { Authorization: `Bearer ${process.env.PRINTFUL_API_KEY}` },
       });
 
-      if (!response.ok) throw new Error(`❌ Erreur API Printful: ${response.statusText}`);
+      if (!response.ok) throw new Error(`❌ Erreur API Printful: ${response.status} ${response.statusText}`);
       const data = await response.json();
       allProducts = allProducts.concat(data.result);
       hasMore = data.paging.offset + data.paging.limit < data.paging.total;
       currentPage++;
     }
 
-    console.log(`✅ ${allProducts.length} produits trouvés.`);
+    reporter.info(`✅ ${allProducts.length} produits trouvés.`);
 
     for (const product of allProducts) {
       const detailsResponse = await fetch(`https://api.printful.com/sync/products/${product.id}`, {
@@ -99,46 +149,54 @@ exports.sourceNodes = async ({ actions, createNodeId, createContentDigest }) => 
       });
 
       if (!detailsResponse.ok) {
-        console.error(`❌ Erreur récupération produit ${product.id}: ${detailsResponse.statusText}`);
+        reporter.warn(`❌ Erreur récupération produit ${product.id}: ${detailsResponse.status} ${detailsResponse.statusText}`);
         continue;
       }
 
       const detailsData = await detailsResponse.json();
       const productDetails = detailsData.result.sync_product;
-      const baseProductId = detailsData.result.sync_variants.length > 0 ? detailsData.result.sync_variants[0].product.variant_id : null;
-      let sizeGuide = null;
+      const variants = detailsData.result.sync_variants || [];
+      const baseProductId = variants.length > 0 ? variants[0].product.variant_id : null;
 
+      let sizeGuide = null;
       if (baseProductId) {
         try {
           const sizeResponse = await fetch(`https://api.printful.com/products/${baseProductId}`, {
             headers: { Authorization: `Bearer ${process.env.PRINTFUL_API_KEY}` },
           });
-
           if (sizeResponse.ok) {
             const sizeData = await sizeResponse.json();
             sizeGuide = sizeData.result.product.dimensions || null;
           }
         } catch (error) {
-          console.error(`❌ Erreur récupération guide des tailles pour ${product.id}:`, error);
+          reporter.warn(`❌ Erreur récupération guide des tailles pour ${product.id}: ${error?.message}`);
         }
       }
+
+      // Normalise le slug
+      const slug = (product.name || "")
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[̀-ͯ]/g, "")
+        .replace(/\s+/g, "-")
+        .replace(/[^a-z0-9-]/g, "");
 
       createNode({
         id: createNodeId(`printful-product-${product.id}`),
         name: product.name,
-        slug: product.name.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, ""),
+        slug,
         description: productDetails?.description || "Aucune description disponible.",
         thumbnail_url: product.thumbnail_url,
-        sync_variants: detailsData.result.sync_variants,
+        sync_variants: variants,
         size_guide: sizeGuide,
         parent: null,
         children: [],
-        internal: { type: "PrintfulProduct", contentDigest: createContentDigest(productDetails) },
+        internal: { type: "PrintfulProduct", contentDigest: createContentDigest(productDetails || {}) },
       });
     }
-    console.log("✅ Importation réussie !");
+    reporter.info("✅ Importation réussie !");
   } catch (error) {
-    console.error("❌ Erreur globale Printful:", error);
+    reporter.panicOnBuild("❌ Erreur globale Printful:", error);
   }
 };
 

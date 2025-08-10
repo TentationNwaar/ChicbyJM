@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { graphql, useStaticQuery, Link } from 'gatsby';
+import { graphql, useStaticQuery } from 'gatsby';
 import * as styles from './shop.module.css';
 
 import Banner from '../components/Banner';
-import Breadcrumbs from '../components/Breadcrumbs';
-import CardController from '../components/CardController';
 import Container from '../components/Container';
 import Chip from '../components/Chip';
 import Icon from '../components/Icons/Icon';
@@ -12,7 +10,6 @@ import Layout from '../components/Layout';
 import LayoutOption from '../components/LayoutOption';
 import ProductCardGrid from '../components/ProductCardGrid';
 import Button from '../components/Button';
-import Config from '../config.json';
 
 const ShopPage = () => {
   // 1️⃣ Requête GraphQL pour récupérer les produits
@@ -135,24 +132,6 @@ const ShopPage = () => {
             <ProductCardGrid data={sortedProducts} />
           </div>
 
-          {/* Liste d’images cliquables */}
-          <div className={styles.cardGrid}>
-            {sortedProducts.map(({ node }) => {
-              const firstVariant = node.sync_variants?.[0];
-
-              return (
-                <div key={node.id} className={styles.card}>
-                  <Link to={`/en/product/${node.slug}/`}>
-                    <img src={node.thumbnail_url} alt={node.name} className={styles.cardImage} />
-                    <h2 className={styles.cardTitle}>{node.name}</h2>
-                    <p className={styles.productPrice}>
-                      {firstVariant ? `${firstVariant.retail_price} ${firstVariant.currency}` : 'Prix non disponible'}
-                    </p>
-                  </Link>
-                </div>
-              );
-            })}
-          </div>
 
           <div className={styles.loadMoreContainer}>
             <span>{displayedItems} sur {totalItems}</span>

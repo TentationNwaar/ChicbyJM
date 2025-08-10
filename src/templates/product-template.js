@@ -3,8 +3,7 @@ import { graphql } from "gatsby";
 import Layout from "../components/Layout";
 import { CartContext } from "../context/CartContext";
 import "./product-template.css";
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
+import { supabase } from "../lib/supabaseClient";
 
 function parseVariantName(fullName) {
   const result = { color: "", size: "" };
@@ -22,8 +21,6 @@ function parseVariantName(fullName) {
   return result;
 }
 
-const slugify = (str) =>
-  str.toLowerCase().replace(/[^a-z0-9]/g, "-").replace(/-+/g, "-");
 
 function getProductImage(product, variant) {
   if (!variant || !variant.files || variant.files.length === 0) {
@@ -51,32 +48,10 @@ const ProductTemplate = ({ data }) => {
   const product = data.printfulProduct;
   const variants = product.sync_variants || [];
 
-  const productSlug = slugify(product.name);
-  const customImages = [1, 2, 3].map(
-    (i) => `/products/${productSlug}/${i}.jpg`
-  );
-  const allImages = [
-    ...customImages,
-    ...variants
-      .flatMap((variant) => variant.files || [])
-      .filter(
-        (file) =>
-          file.preview_url &&
-          !file.filename.includes("mockup") &&
-          !file.filename.includes("logo")
-      )
-      .map((file) => file.preview_url),
-  ];
 
   const isBrowser = typeof window !== "undefined";
   const cartContext = isBrowser ? useContext(CartContext) : null;
   const addToCart = cartContext ? cartContext.addToCart : null;
-
-  if (!isBrowser) {
-    return <p>Chargement...</p>;
-  }
-
-  const productName = product.name.split("/")[0];
 
   const extractedVariants = variants.map((variant) =>
     parseVariantName(variant.name)
@@ -92,6 +67,14 @@ const ProductTemplate = ({ data }) => {
   const [selectedSize, setSelectedSize] = useState(() => availableSizes[0] || null);
   const [selectedImage, setSelectedImage] = useState(product.thumbnail_url);
   const [isDescriptionOpen, setIsDescriptionOpen] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [toast, setToast] = useState(null);
+
+  useEffect(() => {
+    if (!toast) return;
+    const t = setTimeout(() => setToast(null), 1800);
+    return () => clearTimeout(t);
+  }, [toast]);
 
   useEffect(() => {
     if (!selectedColor || !selectedSize) {
@@ -129,6 +112,10 @@ const ProductTemplate = ({ data }) => {
   }, [selectedColor, selectedSize, variants, product]);
 
   const handleAddToCart = () => {
+    if (!addToCart) {
+      console.warn('addToCart indisponible (SSR/hydration)');
+      return;
+    }
     const selectedVariant = variants.find((variant) => {
       const variantName = parseVariantName(variant.name);
       return (
@@ -151,8 +138,107 @@ const ProductTemplate = ({ data }) => {
     alert("Produit ajouté au panier !");
   };
 
+  const handleAddToFavorites = async () => {
+    const rawUser = localStorage.getItem("user");
+    if (!rawUser) {
+      setToast({ type: 'error', text: "Connecte-toi pour ajouter aux favoris." });
+      return;
+    }
+    const user = JSON.parse(rawUser);
+
+    // Trouver la variante choisie (ou fallback)
+    const selectedVariant = variants.find((v) => {
+      const parsed = parseVariantName(v.name);
+      return (
+        (!selectedColor || parsed.color?.toLowerCase() === selectedColor?.toLowerCase()) &&
+        (!selectedSize || parsed.size?.toLowerCase() === selectedSize?.toLowerCase())
+      );
+    }) || variants[0];
+
+    // On a déjà selectedImage calculée dans ton useEffect
+    const payload = {
+      user_id: user.id,
+      product_id: product.id,
+      variant_id: selectedVariant?.id?.toString() || null,
+      color: selectedColor || null,
+      size: selectedSize || null,
+      image_url: selectedImage || product.thumbnail_url,
+    };
+
+    // Toggle: si existe -> delete / sinon -> insert
+    const { data: existing } = await supabase
+      .from('favorites')
+      .select('id')
+      .eq('user_id', user.id)
+      .eq('product_id', product.id)
+      .maybeSingle();
+
+    if (existing?.id) {
+      const { error: delErr } = await supabase
+        .from('favorites')
+        .delete()
+        .eq('id', existing.id);
+      if (delErr) {
+        console.error(delErr);
+        setToast({ type: 'error', text: "Erreur lors du retrait des favoris." });
+        return;
+      }
+      setIsFavorite(false);
+      setToast({ type: 'ok', text: "Retiré des favoris." });
+      return;
+    }
+
+    const { error } = await supabase.from('favorites').insert(payload);
+    if (error) {
+      console.error(error);
+      setToast({ type: 'error', text: "Erreur lors de l’ajout aux favoris." });
+      return;
+    }
+    setIsFavorite(true);
+    setToast({ type: 'ok', text: "Ajouté aux favoris !" });
+  };
+
+  useEffect(() => {
+    const checkIfFavorite = async () => {
+      const rawUser = localStorage.getItem("user");
+      if (!rawUser) return;
+
+      const user = JSON.parse(rawUser);
+
+      const { data } = await supabase
+        .from("favorites")
+        .select("*")
+        .eq("user_id", user.id)
+        .eq("product_id", product.id)
+        .maybeSingle();
+
+      if (data) {
+        setIsFavorite(true);
+      }
+    };
+
+    checkIfFavorite();
+  }, [product.id]);
+
   return (
     <Layout>
+      {toast && (
+      <div style={{
+        position: 'fixed',
+        bottom: 24,
+        left: '50%',
+        transform: 'translateX(-50%)',
+        background: '#b59f66', // same as .add-to-cart background
+        color: '#fff',
+        padding: '12px 20px',
+        borderRadius: 25,
+        boxShadow: '0 4px 10px rgba(0,0,0,0.1)',
+        fontWeight: 'bold',
+        zIndex: 9999
+      }}>
+        {toast.text}
+      </div>
+    )}
       <div className="product-container">
         <div className="product-images-container">
           <img
@@ -164,8 +250,8 @@ const ProductTemplate = ({ data }) => {
         </div>
 
         <div className="product-info">
-          <h1 className="product-title">{productName}</h1>
-          <p className="product-price">CHF {variants[0]?.retail_price || "N/A"}</p>
+          <h1 className="product-title">{product.name.split("/")[0]}</h1>
+          <p className="product-price"> CHF {variants[0]?.retail_price || "N/A"}</p>
           <p className="tax-info">Taxes incluses.</p>
 
           {availableColors.length > 0 && (
@@ -209,6 +295,9 @@ const ProductTemplate = ({ data }) => {
             <button className="description-button" onClick={() => setIsDescriptionOpen(true)}>
               Description
             </button>
+            <button className="description-button" onClick={handleAddToFavorites}>
+              {isFavorite ? "Ajouté aux favoris ❤️" : "Ajouter aux favoris"}
+            </button>
           </div>
         </div>
       </div>
@@ -216,10 +305,7 @@ const ProductTemplate = ({ data }) => {
       {isDescriptionOpen && (
         <div className={`description-overlay ${isDescriptionOpen ? "open" : ""}`}>
           <div className="description-panel">
-            <button
-              className="close-description"
-              onClick={() => setIsDescriptionOpen(false)}
-            >
+            <button className="close-description" onClick={() => setIsDescriptionOpen(false)}>
               ×
             </button>
             <h2>Description</h2>

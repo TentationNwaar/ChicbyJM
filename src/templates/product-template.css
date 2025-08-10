@@ -17,6 +17,15 @@
   text-align: center;
 }
 
+.favorite-button {
+  background-color: transparent;
+  border: 2px solid red;
+  color: red;
+  padding: 10px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
 /* Boutons de sélection de couleur */
 .product-colors {
   margin: 15px 0;

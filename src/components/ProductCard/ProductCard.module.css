@@ -2,38 +2,100 @@
     width: 100%;
 }
 
-.detailsContainer {
-    margin-top: 16px;
-}
-
-.imageContainer {
-    position: relative;
-    cursor: pointer;
-}
-
 .root img {
     display: block;
-    width: 100%;
-    object-fit: fill;
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    object-fit: contain;
     border-radius: 1px;
 }
 
+.imageMax {
+  width: 300px !important;
+  height: 300px !important;
+  max-width: 300px !important;
+  max-height: 300px !important;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+}
+
+.imageContainer {
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.detailsContainer {
+    text-align: center;
+}
+
+.image {
+  max-width: 300px;
+  max-height: 300px;
+  width: 100%;
+  height: auto;
+  object-fit: contain; /* pour ne pas déformer */
+  margin: 0 auto;
+  display: block;
+}
+
+.cardGrid img {
+  max-width: 300px;
+  max-height: 300px;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  margin: 0 auto;
+  display: block;
+}
+
 .productName {
-    font-size: 14px;
-    line-height: 17px;
+    display: block;
+    margin-top: 10px;
+    font-family: 'Inria Serif', serif;
+    font-size: 21px;
+    line-height: 1.4;
     color: var(--standard-black);
+    font-weight: 400;
+    text-align: center;
+    margin: 24px 0 18px 0; /* increased top and bottom margin for breathing room */
+}
+
+.priceAndFavorite {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.favoriteButton {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: red;
 }
 
 .prices {
-    margin-top: 8px;
-    font-size: 14px;
-    line-height: 17px;
+    margin-top: 0;              /* sits right under the title */
+    font-family: 'Inria Serif', serif;
+    font-size: 18px;
+    line-height: 1.25;
+    font-weight: 700;
+    text-align: center;
+    color: var(--standard-black);
+    display: block;             /* force its own line */
 }
 
 .prices span {
-    font-size: 14px;
-    line-height: 17px;
-    font-weight: 500;
+    font-size: inherit;
+    line-height: inherit;
+    font-weight: inherit;
 }
 
 .salePrice {
@@ -52,7 +114,7 @@
 }
 
 .prices > span:first-child {
-    margin-right: 16px;
+    margin-right: 4px;
 }
 
 .bagContainer {
@@ -79,18 +141,42 @@
 }
 
 .heartContainer {
-    position: absolute;
-    top: 32px;
-    right: 32px;
-
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease-in-out;
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 1000;
+  /* Assurez-vous que l'icône est toujours visible */
+  opacity: 1;
+  visibility: visible;
+  /* Ajoutez des styles pour l'icône elle-même si Icon ne les définit pas */
+  display: flex; /* Pour centrer l'icône si elle est un enfant */
+  align-items: center;
+  justify-content: center;
+  width: 30px; /* Taille de la zone cliquable du cœur */
+  height: 30px; /* Taille de la zone cliquable du cœur */
+  background-color: rgba(255, 255, 255, 0.7); /* Petit fond semi-transparent pour le rendre plus visible */
+  border-radius: 50%; /* Pour un cercle */
+  cursor: pointer;
 }
 
-.root:hover .heartContainer {
-    opacity: 1;
-    visibility: visible;
+/* Styles pour l'icône SVG à l'intérieur de heartContainer */
+.heartContainer svg {
+  width: 20px; /* Taille de l'icône */
+  height: 20px; /* Taille de l'icône */
+  color: red; /* Couleur par défaut du cœur */
+}
+
+/* Si vous avez une version "fill" qui doit être différente */
+.heartContainer svg[symbol="heartFill"] {
+  color: red; /* Couleur du cœur rempli */
+}
+
+.heartFillContainer.show {
+  display: block;
+}
+
+.heartFillContainer.hide {
+  display: none;
 }
 
 .heartFillContainer {
@@ -127,6 +213,10 @@
         opacity: 1;
         visibility: visible;
     }
+
+    .root {
+        width: 33.3333%;
+    }
 }
 
 @media (max-width: 600px) {
@@ -140,13 +230,29 @@
 
     .productName {
         font-weight: normal;
+        font-family: 'Inria Serif', serif;
         font-size: 13px;
         line-height: 16px;
+        text-align: center;
+        margin-top: 16px;
+    }
+
+    .prices {
+        font-weight: bold;
+        font-family: 'Inria Serif', serif;
+        font-size: 14px;
+        line-height: 17px;
+        text-align: center;
+        margin-top: 12px;
     }
 
     .prices span {
         font-size: 13px;
         line-height: 16px;
+    }
+
+    .root {
+        width: 33.3333%;
     }
 }
 
@@ -172,5 +278,9 @@
     .heartContainer {
         top: 32px;
         right: 16px;
+    }
+
+    .root {
+        width: 33.3333%;
     }
 }
