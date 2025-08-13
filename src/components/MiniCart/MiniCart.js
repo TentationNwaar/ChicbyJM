@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 import { Link } from 'gatsby';
 import { CartContext } from '../../context/CartContext';
 import * as styles from './MiniCart.module.css';
-import { useEffect } from 'react';
 
 const MiniCart = ({ closeCart }) => {
   const context = useContext(CartContext);
@@ -20,7 +19,7 @@ const { cart } = context;
   return (
     <div className={styles.miniCart}>
       <button className={styles.closeButton} onClick={closeCart}>×</button>
-      <h2>Mon Panier</h2>
+      <p className={styles.cartTitle}>Mon Panier</p>
 
       {cart.length === 0 ? (
         <p>Votre panier est vide.</p>

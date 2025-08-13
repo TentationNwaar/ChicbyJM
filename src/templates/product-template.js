@@ -129,8 +129,8 @@ const ProductTemplate = ({ data }) => {
     addToCart({
       id: variant.id,
       name: product.name,
-      color: selectedColor || "Aucune",
-      size: selectedSize || "Aucune",
+      color: selectedColor || "Non précisé",
+      size: selectedSize || "Non précisé",
       price: parseFloat(variant.retail_price) || 0,
       image: getProductImage(product, variant),
     });

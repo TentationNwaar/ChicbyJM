@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { CartContext } from "../context/CartContext";
 import Layout from "../components/Layout";
 import * as styles from "./cart.module.css";
+import { navigate } from 'gatsby';
 
 const CartPage = () => {
   const context = useContext(CartContext);
@@ -86,7 +87,9 @@ const CartPage = () => {
                 <span><strong>CHF {(total).toFixed(2)}</strong></span>
               </div>
 
-              <button className={styles.checkoutButton}>VERS LA FINALISATION DE LA COMMANDE</button>
+              <button className={styles.checkoutButton} onClick={() => (window.location.href = "/checkout")}>
+                VERS LA FINALISATION DE LA COMMANDE
+              </button>
             </div>
           </div>
         )}

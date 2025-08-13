@@ -142,7 +142,7 @@ const FavoritesPage = () => {
                     />
                     <h2 className={styles.cardTitle}>{product?.name || 'Produit'}</h2>
                     <span className={styles.productPrice}>
-                      CHF {variant?.retail_price || '—'}
+                      {variant?.retail_price || '—'} CHF
                     </span>
                   </li>
                 );
