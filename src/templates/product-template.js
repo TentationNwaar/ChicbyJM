@@ -127,12 +127,17 @@ const ProductTemplate = ({ data }) => {
     const variant = selectedVariant || variants[0];
 
     addToCart({
-      id: variant.id,
+      // identifiants utiles pour Printful & suivi
+      product_id: product.id,
+      sync_variant_id: Number(variant.id),   // <= Printful sync_variant.id
+      id: String(variant.id),                // pour compat éventuelle de ton CartContext
       name: product.name,
       color: selectedColor || "Non précisé",
       size: selectedSize || "Non précisé",
       price: parseFloat(variant.retail_price) || 0,
+      currency: variant.currency || "CHF",
       image: getProductImage(product, variant),
+      quantity: 1,
     });
 
     alert("Produit ajouté au panier !");
@@ -251,7 +256,7 @@ const ProductTemplate = ({ data }) => {
 
         <div className="product-info">
           <h1 className="product-title">{product.name.split("/")[0]}</h1>
-          <p className="product-price"> CHF {variants[0]?.retail_price || "N/A"}</p>
+          <p className="product-price">{variants[0]?.retail_price || "N/A"} CHF</p>
           <p className="tax-info">Taxes incluses.</p>
 
           {availableColors.length > 0 && (
