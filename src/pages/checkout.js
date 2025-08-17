@@ -187,10 +187,10 @@ export default function CheckoutPage() {
 
   return (
     <Layout>
-      <div style={{ padding: "24px 16px" }}>
-        <h1>Paiement</h1>
+      <div style={{ textAlign: "center", maxWidth: 600, margin: "0 auto" }}>
+        <h1 style={{ fontSize: "2rem", marginBottom: "1rem", fontWeight: 700 }}>Paiement</h1>
         {!clientSecret ? (
-          <p>Préparation du paiement…</p>
+          <p style={{ fontSize: "1.1rem", color: "#555" }}>Préparation du paiement…</p>
         ) : !stripePromise ? (
           <p style={{ color: "crimson" }}>
             Clé publique Stripe manquante. Vérifie la variable GATSBY_STRIPE_PUBLISHABLE_KEY.
