@@ -3,16 +3,15 @@ import { graphql, useStaticQuery } from 'gatsby';
 import * as styles from './shop.module.css';
 
 import Banner from '../components/Banner';
-import Breadcrumbs from '../components/Breadcrumbs';
-import CardController from '../components/CardController';
 import Container from '../components/Container';
 import Chip from '../components/Chip';
 import Icon from '../components/Icons/Icon';
 import Layout from '../components/Layout';
 import LayoutOption from '../components/LayoutOption';
 import ProductCardGrid from '../components/ProductCardGrid';
-import Button from '../components/Button';
 import Config from '../config.json';
+import FiltersPanel from '../components/FiltersPanel';
+import { filterAndSort } from '../utils/catalogFilters';
 
 const ShopPage = () => {
   // 1️⃣ Requête GraphQL pour récupérer les produits
@@ -45,6 +44,22 @@ const ShopPage = () => {
   const [activeFilters, setActiveFilters] = useState({});
   const [sortOption, setSortOption] = useState(null);
 
+  // ✅ Toggle d’une valeur de filtre (même logique que shopTous)
+  const toggleFilterValue = (category, name) => {
+    setActiveFilters((prev) => {
+      const current = new Set(prev[category] || []);
+      if (current.has(name)) current.delete(name);
+      else current.add(name);
+
+      const next = { ...prev };
+      if (current.size > 0) next[category] = Array.from(current);
+      else delete next[category];
+      return next;
+    });
+  };
+
+  const resetFilters = () => setActiveFilters({});
+
   // 4️⃣ Fermer le panneau de filtres via ESC
   useEffect(() => {
     const escapeHandler = (e) => {
@@ -54,47 +69,41 @@ const ShopPage = () => {
     return () => window.removeEventListener('keydown', escapeHandler);
   }, []);
 
-  // 5️⃣ Fonction pour retirer un filtre actif
+  // 5️⃣ Retirer un chip actif
   const removeFilter = (categoryName, value) => {
-    setActiveFilters((prevFilters) => {
-      const newFilters = { ...prevFilters };
-
-      // Vérifier si la catégorie est bien définie
-      if (!newFilters[categoryName]) return prevFilters;
-
-      // Retirer l'élément sélectionné
-      newFilters[categoryName] = newFilters[categoryName].filter((val) => val !== value);
-
-      // Supprimer la catégorie si elle devient vide
-      if (newFilters[categoryName].length === 0) {
-        delete newFilters[categoryName];
-      }
-
-      return newFilters;
+    setActiveFilters((prev) => {
+      const next = { ...prev };
+      if (!next[categoryName]) return prev;
+      next[categoryName] = next[categoryName].filter((v) => v !== value);
+      if (next[categoryName].length === 0) delete next[categoryName];
+      return next;
     });
   };
 
-  // 6️⃣ Filtrer les produits en ne conservant que ceux dont le nom contient "femme" ou "unisexe"
-  const accessoryKeywords = ['sac', 'chapeau', 'ceinture', 'bijou', 'porte-clé', 'montre', 'casquette', 'bracelet', 'écharpe', 'gants', 'bob', 'bonnet'];
+  // 6️⃣ Base accessoires uniquement (nom de variante)
+  const accessoryKeywords = [
+    'sac','chapeau','ceinture','bijou','porte-clé','montre','casquette',
+    'bracelet','écharpe','gants','bob','bonnet','beanie','hat'
+  ];
 
-  const filteredProducts = products.filter(({ node }) => {
-    return node.sync_variants.some(variant =>
-      accessoryKeywords.some(keyword => variant.name.toLowerCase().includes(keyword))
+  const baseProducts = React.useMemo(() => {
+    return products.filter(({ node }) =>
+      Array.isArray(node.sync_variants) &&
+      node.sync_variants.some(variant => {
+        const v = (variant?.name || '').toLowerCase();
+        return accessoryKeywords.some(k => v.includes(k));
+      })
     );
-  });
+  }, [products]);
 
-  // 7️⃣ Trier les produits filtrés selon `sortOption`
-  const sortedProducts = [...filteredProducts];
-  if (sortOption === 'priceAsc') {
-    sortedProducts.sort((a, b) => getMinPrice(a.node.sync_variants) - getMinPrice(b.node.sync_variants));
-  } else if (sortOption === 'priceDesc') {
-    sortedProducts.sort((a, b) => getMinPrice(b.node.sync_variants) - getMinPrice(a.node.sync_variants));
-  } else if (sortOption === 'alphabet') {
-    sortedProducts.sort((a, b) => a.node.name.localeCompare(b.node.name, 'fr', { sensitivity: 'base' }));
-  }
+  // 7️⃣ Filtrer + trier via util partagé (identique à shopTous)
+  const sortedProducts = React.useMemo(
+    () => filterAndSort(baseProducts, activeFilters, sortOption),
+    [baseProducts, activeFilters, sortOption]
+  );
 
-  // 8️⃣ UI - Nombre d’articles
-  const totalItems = products.length;
+  // 8️⃣ Compteurs
+  const totalItems = baseProducts.length;
   const displayedItems = sortedProducts.length;
 
   return (
@@ -108,7 +117,11 @@ const ShopPage = () => {
           <div className={styles.metaContainer}>
             <span className={styles.itemCount}>{displayedItems} articles</span>
             <div className={styles.controllerContainer}>
-              <div className={styles.iconContainer} role="presentation" onClick={() => setShowFilter(!showFilter)}>
+              <div
+                className={styles.iconContainer}
+                role="presentation"
+                onClick={() => setShowFilter(!showFilter)}
+              >
                 <Icon symbol="filter" />
                 <span>Filtrer</span>
               </div>
@@ -124,23 +137,36 @@ const ShopPage = () => {
             </div>
           </div>
 
-          {/* Filtres actifs affichés */}
+          {showFilter && (
+            <FiltersPanel
+              configFilters={Config.filters}
+              activeFilters={activeFilters}
+              onToggle={toggleFilterValue}
+              onReset={resetFilters}
+              onApply={() => setShowFilter(false)}
+            />
+          )}
+
+          {/* Chips des filtres actifs */}
           <div className={styles.chipsContainer}>
             {Object.entries(activeFilters).map(([categoryName, selectedValues]) =>
               selectedValues.map((value) => (
-                <Chip key={`${categoryName}-${value}`} name={value} onClick={() => removeFilter(categoryName, value)} />
+                <Chip
+                  key={`${categoryName}-${value}`}
+                  name={value}
+                  onClick={() => removeFilter(categoryName, value)}
+                />
               ))
             )}
           </div>
 
-          {/* Liste de produits */}
+          {/* Grille produits (avec favoris) */}
           <div className={styles.productContainer}>
             <ProductCardGrid data={sortedProducts} />
           </div>
 
           <div className={styles.loadMoreContainer}>
             <span>{displayedItems} sur {totalItems}</span>
-            <Button fullWidth level="secondary">Charger plus</Button>
           </div>
         </Container>
       </div>
@@ -148,11 +174,5 @@ const ShopPage = () => {
     </Layout>
   );
 };
-
-/** Fonction pour obtenir le prix minimal */
-function getMinPrice(variants = []) {
-  if (!variants.length) return 0;
-  return Math.min(...variants.map((v) => parseFloat(v.retail_price)));
-}
 
 export default ShopPage;

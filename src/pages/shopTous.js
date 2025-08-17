@@ -13,6 +13,8 @@ import LayoutOption from '../components/LayoutOption';
 import ProductCardGrid from '../components/ProductCardGrid';
 import Button from '../components/Button';
 import Config from '../config.json';
+import FiltersPanel from '../components/FiltersPanel';
+import { filterAndSort } from '../utils/catalogFilters';
 
 const ShopPage = () => {
   // 1️⃣ Requête GraphQL pour récupérer les produits
@@ -45,6 +47,22 @@ const ShopPage = () => {
   const [activeFilters, setActiveFilters] = useState({});
   const [sortOption, setSortOption] = useState(null);
 
+  // ✅ Toggle a checkbox value for a given category (from Config.filters)
+  const toggleFilterValue = (category, name) => {
+    setActiveFilters((prev) => {
+      const current = new Set(prev[category] || []);
+      if (current.has(name)) current.delete(name);
+      else current.add(name);
+
+      const next = { ...prev };
+      if (current.size > 0) next[category] = Array.from(current);
+      else delete next[category];
+      return next;
+    });
+  };
+
+  const resetFilters = () => setActiveFilters({});
+
   // 4️⃣ Fermer le panneau de filtres via ESC
   useEffect(() => {
     const escapeHandler = (e) => {
@@ -74,52 +92,11 @@ const ShopPage = () => {
     });
   };
 
-  // 6️⃣ Filtrer les produits selon les filtres actifs
-  const filteredProducts = products.filter(({ node }) => {
-    for (const [categoryName, selectedValues] of Object.entries(activeFilters)) {
-      if (categoryName.toLowerCase() === 'couleurs') {
-        const hasColor = node.sync_variants?.some((variant) =>
-          selectedValues.some((color) =>
-            variant.name.toLowerCase().includes(color.toLowerCase())
-          )
-        );
-        if (!hasColor) return false;
-      } else if (categoryName.toLowerCase() === 'taille') {
-        const hasSize = node.sync_variants?.some((variant) =>
-          selectedValues.some((size) =>
-            variant.name.toLowerCase().includes(size.toLowerCase())
-          )
-        );
-        if (!hasSize) return false;
-      } else if (categoryName.toLowerCase() === 'type de produits') {
-        const hasType = node.name.toLowerCase().includes(selectedValues[0].toLowerCase());
-        if (!hasType) return false;
-      } else if (categoryName.toLowerCase() === 'prix') {
-        const passPrice = node.sync_variants?.some((variant) => {
-          const price = parseFloat(variant.retail_price);
-          return selectedValues.some((range) => {
-            if (range === 'Moins de 50 CHF') return price < 50;
-            if (range === '50 - 100 CHF') return price >= 50 && price < 100;
-            if (range === '100 - 200 CHF') return price >= 100 && price < 200;
-            if (range === 'Plus de 200 CHF') return price >= 200;
-            return false;
-          });
-        });
-        if (!passPrice) return false;
-      }
-    }
-    return true;
-  });
-
-  // 7️⃣ Trier les produits filtrés selon `sortOption`
-  const sortedProducts = [...filteredProducts];
-  if (sortOption === 'priceAsc') {
-    sortedProducts.sort((a, b) => getMinPrice(a.node.sync_variants) - getMinPrice(b.node.sync_variants));
-  } else if (sortOption === 'priceDesc') {
-    sortedProducts.sort((a, b) => getMinPrice(b.node.sync_variants) - getMinPrice(a.node.sync_variants));
-  } else if (sortOption === 'alphabet') {
-    sortedProducts.sort((a, b) => a.node.name.localeCompare(b.node.name, 'fr', { sensitivity: 'base' }));
-  }
+  // 6-7️⃣ Filtrer + trier via util partagé
+  const sortedProducts = React.useMemo(
+    () => filterAndSort(products, activeFilters, sortOption),
+    [products, activeFilters, sortOption]
+  );
 
   // 8️⃣ UI - Nombre d’articles
   const totalItems = products.length;
@@ -152,6 +129,16 @@ const ShopPage = () => {
             </div>
           </div>
 
+          {showFilter && (
+            <FiltersPanel
+              configFilters={Config.filters}
+              activeFilters={activeFilters}
+              onToggle={toggleFilterValue}
+              onReset={resetFilters}
+              onApply={() => setShowFilter(false)}
+            />
+          )}
+
           {/* Filtres actifs affichés */}
           <div className={styles.chipsContainer}>
             {Object.entries(activeFilters).map(([categoryName, selectedValues]) =>
@@ -168,7 +155,6 @@ const ShopPage = () => {
 
           <div className={styles.loadMoreContainer}>
             <span>{displayedItems} sur {totalItems}</span>
-            <Button fullWidth level="secondary">Charger plus</Button>
           </div>
         </Container>
       </div>
@@ -176,11 +162,5 @@ const ShopPage = () => {
     </Layout>
   );
 };
-
-/** Fonction pour obtenir le prix minimal */
-function getMinPrice(variants = []) {
-  if (!variants.length) return 0;
-  return Math.min(...variants.map((v) => parseFloat(v.retail_price)));
-}
 
 export default ShopPage;

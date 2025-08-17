@@ -66,7 +66,7 @@
   ],
   "filters": [
     {
-      "category": "couleurs",
+      "category": "Couleurs",
       "items": [
         { "name": "Noir", "value": false },
         { "name": "Vert", "value": false },
@@ -86,7 +86,7 @@
     },
 
     {
-      "category": "taille",
+      "category": "Taille",
       "items": [
         { "name": "XXS", "value": false },
         { "name": "XS", "value": false },
@@ -98,19 +98,33 @@
       ]
     },
     {
-      "category": "type de produits",
+      "category": "Type de produits",
       "items": [
-        { "name": "T-shirts", "value": false },
-        { "name": "Pantalons", "value": false },
-        { "name": "Shorts", "value": false },
+        { "name": "T-shirt", "value": false },
         { "name": "Sweatshirt", "value": false },
-        { "name": "Robes", "value": false },
-        { "name": "Chemises", "value": false },
-        { "name": "Jupes", "value": false }
+        { "name": "Hoodie", "value": false },
+        { "name": "Pantalon", "value": false },
+        { "name": "Jean", "value": false },
+        { "name": "Jogging", "value": false },
+        { "name": "Short", "value": false },
+        { "name": "Robe", "value": false },
+        { "name": "Jupe", "value": false },
+        { "name": "Chemise", "value": false },
+        { "name": "Pull", "value": false },
+        { "name": "Manteau", "value": false },
+        { "name": "Veste", "value": false },
+        { "name": "Débardeur", "value": false },
+        { "name": "Casquette", "value": false },
+        { "name": "Bonnet", "value": false },
+        { "name": "Écharpe", "value": false },
+        { "name": "Gants", "value": false },
+        { "name": "Ceinture", "value": false },
+        { "name": "Sac", "value": false },
+        { "name": "Bijou", "value": false }
       ]
     },
     {
-      "category": "prix",
+      "category": "Prix",
       "items": [
         { "name": "Moins de 50 CHF", "value": false },
         { "name": "50 - 100 CHF", "value": false },

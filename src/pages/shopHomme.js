@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { graphql, useStaticQuery } from 'gatsby';
 import * as styles from './shop.module.css';
 
@@ -9,7 +9,9 @@ import Icon from '../components/Icons/Icon';
 import Layout from '../components/Layout';
 import LayoutOption from '../components/LayoutOption';
 import ProductCardGrid from '../components/ProductCardGrid';
-import Button from '../components/Button';
+import FiltersPanel from '../components/FiltersPanel';
+import Config from '../config.json';
+import { filterAndSort } from '../utils/catalogFilters';
 
 const ShopPage = () => {
   // 1️⃣ Requête GraphQL pour récupérer les produits
@@ -37,10 +39,36 @@ const ShopPage = () => {
   // 2️⃣ Liste complète de produits
   const products = data.allPrintfulProduct.edges;
 
+  // ✅ Sous-ensemble "Homme" (y compris unisexe)
+  const baseProducts = useMemo(
+    () =>
+      products.filter(({ node }) => {
+        const nm = (node?.name || '').toLowerCase();
+        return nm.includes('homme') || nm.includes('unisexe');
+      }),
+    [products]
+  );
+
   // 3️⃣ États pour la gestion des filtres et du tri
   const [showFilter, setShowFilter] = useState(false);
   const [activeFilters, setActiveFilters] = useState({});
   const [sortOption, setSortOption] = useState(null);
+
+  // ✅ Toggle a checkbox value for a given category (from Config.filters)
+  const toggleFilterValue = (category, name) => {
+    setActiveFilters((prev) => {
+      const current = new Set(prev[category] || []);
+      if (current.has(name)) current.delete(name);
+      else current.add(name);
+
+      const next = { ...prev };
+      if (current.size > 0) next[category] = Array.from(current);
+      else delete next[category];
+      return next;
+    });
+  };
+
+  const resetFilters = () => setActiveFilters({});
 
   // 4️⃣ Fermer le panneau de filtres via ESC
   useEffect(() => {
@@ -51,44 +79,25 @@ const ShopPage = () => {
     return () => window.removeEventListener('keydown', escapeHandler);
   }, []);
 
-  // 5️⃣ Fonction pour retirer un filtre actif
+  // 5️⃣ Fonction pour retirer un filtre actif (via chip)
   const removeFilter = (categoryName, value) => {
     setActiveFilters((prevFilters) => {
-      const newFilters = { ...prevFilters };
-
-      // Vérifier si la catégorie est bien définie
-      if (!newFilters[categoryName]) return prevFilters;
-
-      // Retirer l'élément sélectionné
-      newFilters[categoryName] = newFilters[categoryName].filter((val) => val !== value);
-
-      // Supprimer la catégorie si elle devient vide
-      if (newFilters[categoryName].length === 0) {
-        delete newFilters[categoryName];
-      }
-
-      return newFilters;
+      const next = { ...prevFilters };
+      if (!next[categoryName]) return prevFilters;
+      next[categoryName] = next[categoryName].filter((v) => v !== value);
+      if (next[categoryName].length === 0) delete next[categoryName];
+      return next;
     });
   };
 
-  // 6️⃣ Filtrer les produits en ne conservant que ceux dont le nom contient "femme" ou "unisexe"
-  const filteredProducts = products.filter(({ node }) => {
-    const productName = node.name.toLowerCase();
-    return productName.includes('homme') || productName.includes('unisexe');
-  });
-
-  // 7️⃣ Trier les produits filtrés selon `sortOption`
-  const sortedProducts = [...filteredProducts];
-  if (sortOption === 'priceAsc') {
-    sortedProducts.sort((a, b) => getMinPrice(a.node.sync_variants) - getMinPrice(b.node.sync_variants));
-  } else if (sortOption === 'priceDesc') {
-    sortedProducts.sort((a, b) => getMinPrice(b.node.sync_variants) - getMinPrice(a.node.sync_variants));
-  } else if (sortOption === 'alphabet') {
-    sortedProducts.sort((a, b) => a.node.name.localeCompare(b.node.name, 'fr', { sensitivity: 'base' }));
-  }
+  // 6-7️⃣ Filtrer + trier via util partagé (en partant du sous-ensemble Homme)
+  const sortedProducts = useMemo(
+    () => filterAndSort(baseProducts, activeFilters, sortOption),
+    [baseProducts, activeFilters, sortOption]
+  );
 
   // 8️⃣ UI - Nombre d’articles
-  const totalItems = products.length;
+  const totalItems = baseProducts.length;
   const displayedItems = sortedProducts.length;
 
   return (
@@ -118,6 +127,16 @@ const ShopPage = () => {
             </div>
           </div>
 
+          {showFilter && (
+            <FiltersPanel
+              configFilters={Config.filters}
+              activeFilters={activeFilters}
+              onToggle={toggleFilterValue}
+              onReset={resetFilters}
+              onApply={() => setShowFilter(false)}
+            />
+          )}
+
           {/* Filtres actifs affichés */}
           <div className={styles.chipsContainer}>
             {Object.entries(activeFilters).map(([categoryName, selectedValues]) =>
@@ -127,15 +146,13 @@ const ShopPage = () => {
             )}
           </div>
 
-          {/* Liste de produits */}
+          {/* Liste de produits via ProductCardGrid (inclut le cœur au survol) */}
           <div className={styles.productContainer}>
             <ProductCardGrid data={sortedProducts} />
           </div>
 
-
           <div className={styles.loadMoreContainer}>
             <span>{displayedItems} sur {totalItems}</span>
-            <Button fullWidth level="secondary">Charger plus</Button>
           </div>
         </Container>
       </div>

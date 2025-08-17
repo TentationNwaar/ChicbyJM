@@ -13,6 +13,8 @@ import LayoutOption from '../components/LayoutOption';
 import ProductCardGrid from '../components/ProductCardGrid';
 import Button from '../components/Button';
 import Config from '../config.json';
+import FiltersPanel from '../components/FiltersPanel';
+import { filterAndSort } from '../utils/catalogFilters';
 
 const ShopPage = () => {
   // 1️⃣ Requête GraphQL pour récupérer les produits
@@ -45,6 +47,22 @@ const ShopPage = () => {
   const [activeFilters, setActiveFilters] = useState({});
   const [sortOption, setSortOption] = useState(null);
 
+  // ✅ Toggle a checkbox value for a given category (from Config.filters)
+  const toggleFilterValue = (category, name) => {
+    setActiveFilters((prev) => {
+      const current = new Set(prev[category] || []);
+      if (current.has(name)) current.delete(name);
+      else current.add(name);
+
+      const next = { ...prev };
+      if (current.size > 0) next[category] = Array.from(current);
+      else delete next[category];
+      return next;
+    });
+  };
+
+  const resetFilters = () => setActiveFilters({});
+
   // 4️⃣ Fermer le panneau de filtres via ESC
   useEffect(() => {
     const escapeHandler = (e) => {
@@ -74,24 +92,20 @@ const ShopPage = () => {
     });
   };
 
-  // 6️⃣ Filtrer les produits en ne conservant que ceux dont le nom contient "femme" ou "unisexe"
-  const filteredProducts = products.filter(({ node }) => {
-    const productName = node.name.toLowerCase();
-    return productName.includes('femme') || productName.includes('unisexe');
+  // 6️⃣ Restreindre au catalogue Femme/Unisexe
+  const genderFilteredProducts = products.filter(({ node }) => {
+    const n = (node?.name || '').toLowerCase();
+    return n.includes('femme') || n.includes('unisexe');
   });
 
-  // 7️⃣ Trier les produits filtrés selon `sortOption`
-  const sortedProducts = [...filteredProducts];
-  if (sortOption === 'priceAsc') {
-    sortedProducts.sort((a, b) => getMinPrice(a.node.sync_variants) - getMinPrice(b.node.sync_variants));
-  } else if (sortOption === 'priceDesc') {
-    sortedProducts.sort((a, b) => getMinPrice(b.node.sync_variants) - getMinPrice(a.node.sync_variants));
-  } else if (sortOption === 'alphabet') {
-    sortedProducts.sort((a, b) => a.node.name.localeCompare(b.node.name, 'fr', { sensitivity: 'base' }));
-  }
+  // 7️⃣ Filtrer + trier via util partagé (mêmes règles que shopTous)
+  const sortedProducts = React.useMemo(
+    () => filterAndSort(genderFilteredProducts, activeFilters, sortOption),
+    [genderFilteredProducts, activeFilters, sortOption]
+  );
 
   // 8️⃣ UI - Nombre d’articles
-  const totalItems = products.length;
+  const totalItems = genderFilteredProducts.length;
   const displayedItems = sortedProducts.length;
 
   return (
@@ -121,6 +135,16 @@ const ShopPage = () => {
             </div>
           </div>
 
+          {showFilter && (
+            <FiltersPanel
+              configFilters={Config.filters}
+              activeFilters={activeFilters}
+              onToggle={toggleFilterValue}
+              onReset={resetFilters}
+              onApply={() => setShowFilter(false)}
+            />
+          )}
+
           {/* Filtres actifs affichés */}
           <div className={styles.chipsContainer}>
             {Object.entries(activeFilters).map(([categoryName, selectedValues]) =>
@@ -138,7 +162,6 @@ const ShopPage = () => {
 
           <div className={styles.loadMoreContainer}>
             <span>{displayedItems} sur {totalItems}</span>
-            <Button fullWidth level="secondary">Charger plus</Button>
           </div>
         </Container>
       </div>
