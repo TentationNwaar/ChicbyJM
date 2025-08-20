@@ -8,8 +8,9 @@
   display: grid;
   width: 100%;
   margin-top: 32px;
-  gap: 32px; /* Espace entre les cartes */
-  grid-template-columns: repeat(3, 3fr); /* Par défaut : 4 colonnes */
+  gap: 16px; /* espace entre les cartes */
+  /* grille fluide : s'adapte automatiquement à la largeur disponible */
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
 }
 
 .searchLabels {
@@ -35,6 +36,14 @@
   display: block;
 }
 
+/* Assure une mise à l'échelle correcte des images dans les anciennes cartes */
+.card img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
 .cardTitle, .productPrice {
   text-align: center;
 }
@@ -57,13 +66,14 @@
 }
 
 .productImage {
-  width: 220px;  /* plus petit que 300px pour un affichage plus compact */
+  width: 100%;
+  max-width: 240px;
   height: auto;
-  border-radius: 6px; /* petit arrondi pour un look propre */
-  object-fit: cover;  /* pour forcer le remplissage sans déformation */
+  border-radius: 6px;
+  object-fit: contain;
 }
 
-.image-grid {
+.imageGrid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 24px;
@@ -73,18 +83,24 @@
     margin: 0;
 }
 
-.image-grid li {
+.imageGrid li {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 24px; /* Marge inférieure si nécessaire */
+    margin-bottom: 24px;
 }
 
-.image-grid h2 {
-    font-size: 24px; /* Ajustez la taille de la police selon vos besoins */
-    line-height: 40px; /* Ajustez la hauteur de ligne pour réduire l'espace entre les lignes du titre */
-    margin: 0; /* Réduit la marge autour du titre */
-    padding: 0; /* Réduit le padding autour du titre */
+.imageGrid h2 {
+    font-size: 24px;
+    line-height: 40px;
+    margin: 0;
+    padding: 0;
+}
+
+.imageGrid img {
+    width: 100%;
+    height: auto;
+    display: block;
 }
 
 .metaContainer {
@@ -155,7 +171,7 @@
     display: none;
 }
 
-.image-grid li h2{
+.imageGrid li h2{
     text-align: center;
 }
 
@@ -170,10 +186,9 @@
 
 @media (max-width: 1148px) {
 
-    .image-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr); /* 2 columns on medium screens */
-        gap: 16px; /* Espacement entre les éléments */
+    .imageGrid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
         text-align: center;
     }
 
@@ -181,26 +196,30 @@
         grid-template-columns: repeat(3, 1fr);
     }
 
-    .image-grid li {
+    .imageGrid li {
         margin-bottom: 24px; /* Marge en bas de chaque élément */
     }
 }
 
-@media (max-width: 800px) {
+@media (max-width: 802px) {
     .itemCount {
         display: none;
     }
 
     .cardGrid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: 1fr;
     }
 
-    .image-grid {
-        display: grid;
-        grid-template-columns: 1fr; /* 1 column on mobile */
-        gap: 16px; /* Espacement entre les éléments */
+    .imageGrid {
+        grid-template-columns: 1fr !important;
+        gap: 16px;
         list-style-type: none;
         padding: 0;
+    }
+
+    .imageGrid > li,
+    .cardGrid > * {
+        width: 100%;
     }
 
     .controllerContainer {
@@ -238,7 +257,7 @@
         display: none;
     }
 
-    .image-grid li {
+    .imageGrid li {
         margin-bottom: 24px; /* Marge en bas de chaque élément */
     }
 
@@ -261,9 +280,12 @@
         display: none;
     }
 
-    .image-grid {
-        display: grid;
-        grid-template-columns: repeat(1, 1fr); /* 1 column on mobile */
+    .cardGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .imageGrid {
+        grid-template-columns: 1fr;
         gap: 16px;
         list-style-type: none;
         padding: 0;
@@ -281,6 +303,3 @@
         width: 80%; /* Button width adjustment for mobile */
     }
 }
-
-
-

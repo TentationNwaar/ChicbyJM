@@ -166,12 +166,12 @@ const ProductCard = (props) => {
 
         <div className={styles.detailsContainer}>
           <div>
-            <span className={styles.productName}>{name}</span>
+            <span className={styles.productName} data-el="title">{name}</span>
           </div>
 
           <div>
             {price && (
-              <span className={styles.prices}>
+              <span className={styles.prices} data-el="price">
                 <CurrencyFormatter amount={price} />
               </span>
             )}

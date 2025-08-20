@@ -4,16 +4,14 @@
   flex-direction: column;
 }
 
+/* ===== Desktop / default ===== */
 .cardGrid {
   width: 100%;
   margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 24px;
-}
-
-.mobileSlider {
-  /* display: none; */
+  align-items: start;
 }
 
 .show {
@@ -39,7 +37,7 @@
   font-size: 21px;
   text-align: center;
   margin-top: 12px;
-  margin-bottom: 6px; /* more separation from price */
+  margin-bottom: 6px;
   margin-left: 0;
   margin-right: 0;
   display: block;
@@ -54,38 +52,180 @@
   margin-top: 0;
 }
 
-/* Responsive : on laisse le JS gérer columns ! 
-   Donc ces overrides ne sont plus nécessaires OU on peut les remplacer par max-width
-*/
+/* Images: remplir la cellule, rester propres et centrées */
+.cardGrid img {
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+}
+
+/* S'assurer que chaque enfant ne déborde pas */
+.cardGrid > * {
+  box-sizing: border-box;
+}
+
+/* ===== Breakpoints ===== */
 
 @media (max-width: 1148px) {
-  /* plus de grid-template-columns ici ! */
+  .cardGrid { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 1024px) {
-  .cardGrid {
-    grid-template-columns: repeat(2, 1fr);
-  }
+  .cardGrid { grid-template-columns: repeat(2, 1fr); }
 }
 
-@media (max-width: 800px) {
-  .mobileSlider {
+/* ----- Téléphones / tablettes : 2 cartes par ligne ----- */
+@media (max-width: 802px) {
+  .cardGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 12px !important;
+  }
+  .cardGrid > * {
+    margin: 0 !important;
+    background: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+  }
+
+  .cardItem {
     display: block;
+    width: 100%;
+    padding: 12px;
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 12px;
   }
-  .cardGrid {
-    display: none;  /* Si tu as un slider mobile OK */
+
+  /* Remove inner grid on child wrappers */
+  .cardGrid > * > *:first-child {
+    display: block !important;
+    grid-template-columns: none !important;
   }
-  .show {
-    /* Le JS gère columns pour .show aussi */
+  .cardGrid > * > *:first-child img {
+    width: 100%;
+    max-height: 200px;
+    object-fit: contain;
+  }
+  .cardGrid > * > *:first-child .productTitle,
+  .cardGrid > * > *:first-child .productPrice {
+    grid-column: 2;
+    text-align: right;
+    justify-self: end;
+    margin: 0;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+  }
+  .productTitle { font-size: 18px; line-height: 1.25; margin-bottom: 4px; }
+  .productPrice { font-size: 16px; }
+
+  .cardItem img {
+    width: 100%;
+    max-height: 200px;
+    object-fit: contain;
   }
 }
 
+/* ----- Affinage écrans moyens ----- */
 @media (max-width: 600px) {
-  .cardGrid {
-    grid-template-columns: 1fr;
+  .cardGrid > * > *:first-child {
+    display: block !important;
+    grid-template-columns: none !important;
+  }
+  .cardGrid > * > *:first-child {
+    grid-template-columns: 100px 1fr;
+    column-gap: 10px;
+  }
+  .cardGrid > * > *:first-child img {
+    width: 100%;
+    max-height: 200px;
+    object-fit: contain;
+  }
+  .cardGrid > * > *:first-child .productTitle,
+  .cardGrid > * > *:first-child .productPrice {
+    text-align: right;
+    justify-self: end;
   }
 }
 
+/* ----- Affinage mobiles <= 500px ----- */
 @media (max-width: 500px) {
-  /* plus de grid-template-columns ici non plus */
+  .cardGrid > * > *:first-child {
+    display: block !important;
+    grid-template-columns: none !important;
+  }
+  .cardGrid > * > *:first-child {
+    grid-template-columns: 86px 1fr;
+    column-gap: 8px;
+  }
+  .cardGrid > * > *:first-child img {
+    width: 100%;
+    max-height: 200px;
+    object-fit: contain;
+  }
+  .cardGrid > * > *:first-child .productTitle,
+  .cardGrid > * > *:first-child .productPrice {
+    text-align: right;
+    justify-self: end;
+  }
+}
+
+/* ----- Ultra petits écrans <= 431px ----- */
+@media (max-width: 431px) {
+  .cardGrid { gap: 10px; }
+
+  .cardGrid > * > *:first-child {
+    display: block !important;
+    grid-template-columns: none !important;
+  }
+  .cardGrid > * > *:first-child {
+    grid-template-columns: 96px 1fr;
+    column-gap: 10px;
+  }
+  .cardGrid > * > *:first-child img {
+    width: 100%;
+    max-height: 200px;
+    object-fit: contain;
+  }
+  .cardGrid > * > *:first-child .productTitle,
+  .cardGrid > * > *:first-child .productPrice {
+    text-align: right;
+    justify-self: end;
+  }
+}
+
+/* ----- Très petits écrans <= 360px ----- */
+@media (max-width: 360px) {
+  .cardGrid { gap: 7px; }
+  .cardGrid > * > *:first-child {
+    display: block !important;
+    grid-template-columns: none !important;
+  }
+  .cardGrid > * > *:first-child {
+    grid-template-columns: 72px 1fr;
+    column-gap: 6px;
+  }
+  .cardGrid > * > *:first-child img {
+    width: 100%;
+    max-height: 200px;
+    object-fit: contain;
+    border-radius: 7px;
+  }
+  .cardGrid > * > *:first-child .productTitle,
+  .cardGrid > * > *:first-child .productPrice {
+    text-align: right;
+    justify-self: end;
+  }
+  .productTitle { font-size: 16px; }
+  .productPrice { font-size: 14px; }
+}
+
+.cardItem {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }

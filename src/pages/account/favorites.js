@@ -31,6 +31,7 @@ const FavoritesPage = () => {
   const [favorites, setFavorites] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showDelete, setShowDelete] = useState(false);
+  const [selectedFavoriteId, setSelectedFavoriteId] = useState(null);
 
   const data = useStaticQuery(graphql`
     query AllProductsForFavorites {
@@ -132,18 +133,32 @@ const FavoritesPage = () => {
                     role="button"
                     tabIndex={0}
                     onKeyDown={(e) => { if (e.key === 'Enter') window.location.assign(path); }}
-                    style={{ cursor: 'pointer' }}
                   >
-                    <img
-                      src={displayImage}
-                      alt={product?.name || 'Produit'}
-                      className={styles.productImage}
-                      loading="lazy"
-                    />
-                    <h2 className={styles.cardTitle}>{product?.name || 'Produit'}</h2>
-                    <span className={styles.productPrice}>
-                      {variant?.retail_price || '—'} CHF
-                    </span>
+                    <div className={styles.cardInner}>
+                      <img
+                        src={displayImage}
+                        alt={product?.name || 'Produit'}
+                        className={styles.productImage}
+                        loading="lazy"
+                      />
+                      <div className={styles.cardContent}>
+                        <h2 className={styles.cardTitle}>{product?.name || 'Produit'}</h2>
+                        <span className={styles.productPrice}>
+                          {variant?.retail_price || '—'} CHF
+                        </span>
+                      </div>
+                      <button
+                        className={styles.favButton}
+                        aria-label="Retirer des favoris"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedFavoriteId(id);
+                          setShowDelete(true);
+                        }}
+                      >
+                        ♥
+                      </button>
+                    </div>
                   </li>
                 );
               })}
@@ -158,11 +173,27 @@ const FavoritesPage = () => {
 
       <Modal visible={showDelete} close={() => setShowDelete(false)}>
         <div className={styles.confirmDeleteContainer}>
-          <h4>Remove from Favorites?</h4>
-          <p>Are you sure you want to remove this from your favorites?</p>
+          <h4>Retirer des favoris ?</h4>
+          <p>Voulez-vous retirer cet article de vos favoris ?</p>
           <div className={styles.actionContainer}>
-            <Button onClick={() => setShowDelete(false)} level="primary">Delete</Button>
-            <Button onClick={() => setShowDelete(false)} level="secondary">Cancel</Button>
+            <Button
+              onClick={async () => {
+                if (!selectedFavoriteId) { setShowDelete(false); return; }
+                try {
+                  await supabase.from('favorites').delete().eq('id', selectedFavoriteId);
+                  setFavorites((prev) => prev.filter((f) => f.id !== selectedFavoriteId));
+                } finally {
+                  setShowDelete(false);
+                  setSelectedFavoriteId(null);
+                }
+              }}
+              level="primary"
+            >
+              Supprimer
+            </Button>
+            <Button onClick={() => { setShowDelete(false); setSelectedFavoriteId(null); }} level="secondary">
+              Annuler
+            </Button>
           </div>
         </div>
       </Modal>

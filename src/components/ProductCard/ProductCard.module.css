@@ -43,16 +43,6 @@
   display: block;
 }
 
-.cardGrid img {
-  max-width: 300px;
-  max-height: 300px;
-  width: 100%;
-  height: auto;
-  object-fit: contain;
-  margin: 0 auto;
-  display: block;
-}
-
 .productName {
     display: block;
     margin-top: 10px;
@@ -203,84 +193,107 @@
     opacity: 0;
 }
 
-@media (max-width: 800px) {
-    .bagContainer {
-        opacity: 1;
-        visibility: visible;
-    }
+/* ✅ Mobile-only overrides: apply our compact card layout ONLY on very small screens */
+@media (max-width: 431px) {
+  .root {
+    display: inline-block;           /* allow two cards per row without changing parent */
+    width: calc(100% - 12px);         /* two per row with small gap */
+    vertical-align: top;
+    margin: 6px;                     /* small outer gap */
+    padding: 8px;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    background: #fff;
+  }
 
-    .heartContainer {
-        opacity: 1;
-        visibility: visible;
-    }
+  .imageContainer {
+    grid-column: auto;
+    width: 100%;
+    position: relative;
+    justify-content: center;
+  }
 
-    .root {
-        width: 33.3333%;
-    }
+  /* Keep images neat on mobile */
+  .imageMax {
+    width: 100% !important;
+    height: auto !important;
+    max-width: 100% !important;
+    max-height: 180px !important;
+    object-fit: contain;
+    border-radius: 10px;
+    margin: 0 auto;
+    display: block;
+  }
+
+  .detailsContainer {
+    text-align: left;
+    width: 100%;
+    padding-right: 0;
+    position: static;
+    margin-top: 6px;
+  }
+
+  .productName,
+  .prices {
+    text-align: left;
+    margin: 0 0 4px 0;
+    max-width: 100%;
+  }
+
+  .productName {
+    display: block;
+    font-size: 16px;
+    line-height: 1.25;
+    margin: 0 0 4px 0;
+    white-space: nowrap;           /* 1 line only */
+    overflow: hidden;
+    text-overflow: ellipsis;       /* cut with … */
+  }
+
+  .prices {
+    font-size: 14px;
+    line-height: 1.2;
+    font-weight: 700;
+  }
+
+  /* Heart icon on the far right, black */
+  .favoriteIcon {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 1001;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.8);
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  .favoriteIcon svg {
+    width: 18px;
+    height: 18px;
+    color: #000; /* black on mobile */
+  }
+
+  /* Force heart container to the far right and black on tiny mobile */
+  .heartContainer {
+    position: absolute;
+    top: 8px !important;
+    right: 8px !important;
+    z-index: 1002;
+    background: rgba(255,255,255,0.85);
+  }
+  .heartContainer svg {
+    color: #000 !important;
+  }
+
+  .detailsContainer .heartContainer { right: 8px !important; top: 8px !important; position: absolute; }
 }
-
-@media (max-width: 600px) {
-    .imageContainer img{
-        height: 100px !important;
-        display: flex;
-        width: 10%; /* Ajuster la largeur ici si nécessaire */
-        object-fit: fill;
-        border-radius: 1px;
-    }
-
-    .productName {
-        font-weight: normal;
-        font-family: 'Inria Serif', serif;
-        font-size: 13px;
-        line-height: 16px;
-        text-align: center;
-        margin-top: 16px;
-    }
-
-    .prices {
-        font-weight: bold;
-        font-family: 'Inria Serif', serif;
-        font-size: 14px;
-        line-height: 17px;
-        text-align: center;
-        margin-top: 12px;
-    }
-
-    .prices span {
-        font-size: 13px;
-        line-height: 16px;
-    }
-
-    .root {
-        width: 33.3333%;
-    }
-}
-
-@media (max-width: 400px) {
-    .imageContainer img{
-        height: 220px !important;
-        display: flex;
-        width: 10%; /* Ajuster la largeur ici si nécessaire */
-        object-fit: fill;
-        border-radius: 1px;
-    }
-
-    .bagContainer {
-        width: 40px;
-        height: 40px;
-    }
-
-    .bagContainer svg {
-        width: 20px;
-        height: 20px;
-    }
-
-    .heartContainer {
-        top: 32px;
-        right: 16px;
-    }
-
-    .root {
-        width: 33.3333%;
-    }
-}
+  .detailsContainer .heartContainer {
+    position: absolute;
+    top: 0;
+    right: -40px;
+    margin: 0;
+  }
