@@ -1,5 +1,5 @@
 // src/lib/reviews.ts
-import { supabase } from "../supabaseClient";
+import { supabase } from "./supabaseClient";
 
 export async function getProductRating(productId: string) {
   const { data, error } = await supabase

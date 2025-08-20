@@ -4,6 +4,7 @@ import Layout from "../components/Layout";
 import { CartContext } from "../context/CartContext";
 import "./product-template.css";
 import { supabase } from "../lib/supabaseClient";
+import ProductReviews from "../components/ProductReviews";
 
 function parseVariantName(fullName) {
   const result = { color: "", size: "" };
@@ -345,6 +346,8 @@ const ProductTemplate = ({ data }) => {
     </Layout>
   );
 };
+
+
 
 export const query = graphql`
   query ($id: String!) {
