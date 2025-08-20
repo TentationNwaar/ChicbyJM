@@ -333,8 +333,18 @@
     display: flex; /* Show arrows on mobile */
   }
 
+  .product-images-container {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
   .product-images-container img {
-    max-width: 100%; /* Réduit la taille de l'image sur les écrans mobiles */
+    width: 100% !important;
+    height: auto;
+    max-width: 100% !important;
+    border-radius: 0; /* remove rounded corners */
+    box-shadow: none; /* clean, flat look */
   }
 
   .product-images,
@@ -357,14 +367,18 @@
   }
 
   .add-to-cart {
-    width: 100%; /* Garder le bouton plein écran sur mobile */
+    width: 100%;
     font-size: 1.1rem;
+    display: block;
+    margin: 15px auto;
   }
 
   .add-to-cart,
   .paypal-button {
     font-size: 1rem;
-    width: 80%; /* Moins large sur mobile */
+    width: 100%;
+    display: block;
+    margin: 10px auto;
   }
 }
 
