@@ -308,6 +308,11 @@ const ProductTemplate = ({ data }) => {
         </div>
       </div>
 
+            {/* --- AVIS & NOTES --- */}
+      <section className="reviews-section">
+        <ProductReviews productId={String(product.id)} />
+      </section>
+
       {isDescriptionOpen && (
         <div className={`description-overlay ${isDescriptionOpen ? "open" : ""}`}>
           <div className="description-panel">
