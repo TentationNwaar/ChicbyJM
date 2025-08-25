@@ -10,35 +10,72 @@ export default function ProductReviews({ productId }:{ productId:string }) {
   const [loading, setLoading] = useState(true);
   const [my, setMy] = useState({ rating: 0, title: "", body: "" });
   const [user, setUser] = useState<any>(null);
+  const [err, setErr] = useState<string | null>(null);
 
   useEffect(() => {
-    const init = async () => {
-      setLoading(true);
-      const [{ data: { user } }, r, lst] = await Promise.all([
-        supabase.auth.getUser(),
-        getProductRating(productId),
-        listReviews(productId, {from:0, to:9})
-      ]);
-      setUser(user);
-      setRating({ avg_rating: r.avg_rating, review_count: r.review_count });
-      setReviews(lst);
-      setLoading(false);
-    };
-    init();
+    let mounted = true;
+    (async () => {
+      try {
+        setLoading(true);
+        setErr(null);
+        const [{ data: { user } }, r, lst] = await Promise.all([
+          supabase.auth.getUser(),
+          getProductRating(productId),
+          listReviews(productId, { from: 0, to: 9 })
+        ]);
+        if (!mounted) return;
+        setUser(user);
+        setRating({ avg_rating: r?.avg_rating ?? null, review_count: r?.review_count ?? 0 });
+        setReviews(lst ?? []);
+      } catch (e:any) {
+        console.error("init reviews failed", e);
+        if (mounted) setErr(e?.message ?? "Une erreur est survenue lors du chargement des avis.");
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    })();
+    return () => { mounted = false; };
   }, [productId]);
 
   const submit = async (e:React.FormEvent) => {
     e.preventDefault();
-    if (!user) return alert("Connecte-toi pour laisser un avis.");
-    await upsertMyReview(productId, my.rating, my.title, my.body, user.id);
-    // refresh
-    const [r, lst] = await Promise.all([
-      getProductRating(productId),
-      listReviews(productId, {from:0, to:9})
-    ]);
-    setRating({ avg_rating: r.avg_rating, review_count: r.review_count });
-    setReviews(lst);
-    setMy({ rating: 0, title: "", body: "" });
+    try {
+      setErr(null);
+      if (!user) {
+        setErr("Connecte-toi pour laisser un avis.");
+        alert("Connecte-toi pour laisser un avis.");
+        return;
+      }
+      if (!my.rating) {
+        setErr("Choisis une note (1 à 5).");
+        return;
+      }
+      if (!productId) {
+        setErr("Identifiant produit manquant.");
+        return;
+      }
+      // ➜ nom d’affichage (full_name > name > email prefix > fallback)
+      const displayName =
+        user?.user_metadata?.full_name ||
+        user?.user_metadata?.name ||
+        (user?.email ? user.email.split("@")[0] : null) ||
+        "Client";
+
+      // passe le displayName dans l’upsert
+      const saved = await upsertMyReview(productId, my.rating, my.title, my.body, user.id, displayName);
+      const [r, lst] = await Promise.all([
+        getProductRating(productId),
+        listReviews(productId, { from: 0, to: 9 })
+      ]);
+      setRating({ avg_rating: r?.avg_rating ?? null, review_count: r?.review_count ?? 0 });
+      setReviews(lst ?? []);
+      setMy({ rating: 0, title: "", body: "" });
+    } catch (e:any) {
+      console.error("submit review failed", e);
+      const msg = e?.message || (e?.error_description ?? e?.hint) || "Impossible d’enregistrer l’avis.";
+      setErr(msg);
+      alert(msg);
+    }
   };
 
   return (
@@ -67,6 +104,7 @@ export default function ProductReviews({ productId }:{ productId:string }) {
           />
           <button className="add-to-cart" type="submit">Publier mon avis</button>
         </form>
+        {err && <p style={{ color:"#b00020", marginTop:8 }}>{err}</p>}
         {!user && <p style={{ color:"#666", marginTop:8 }}>Connecte‑toi pour noter et commenter.</p>}
       </div>
 
@@ -80,6 +118,8 @@ export default function ProductReviews({ productId }:{ productId:string }) {
               {r.title && <div style={{ fontWeight:600, marginTop:4 }}>{r.title}</div>}
               {r.body && <div style={{ color:"#333", marginTop:4, whiteSpace:"pre-wrap" }}>{r.body}</div>}
               <div style={{ color:"#777", fontSize:12, marginTop:4 }}>
+                {r.author_name ? <strong style={{ color:"#444" }}>{r.author_name}</strong> : null}
+                {r.author_name ? " • " : ""}
                 {new Date(r.created_at).toLocaleDateString()}
               </div>
             </li>
