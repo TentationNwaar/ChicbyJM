@@ -417,7 +417,8 @@
   }
 
   .reviews-section {
-    padding: 12px 0 24px;
+    padding-left: 16px;
+    padding-right: 16px;
     margin: 16px auto 32px;
     max-width: 100%;
     overflow-x: hidden;
@@ -482,6 +483,45 @@
     width: 100%;
     display: block;
     margin: 10px auto;
+  }
+
+  /* Centrage des infos produit en mobile */
+  .product-info {
+    text-align: center;
+    margin-left: 0; /* annule le margin desktop */
+  }
+
+  /* Titre, prix, titres de sections */
+  .product-title,
+  .product-price,
+  .product-sizes,
+  .size-selection {
+    text-align: center;
+  }
+
+  /* La ligne “Taxes incluses.” */
+  .product-price + p,
+  .product-info .taxes,
+  .product-info .taxes-included {
+    text-align: center;
+  }
+
+  /* Puces de tailles centrées */
+  .size-buttons {
+    justify-content: center;
+  }
+
+  /* Centrer aussi les boutons d’action */
+  .product-actions {
+    align-items: center;
+  }
+
+  .add-to-cart,
+  .description-button,
+  .paypal-button {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
   }
 }
 

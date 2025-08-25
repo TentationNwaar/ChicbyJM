@@ -48,3 +48,23 @@ export async function upsertMyReview(
   }
   return data;
 }
+
+export async function getMyReview(productId: string, userId: string) {
+  const { data, error } = await supabase
+    .from("product_reviews")
+    .select("id,rating,title,body,created_at,user_id,author_name")
+    .eq("product_id", productId)
+    .eq("user_id", userId)
+    .maybeSingle();
+  if (error) throw error;
+  return data; // null si pas d'avis
+}
+
+export async function deleteMyReview(productId: string, userId: string) {
+  const { error } = await supabase
+    .from("product_reviews")
+    .delete()
+    .eq("product_id", productId)
+    .eq("user_id", userId);
+  if (error) throw error;
+}

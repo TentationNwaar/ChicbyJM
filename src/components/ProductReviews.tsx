@@ -1,6 +1,6 @@
 // src/components/ProductReviews.tsx
 import React, { useEffect, useState } from "react";
-import { getProductRating, listReviews, upsertMyReview } from "../lib/reviews";
+import { getProductRating, listReviews, upsertMyReview, getMyReview, deleteMyReview } from "../lib/reviews";
 import { StarDisplay, StarInput } from "./StarRating";
 import { supabase } from "../lib/supabaseClient";
 
@@ -27,6 +27,17 @@ export default function ProductReviews({ productId }:{ productId:string }) {
         setUser(user);
         setRating({ avg_rating: r?.avg_rating ?? null, review_count: r?.review_count ?? 0 });
         setReviews(lst ?? []);
+        // Pré-remplir le formulaire si l'utilisateur a déjà un avis
+        if (user?.id) {
+          try {
+            const mine = await getMyReview(productId, user.id);
+            if (mine) {
+              setMy({ rating: mine.rating || 0, title: mine.title || "", body: mine.body || "" });
+            }
+          } catch (e) {
+            console.error("getMyReview failed", e);
+          }
+        }
       } catch (e:any) {
         console.error("init reviews failed", e);
         if (mounted) setErr(e?.message ?? "Une erreur est survenue lors du chargement des avis.");
@@ -43,7 +54,6 @@ export default function ProductReviews({ productId }:{ productId:string }) {
       setErr(null);
       if (!user) {
         setErr("Connecte-toi pour laisser un avis.");
-        alert("Connecte-toi pour laisser un avis.");
         return;
       }
       if (!my.rating) {
@@ -104,8 +114,11 @@ export default function ProductReviews({ productId }:{ productId:string }) {
           />
           <button className="add-to-cart" type="submit">Publier mon avis</button>
         </form>
-        {err && <p style={{ color:"#b00020", marginTop:8 }}>{err}</p>}
-        {!user && <p style={{ color:"#666", marginTop:8 }}>Connecte‑toi pour noter et commenter.</p>}
+        {err ? (
+          <p style={{ color: "#b00020", marginTop: 8 }}>{err}</p>
+        ) : !user ? (
+          <p style={{ color: "#666", marginTop: 8 }}>Connecte‑toi pour noter et commenter.</p>
+        ) : null}
       </div>
 
       {/* Liste des avis */}
@@ -121,7 +134,45 @@ export default function ProductReviews({ productId }:{ productId:string }) {
                 {r.author_name ? <strong style={{ color:"#444" }}>{r.author_name}</strong> : null}
                 {r.author_name ? " • " : ""}
                 {new Date(r.created_at).toLocaleDateString()}
+                {r.updated_at && new Date(r.updated_at).getTime() !== new Date(r.created_at).getTime() ? (
+                  <span style={{ marginLeft: 6, fontStyle: "italic", color: "#999" }}>
+                    (modifié le {new Date(r.updated_at).toLocaleDateString()})
+                  </span>
+                ) : null}
               </div>
+              {user?.id === r.user_id && (
+                <div style={{ marginTop: 6, display: "flex", gap: 12 }}>
+                  <button
+                    type="button"
+                    onClick={async () => {
+                      try {
+                        if (!confirm("Supprimer votre avis ?")) return;
+                        await deleteMyReview(productId, user.id);
+                        const [rt, lst2] = await Promise.all([
+                          getProductRating(productId),
+                          listReviews(productId, { from: 0, to: 9 })
+                        ]);
+                        setRating({ avg_rating: rt?.avg_rating ?? null, review_count: rt?.review_count ?? 0 });
+                        setReviews(lst2 ?? []);
+                        setMy({ rating: 0, title: "", body: "" });
+                      } catch (e:any) {
+                        console.error("delete review failed", e);
+                        alert(e?.message ?? "Suppression impossible.");
+                      }
+                    }}
+                    style={{ border: "none", background: "transparent", color: "#b00020", cursor: "pointer" }}
+                  >
+                    Supprimer mon avis
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+                    style={{ border: "none", background: "transparent", color: "#555", cursor: "pointer" }}
+                  >
+                    Modifier
+                  </button>
+                </div>
+              )}
             </li>
           ))
         }
