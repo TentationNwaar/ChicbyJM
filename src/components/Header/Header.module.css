@@ -241,11 +241,11 @@
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.6);
-    z-index: 99;
+    z-index: 99990;
 }
 
 .mobileMenuVisible {
-    z-index: 999;
+    z-index: 100000;
     /* Assure-toi que ce menu passe par-dessus l'overlay */
     position: fixed;
     top: 0;
@@ -316,7 +316,7 @@
     max-width: 300px;
     height: 100vh;
     background: #fff;
-    z-index: 100;
+    z-index: 100000;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -391,7 +391,7 @@
     right: 1rem;
     background: none;
     border: none;
-    z-index: 1000;
+    z-index: 10001;
     font-size: 1.8rem;
     cursor: pointer;
 }
@@ -622,6 +622,11 @@ body, html {
         align-items: center;
         gap: 16px;
     }
+
+  :global(html.menu-open [class*="favorite"]) {
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
 }
 
 @media (min-width: 768px) {
@@ -663,4 +668,38 @@ body, html {
     padding: 0;
     z-index: 2;
   }
+}
+
+/* Quand l'overlay/menu est visible, neutraliser les coeurs en dessous */
+.overlay.visible ~ * .ProductCard-module--favoriteIcon,
+.overlay.visible ~ * .product-card .favoriteIcon {
+  pointer-events: none !important;
+}
+
+/* Masquer/Désactiver les coeurs quand le menu est ouvert (classe posée par Header.js) */
+:global(html.menu-open [class*="favoriteIcon"]) ,
+:global(html.menu-open [class*="favorite-icon"]) {
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+/* --- Ensure mobile menu & overlay are always above everything (all viewports) --- */
+.mobileMenu { z-index: 2147483600 !important; }
+.overlay { z-index: 2147483500 !important; }
+
+/* When the mobile menu is open, raise the header stacking context above everything */
+:global(html.menu-open) .root {
+  z-index: 2147483400 !important; /* higher than any product-card overlays */
+}
+
+/* Also make sure the overlay captures all interactions */
+:global(html.menu-open) .overlay {
+  pointer-events: auto !important;
+}
+
+/* Absolute safeguard: when menu is open, completely hide any favorite icons (any module naming) */
+:global(html.menu-open [class*="favorite"]) {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
 }

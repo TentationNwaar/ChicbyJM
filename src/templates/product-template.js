@@ -70,6 +70,7 @@ const ProductTemplate = ({ data }) => {
   const [isDescriptionOpen, setIsDescriptionOpen] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
   const [toast, setToast] = useState(null);
+  const [lightboxSrc, setLightboxSrc] = useState(null);
 
   useEffect(() => {
     if (!toast) return;
@@ -246,12 +247,15 @@ const ProductTemplate = ({ data }) => {
       </div>
     )}
       <div className="product-container">
-        <div className="product-images-container">
+        <div className="product-images-container no-save">
           <img
             src={selectedImage}
             alt="Image principale du produit"
             className="main-product-image"
             style={{ width: "500px", height: "500px", objectFit: "cover" }}
+            draggable={false}
+            onContextMenu={(e) => e.preventDefault()}
+            onClick={() => setLightboxSrc(selectedImage)}
           />
         </div>
 
@@ -346,6 +350,27 @@ const ProductTemplate = ({ data }) => {
               </div>
             )}
           </div>
+        </div>
+      )}
+      {lightboxSrc && (
+        <div className="lightbox-overlay" onClick={() => setLightboxSrc(null)}>
+          <button
+            className="lightbox-close"
+            aria-label="Fermer l'image"
+            onClick={(e) => {
+              e.stopPropagation();
+              setLightboxSrc(null);
+            }}
+          >
+            ✕
+          </button>
+          <img
+            className="lightbox-img"
+            src={lightboxSrc}
+            alt=""
+            draggable={false}
+            onContextMenu={(e) => e.preventDefault()}
+          />
         </div>
       )}
     </Layout>

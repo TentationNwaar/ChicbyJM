@@ -20,7 +20,6 @@ const Header = () => {
   const [mobileMenu, setMobileMenu] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [search, setSearch] = useState('');
-  const [crossVisible, setCrossVisible] = useState(false);
   const handleSuggestionClick = (suggestion) => {
     navigate(`/search?q=${suggestion}`);
     setShowSearch(false);
@@ -38,12 +37,26 @@ const Header = () => {
 
   const handleCloseMobileMenu = () => {
     setMobileMenu(false);
-    setCrossVisible(false);
+    if (typeof document !== 'undefined') {
+      document.documentElement.classList.remove('menu-open');
+      document.body.style.overflow = '';
+    }
   };
 
   const toggleMobileMenu = () => {
-    setMobileMenu(!mobileMenu);
-    setCrossVisible(true);
+    setMobileMenu(prev => {
+      const next = !prev;
+      if (typeof document !== 'undefined') {
+        if (next) {
+          document.documentElement.classList.add('menu-open');
+          document.body.style.overflow = 'hidden';
+        } else {
+          document.documentElement.classList.remove('menu-open');
+          document.body.style.overflow = '';
+        }
+      }
+      return next;
+    });
   };
 
   useEffect(() => {
@@ -55,7 +68,13 @@ const Header = () => {
       };
 
       window.addEventListener('resize', handleResize);
-      return () => window.removeEventListener('resize', handleResize);
+      return () => {
+        window.removeEventListener('resize', handleResize);
+        if (typeof document !== 'undefined') {
+          document.documentElement.classList.remove('menu-open');
+          document.body.style.overflow = '';
+        }
+      };
     }
   }, []);
 
@@ -179,7 +198,7 @@ const Header = () => {
 
       {mobileMenu && (
         <>
-          <div className={styles.overlay} onClick={handleCloseMobileMenu} />
+          <div className={`${styles.overlay} ${styles.visible}`} onClick={handleCloseMobileMenu} />
           <motion.nav
             initial={{ x: '100%' }}
             animate={{ x: 0 }}

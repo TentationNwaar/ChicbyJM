@@ -320,6 +320,51 @@
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15); /* Ombre plus marquée au survol */
 }
 
+/* === Anti save (tap prolongé / clic droit) sur l'image === */
+.no-save {
+  -webkit-touch-callout: none;   /* iOS: désactive le menu long-press */
+  -webkit-user-select: none;
+  user-select: none;
+}
+.no-save img {
+  -webkit-user-drag: none;       /* iOS/Safari: empêche le drag/save */
+  user-drag: none;
+}
+
+/* === Lightbox plein écran pour la photo produit === */
+.lightbox-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+}
+
+.lightbox-img {
+  max-width: 100vw;
+  max-height: 100vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+.lightbox-close {
+  position: fixed;
+  top: 14px;
+  right: 14px;
+  width: 44px;
+  height: 44px;
+  border-radius: 9999px;
+  border: none;
+  background: rgba(255,255,255,0.95);
+  font-size: 22px;
+  line-height: 44px;
+  text-align: center;
+  cursor: pointer;
+}
+
 /* ====== Reviews (notes & commentaires) ====== */
 .reviews-section {
   margin: 24px auto 40px;
