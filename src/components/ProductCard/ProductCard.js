@@ -10,6 +10,12 @@ import { FaHeart, FaRegHeart } from 'react-icons/fa';
 const ProductCard = (props) => {
   const [isWishlist, setIsWishlist] = useState(false);
 
+  const notify = (detail) => {
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('notify', { detail }));
+    }
+  };
+
   const {
     image,
     imageAlt,
@@ -28,7 +34,10 @@ const ProductCard = (props) => {
 
     try {
       const rawUser = localStorage.getItem('user');
-      if (!rawUser || !productId) return;
+      if (!rawUser || !productId) {
+        notify({ type: 'info', message: 'Connecte-toi pour enregistrer en favoris', timeout: 2400 });
+        return;
+      }
 
       const user = JSON.parse(rawUser);
 
@@ -42,6 +51,7 @@ const ProductCard = (props) => {
 
       if (selectError) {
         console.error('Erreur vérification favori :', selectError);
+        notify({ type: 'error', message: "Impossible de vérifier les favoris", timeout: 2200 });
         return;
       }
 
@@ -58,6 +68,7 @@ const ProductCard = (props) => {
         }
 
         setIsWishlist(false);
+        notify({ type: 'info', message: 'Retiré des favoris', timeout: 2000 });
         return;
       }
 
@@ -71,12 +82,15 @@ const ProductCard = (props) => {
 
       if (insertError) {
         console.error("Erreur ajout favori :", insertError);
+        notify({ type: 'error', message: "Impossible d'ajouter aux favoris, veuillez vous connecter", timeout: 2200 });
         return;
       }
 
       setIsWishlist(true);
+      notify({ type: 'success', message: 'Ajouté aux favoris ❤️', timeout: 2200 });
     } catch (err) {
       console.error('handleFavorite exception :', err);
+      notify({ type: 'error', message: "Oups, une erreur est survenue.", timeout: 2200 });
     }
   };
 

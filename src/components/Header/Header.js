@@ -19,6 +19,7 @@ const Header = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [mobileMenu, setMobileMenu] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
+  const [toast, setToast] = useState(null);
   const [search, setSearch] = useState('');
   const handleSuggestionClick = (suggestion) => {
     navigate(`/search?q=${suggestion}`);
@@ -77,6 +78,24 @@ const Header = () => {
       };
     }
   }, []);
+
+  useEffect(() => {
+  let timerId;
+  const onNotify = (e) => {
+    console.log("[Header] Event notify reçu :", e.detail); // 🔍 log debug
+    const { message, type = "success", timeout = 2500 } = e.detail || {};
+    setToast({ message, type });
+    if (timerId) clearTimeout(timerId);
+    timerId = setTimeout(() => setToast(null), timeout);
+  };
+  console.log("[Header] Montage listener notify"); // 🔍 log au montage
+  window.addEventListener("notify", onNotify);
+  return () => {
+    console.log("[Header] Démontage listener notify"); // 🔍 log au démontage
+    window.removeEventListener("notify", onNotify);
+    if (timerId) clearTimeout(timerId);
+  };
+}, []);
 
   return (
     <div className={styles.root}>
@@ -170,6 +189,23 @@ const Header = () => {
           </div>
           )}
 
+          {toast && (
+              <div className={styles.toastPortal}>
+                <div
+                  className={[
+                    styles.toast,
+                    toast.type === 'error'
+                      ? styles.toastError
+                      : toast.type === 'info'
+                      ? styles.toastInfo
+                      : styles.toastSuccess,
+                  ].join(' ')}
+                >
+                  {toast.message}
+                </div>
+              </div>
+            )}
+
           <div
             role="presentation"
             onClick={toggleMobileMenu}
@@ -248,7 +284,7 @@ const Header = () => {
               id="search"
               placeholder="Rechercher"
               value={search}
-              handleChange={(id, value) => setSearch(value)} // ✅ voilà ce que ton composant attend
+              handleChange={(id, value) => setSearch(value)}
               ref={searchRef}
             />
             <button type="submit">Search</button>

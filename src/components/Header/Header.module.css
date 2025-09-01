@@ -20,7 +20,7 @@
     width: 100%;
     background-color: var(--standard-white);
     box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
-    z-index: 50;
+    z-index: 2000;
 }
 
 .iconButton {
@@ -703,3 +703,35 @@ body, html {
   visibility: hidden !important;
   pointer-events: none !important;
 }
+/* Clamp stacking of any favorite icons so they never overtop the header */
+:global(.ProductCard-module--favoriteIcon),
+:global([class*="favoriteIcon"]) {
+  z-index: 1 !important;
+}
+
+/* Portail du toast: toujours visible au-dessus de la page */
+.toastPortal {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2147483640; /* au-dessus de tout le reste */
+  pointer-events: none; /* n'intercepte pas les clics du site */
+}
+
+/* Toast minimal en fallback (si le composant AddNotification ne rend pas) */
+.toast {
+  display: inline-block;
+  max-width: min(92vw, 560px);
+  padding: 12px 18px;
+  border-radius: 999px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.18);
+  font-weight: 600;
+  letter-spacing: .2px;
+  color: #fff;
+  backdrop-filter: blur(4px);
+}
+
+.toastSuccess { background: #b59f66; } /* vert succès */
+.toastInfo    { background: #b59f66; } /* doré thème */
+.toastError   { background: #dc2626; } /* rouge erreur */
