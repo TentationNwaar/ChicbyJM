@@ -2,7 +2,6 @@ import React, { useState, useEffect, createRef, useContext } from 'react';
 import { UserContext } from '../../context/UserContext';
 import { Link, navigate } from 'gatsby';
 
-import AddNotification from '../AddNotification';
 import Container from '../Container';
 import Config from '../../config.json';
 import FormInputField from '../FormInputField/FormInputField';
@@ -190,21 +189,25 @@ const Header = () => {
           )}
 
           {toast && (
-              <div className={styles.toastPortal}>
-                <div
-                  className={[
-                    styles.toast,
-                    toast.type === 'error'
-                      ? styles.toastError
-                      : toast.type === 'info'
-                      ? styles.toastInfo
-                      : styles.toastSuccess,
-                  ].join(' ')}
-                >
-                  {toast.message}
-                </div>
+            <div className={styles.toastPortal}>
+              <div
+                role="status"
+                aria-live="polite"
+                aria-atomic="true"
+                onClick={() => setToast(null)}
+                className={[
+                  styles.toast,
+                  toast.type === 'error'
+                    ? styles.toastError
+                    : toast.type === 'info'
+                    ? styles.toastInfo
+                    : styles.toastSuccess,
+                ].join(' ')}
+              >
+                {toast.message}
               </div>
-            )}
+            </div>
+          )}
 
           <div
             role="presentation"

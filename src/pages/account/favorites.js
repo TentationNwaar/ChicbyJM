@@ -5,6 +5,7 @@ import Button from '../../components/Button';
 import Container from '../../components/Container';
 import Layout from '../../components/Layout/Layout';
 import Modal from '../../components/Modal';
+import { FaHeart } from 'react-icons/fa';
 import { supabase } from '../../lib/supabaseClient';
 
 const BASE_PRODUCT_PATH = '/en/product'; // doit matcher gatsby-node.js
@@ -134,31 +135,32 @@ const FavoritesPage = () => {
                     tabIndex={0}
                     onKeyDown={(e) => { if (e.key === 'Enter') window.location.assign(path); }}
                   >
-                    <div className={styles.cardInner}>
+                    <div className={styles.imageWrap}>
                       <img
                         src={displayImage}
                         alt={product?.name || 'Produit'}
                         className={styles.productImage}
                         loading="lazy"
                       />
-                      <div className={styles.cardContent}>
-                        <h2 className={styles.cardTitle}>{product?.name || 'Produit'}</h2>
-                        <span className={styles.productPrice}>
-                          {variant?.retail_price || '—'} CHF
-                        </span>
-                      </div>
                       <button
-                        className={styles.favButton}
+                        className={styles.favoriteRemove}
                         aria-label="Retirer des favoris"
                         onClick={(e) => {
+                          e.preventDefault();
                           e.stopPropagation();
                           setSelectedFavoriteId(id);
                           setShowDelete(true);
                         }}
                       >
-                        ♥
+                        <FaHeart />
                       </button>
                     </div>
+
+                    <h2 className={styles.cardTitle}>{product?.name || 'Produit'}</h2>
+                    <span className={styles.productPrice}>
+                      {variant?.retail_price || '—'} CHF
+                    </span>
+                    <div className={styles.flexSpacer} />
                   </li>
                 );
               })}
