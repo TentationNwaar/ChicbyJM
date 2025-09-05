@@ -28,9 +28,9 @@ const fadeInAnimation = {
 // Hero Carousel
 const HeroCarousel = () => {
   const images = [
-    { src: 'carousel/Shooting.webp', alt: 'Image 1', title: 'Votre histoire, votre style', ctaText: 'Commencer le shopping', ctaLink: '/shopTous' },
+    { src: 'carousel/Shooting3.webp', alt: 'Image 3', title: 'Votre histoire, votre style', ctaText: 'Commencer le shopping', ctaLink: '/shopTous' },
     { src: 'carousel/Shooting2.webp', alt: 'Image 2', title: 'Un dressing frais et tendance', ctaText: 'Découvrez la collection homme', ctaLink: '/shopHomme' },
-    { src: 'carousel/Shooting3.webp', alt: 'Image 3', title: 'Une mode pour tous', ctaText: 'Découvrez la collection enfant', ctaLink: '/shopEnfant' },
+    { src: 'carousel/Shooting.webp', alt: 'Image 1', title: 'Une mode pour tous', ctaText: 'Découvrez la collection enfant', ctaLink: '/shopEnfant' },
     { src: 'carousel/Shooting4.webp', alt: 'Image 4', title: 'Douceur et chaleur', ctaText: 'Découvrez la section femme', ctaLink: '/shopFemme' },
     { src: 'carousel/Shooting5.webp', alt: 'Image 5', title: 'Complétez votre style', ctaText: 'Découvrez les accessoires', ctaLink: '/shopAccessoire' },
   ];
@@ -92,13 +92,19 @@ const IndexPage = () => {
       >
         <Container>
           <Title name="Les nouveautés" link="/shopTous" textLink="Tout voir" />
-          <RecentImages />
+          <RecentImages orderBy="created_at" direction="desc" limit={8} />
         </Container>
       </motion.div>
 
       {/* Promotion */}
       <motion.div className={styles.promotionContainer} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInAnimation}>
-        <Hero image={toOptimizedImage('/Banner1_JM.webp')} title="-20% de réductions sur les essentiels du moment" />
+        <Hero
+          image={'/Bannière_JM_2025.png'}
+          title=""
+          useImg={true}
+          className={styles.promotionContainer}
+          imgClassName={styles.promotionImage}
+        />
       </motion.div>
 
       {/* Citation */}

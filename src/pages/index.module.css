@@ -33,11 +33,30 @@ body {
 }
 
 .promotionContainer {
-  padding: 2rem;
-  background-color: #f7f7f7;
+  padding: 0;                      /* remove inner padding so image can be full-bleed */
+  background: transparent;        /* no background behind the image */
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
+  width: 100%;
+  overflow: hidden;               /* required for rounded corners + hover zoom */
+  border-radius: 16px;            /* rounded corners */
+}
+
+.promotionContainer img {
+  width: auto;
+  max-width: 80%;
+  height: auto;
+  max-height: 80vh;
+  margin: 0 auto;
+  display: block;
+  object-fit: cover;
+  object-position: center center;
+  transition: transform 0.4s ease; /* hover zoom */
+}
+
+.promotionContainer:hover img {
+  transform: scale(1.05);
 }
 
 .socialContainer {
@@ -45,6 +64,14 @@ body {
     align-items: center;
     text-align: center;
     padding: 2rem 1rem;
+}
+
+.promotionImage {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 16px;
+  transition: transform 0.4s ease;
 }
 
 @media (max-width: 800px) {
@@ -162,13 +189,24 @@ body {
     width: 100%;
     padding: 0;
     margin: 0;
-    overflow: hidden;
+    overflow: visible;        /* was hidden – allow full image */
+    border-radius: 0;         /* move rounding to the image itself on mobile */
   }
 
   .promotionContainer img {
     width: 100%;
+    max-width: 100%;
     height: auto;
-    object-fit: cover;
+    max-height: 70vh;          /* slightly smaller to ensure full visibility */
+    object-fit: contain;       /* never crop */
+    object-position: center center;
+    border-radius: 16px;       /* rounding on the image */
     display: block;
+    margin: 0 auto;            /* center the image if it ends up narrower */
+    transform: none !important;
+  }
+
+  .promotionContainer:hover img {
+    transform: none;          /* disable zoom on mobile to avoid crop */
   }
 }   

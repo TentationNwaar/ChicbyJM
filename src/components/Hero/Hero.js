@@ -3,6 +3,7 @@ import * as styles from './Hero.module.css';
 import Button from '../Button';
 import { Link } from 'gatsby';
 import { toOptimizedImage } from '../../helpers/general';
+import clsx from 'clsx';
 
 const Hero = (props) => {
   const {
@@ -16,9 +17,28 @@ const Hero = (props) => {
     ctaLink,
     ctaTo,
     header,
+    // new optional props
+    className,
+    imgClassName,
+    useImg = false,            // if true, render an <img> instead of background-image
+    bgSize = 'cover',          // background-size when using background mode
   } = props;
   return (
-    <div className={styles.root} style={{ backgroundImage: `url(${toOptimizedImage(image)})` }}>
+    <div
+      className={clsx(styles.root, className)}
+      style={
+        useImg
+          ? undefined
+          : { backgroundImage: `url(${toOptimizedImage(image)})`, backgroundSize: bgSize }
+      }
+    >
+      {useImg && (
+        <img
+          src={toOptimizedImage(image)}
+          alt={title || ''}
+          className={imgClassName}
+        />
+      )}
       <div className={styles.content} style={{ maxWidth: maxWidth }}>
         {header && <span className={styles.header}>{header}</span>}
         {title && <h2 className={styles.title}>{title}</h2>}
