@@ -92,7 +92,7 @@ const IndexPage = () => {
       >
         <Container>
           <Title name="Les nouveautés" link="/shopTous" textLink="Tout voir" />
-          <RecentImages orderBy="created_at" direction="desc" limit={8} />
+          <RecentImages orderBy="created_at" direction="desc" limit={3} />
         </Container>
       </motion.div>
 

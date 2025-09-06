@@ -1,18 +1,38 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { graphql, useStaticQuery, Link } from "gatsby";
 import "./RecentImages.css";
 
 // Helper: parse various possible date fields safely
-const getDateValue = (p) => {
-  const v = p?.created_at ?? p?.createdAt ?? p?.updatedAt ?? p?.date ?? p?.id ?? 0;
-  if (!v) return 0;
-  return typeof v === "string" && !/^[0-9]+$/.test(v) ? Date.parse(v) : +v || 0;
+const getDateValue = (p, orderByFallback = []) => {
+  const candidates = [
+    p?.created_at,
+    p?.createdAt,
+    p?.updatedAt,
+    p?.date,
+    ...orderByFallback.map((k) => p?.[k]),
+  ].filter(Boolean);
+
+  if (candidates.length === 0) return 0;
+
+  // Take the first available and try to parse
+  const v = candidates[0];
+  if (typeof v === "string") {
+    const parsed = Date.parse(v);
+    return Number.isNaN(parsed) ? 0 : parsed;
+  }
+  const n = +v;
+  return Number.isNaN(n) ? 0 : n;
 };
 
-const RecentImages = () => {
-  // Fetch more than 3, then sort & slice client-side to ensure "latest"
+/**
+ * RecentImages
+ * - If `products` prop is provided, uses it (assumed already sorted by the caller, e.g., Shop logic)
+ * - Otherwise falls back to StaticQuery (build-time) and sorts client-side by the best available date field
+ */
+const RecentImages = ({ products: productsProp = [], limit = 3, orderBy = "created_at", direction = "desc" }) => {
+  // Fallback StaticQuery only when no products are provided via props
   const data = useStaticQuery(graphql`
-    query RecentImages_Home {
+    query RecentImages_Home_Fallback {
       allPrintfulProduct(limit: 24) {
         nodes {
           id
@@ -24,12 +44,36 @@ const RecentImages = () => {
     }
   `);
 
-  const products = data?.allPrintfulProduct?.nodes || [];
+  const source = productsProp.length > 0
+    ? productsProp
+    : (data?.allPrintfulProduct?.nodes || []);
 
-  // Sort newest first then take top 3
-  const newest = [...products]
-    .sort((a, b) => getDateValue(b) - getDateValue(a))
-    .slice(0, 3);
+  const newest = useMemo(() => {
+    // If caller provided products (e.g., Shop already sorted), keep order and just take the first `limit`.
+    if (productsProp.length > 0) {
+      return productsProp.slice(0, limit);
+    }
+
+    // Otherwise, sort by the best available date-like field, falling back gracefully.
+    const fallbackKeys = Array.isArray(orderBy) ? orderBy : [orderBy];
+
+    const withScores = source.map((p, idx) => ({
+      p,
+      score: getDateValue(p, fallbackKeys),
+      idx,
+    }));
+
+    // If no scores are available (all 0), preserve original order
+    const anyScore = withScores.some((x) => x.score !== 0);
+    const sorted = anyScore
+      ? withScores.sort((a, b) => {
+          const diff = a.score - b.score;
+          return direction === "asc" ? diff : -diff;
+        })
+      : withScores; // keep as-is
+
+    return sorted.slice(0, limit).map((x) => x.p);
+  }, [productsProp, source, limit, orderBy, direction]);
 
   return (
     <div className="image-gallery">
@@ -41,6 +85,7 @@ const RecentImages = () => {
               src={product.thumbnail_url || "/placeholder.jpg"}
               alt={product.name}
               className="product-image"
+              loading="lazy"
             />
             <p className="product-name">{product.name}</p>
           </Link>

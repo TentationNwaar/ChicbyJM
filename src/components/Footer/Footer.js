@@ -13,11 +13,63 @@ import * as styles from './Footer.module.css';
 
 const Footer = (prop) => {
   const [email, setEmail] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [honeypot, setHoneypot] = useState('');
 
-  const subscribeHandler = (e) => {
+  const isValidEmail = (value) =>
+    /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(String(value).trim());
+
+  const subscribeHandler = async (e) => {
     e.preventDefault();
-    setEmail('');
-    console.log('Subscribe this email: ', email);
+
+    // bot protection (honeypot)
+    if (honeypot) {
+      return; // silently drop
+    }
+
+    const trimmed = String(email).trim();
+    if (!isValidEmail(trimmed)) {
+      window?.dispatchEvent?.(
+        new CustomEvent('notify', {
+          detail: { type: 'error', message: "Adresse e-mail invalide. Vérifie et réessaie." },
+        })
+      );
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      // Netlify Forms programmatic submission
+      const formName = 'newsletter';
+      const body = new URLSearchParams({
+        'form-name': formName,
+        email: trimmed,
+      });
+
+      await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: body.toString(),
+      });
+
+      window?.dispatchEvent?.(
+        new CustomEvent('notify', {
+          detail: { type: 'success', message: "Inscription réussie à la newsletter ✨" },
+        })
+      );
+
+      setEmail('');
+    } catch (err) {
+      console.error('Newsletter subscribe error:', err);
+      window?.dispatchEvent?.(
+        new CustomEvent('notify', {
+          detail: { type: 'error', message: "Impossible d'envoyer ta demande. Réessaie dans un instant." },
+        })
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleSocialClick = (platform) => {
@@ -77,15 +129,31 @@ const Footer = (prop) => {
                 </p>
                 <form
                   className={styles.newsLetterForm}
-                  onSubmit={(e) => subscribeHandler(e)}
+                  name="newsletter"
+                  method="POST"
+                  data-netlify="true"
+                  data-netlify-honeypot="bot-field"
+                  onSubmit={subscribeHandler}
                 >
+                  {/* Netlify needs this hidden input to detect the form at build time */}
+                  <input type="hidden" name="form-name" value="newsletter" />
+                  {/* Honeypot field (hidden from users) */}
+                  <p style={{ display: 'none' }}>
+                    <label>
+                      Ne pas remplir si tu es humain: <input name="bot-field" onChange={(e) => setHoneypot(e.target.value)} />
+                    </label>
+                  </p>
                   <FormInputField
                     icon={'arrow'}
                     id={'newsLetterInput'}
                     value={email}
                     placeholder={'Email'}
                     handleChange={(_, e) => setEmail(e)}
+                    disabled={loading}
                   />
+                  <button type="submit" disabled={loading} style={{ display: 'none' }} aria-hidden="true" tabIndex={-1}>
+                    Submit
+                  </button>
                 </form>
                 <div className={styles.socialContainer}>
 
