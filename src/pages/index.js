@@ -99,7 +99,7 @@ const IndexPage = () => {
       {/* Promotion */}
       <motion.div className={styles.promotionContainer} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInAnimation}>
         <Hero
-          image={'/Bannière_JM_2025.png'}
+          image={'/BanniereJM2025.png'}
           title=""
           useImg={true}
           className={styles.promotionContainer}
