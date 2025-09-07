@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from 'react'; import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { navigate } from 'gatsby';
 import LazyLoad from 'react-lazyload';
@@ -64,6 +64,31 @@ const HeroCarousel = () => {
 
 // **Page Index**
 const IndexPage = () => {
+  const [latestProducts, setLatestProducts] = useState([]);
+
+  useEffect(() => {
+    // Fetch Gatsby's page-data from the Shop page at runtime so Netlify always shows fresh items
+    const url = '/page-data/shopTous/page-data.json';
+    fetch(url, { credentials: 'same-origin' })
+      .then((r) => r.json())
+      .then((data) => {
+        const nodes = data?.result?.data?.allPrintfulProduct?.nodes || [];
+        // Try to sort by common date-like fields (created_at/createdAt/etc.)
+        const getDate = (p) => {
+          const v = p?.created_at ?? p?.createdAt ?? p?.updatedAt ?? p?.date ?? 0;
+          if (!v) return 0;
+          return typeof v === 'string' ? Date.parse(v) : +v || 0;
+        };
+        const sorted = [...nodes].sort((a, b) => getDate(b) - getDate(a));
+        const top3 = sorted.slice(0, 3);
+        setLatestProducts(top3.length ? top3 : nodes.slice(0, 3));
+      })
+      .catch((e) => {
+        console.warn('[Index] Failed to load shop page-data, falling back:', e);
+        setLatestProducts([]);
+      });
+  }, []);
+
   return (
     <Layout disablePaddingBottom>
       <HeroCarousel />
@@ -92,7 +117,7 @@ const IndexPage = () => {
       >
         <Container>
           <Title name="Les nouveautés" link="/shopTous" textLink="Tout voir" />
-          <RecentImages orderBy="created_at" direction="desc" limit={3} />
+          <RecentImages products={latestProducts} orderBy="created_at" direction="desc" limit={3} />
         </Container>
       </motion.div>
 
