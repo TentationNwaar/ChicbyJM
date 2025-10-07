@@ -43,13 +43,23 @@ const HeroCarousel = () => {
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 3000,
+    lazyLoad: 'ondemand',
+    waitForAnimate: false,
   };
 
   return (
     <Slider {...settings} className={styles.heroCarousel}>
       {images.map((image, index) => (
         <div key={index} className={styles.carouselSlide}>
-          <img src={image.src} alt={image.alt} className={styles.carouselImage} />
+          <img
+            src={image.src}
+            alt={image.alt}
+            className={styles.carouselImage}
+            loading={index === 0 ? 'eager' : 'lazy'}
+            decoding="async"
+            fetchpriority={index === 0 ? 'high' : undefined}
+            sizes="(max-width: 768px) 100vw, 1400px"
+          />
           <div className={styles.carouselOverlay}>
             <h2 className={styles.carouselTitle}>{image.title}</h2>
             <button className={styles.carouselButton} onClick={() => navigate(image.ctaLink)}>
@@ -155,3 +165,10 @@ const IndexPage = () => {
 };
 
 export default IndexPage;
+
+export const Head = () => (
+  <>
+    <link rel="preload" as="image" href="/carousel/Shooting3.webp" imagesizes="(max-width: 768px) 100vw, 1400px" />
+    <link rel="preload" as="image" href="/BanniereJM2025.png" imagesizes="(max-width: 768px) 100vw, 1400px" />
+  </>
+);

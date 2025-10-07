@@ -9,7 +9,7 @@ import Icon from '../Icons/Icon';
 import MiniCart from '../MiniCart';
 import Drawer from '../Drawer';
 import * as styles from './Header.module.css';
-import logo from '../../../static/Logo_JM_Transparent.png'; 
+import logo from '../../../static/Logo_JM_Transparent.png';
 import { motion } from 'framer-motion';
 
 const Header = () => {
@@ -25,7 +25,7 @@ const Header = () => {
     setShowSearch(false);
   };
 
-  const bannerMessage = "BIENVENUE SUR CHIC BY JM !";
+  const bannerMessage = 'BIENVENUE SUR CHIC BY JM !';
   const searchRef = createRef();
   const searchSuggestions = ['T-shirt', 'School Spirit', 'Ciel bleu'];
 
@@ -44,7 +44,7 @@ const Header = () => {
   };
 
   const toggleMobileMenu = () => {
-    setMobileMenu(prev => {
+    setMobileMenu((prev) => {
       const next = !prev;
       if (typeof document !== 'undefined') {
         if (next) {
@@ -79,22 +79,22 @@ const Header = () => {
   }, []);
 
   useEffect(() => {
-  let timerId;
-  const onNotify = (e) => {
-    console.log("[Header] Event notify reçu :", e.detail); // 🔍 log debug
-    const { message, type = "success", timeout = 2500 } = e.detail || {};
-    setToast({ message, type });
-    if (timerId) clearTimeout(timerId);
-    timerId = setTimeout(() => setToast(null), timeout);
-  };
-  console.log("[Header] Montage listener notify"); // 🔍 log au montage
-  window.addEventListener("notify", onNotify);
-  return () => {
-    console.log("[Header] Démontage listener notify"); // 🔍 log au démontage
-    window.removeEventListener("notify", onNotify);
-    if (timerId) clearTimeout(timerId);
-  };
-}, []);
+    let timerId;
+    const onNotify = (e) => {
+      console.log('[Header] Event notify reçu :', e.detail); // 🔍 log debug
+      const { message, type = 'success', timeout = 2500 } = e.detail || {};
+      setToast({ message, type });
+      if (timerId) clearTimeout(timerId);
+      timerId = setTimeout(() => setToast(null), timeout);
+    };
+    console.log('[Header] Montage listener notify'); // 🔍 log au montage
+    window.addEventListener('notify', onNotify);
+    return () => {
+      console.log('[Header] Démontage listener notify'); // 🔍 log au démontage
+      window.removeEventListener('notify', onNotify);
+      if (timerId) clearTimeout(timerId);
+    };
+  }, []);
 
   return (
     <div className={styles.root}>
@@ -104,7 +104,11 @@ const Header = () => {
 
       <Container size={'large'} spacing={'min'}>
         <div className={styles.header}>
-          <div className={styles.logo} role="presentation" onClick={() => navigate('/')}> 
+          <div
+            className={styles.logo}
+            role="presentation"
+            onClick={() => navigate('/')}
+          >
             <img src={logo} alt="Logo JM" width="60" height="60" />
           </div>
 
@@ -157,35 +161,35 @@ const Header = () => {
 
           {isMobile && (
             <div className={styles.mobileIconsContainer}>
-            <button
-              aria-label="Search"
-              className={`${styles.iconButton} ${styles.iconContainer}`}
-              onClick={() => setShowSearch(!showSearch)}
-            >
-              <Icon symbol="search" />
-            </button>
-            <Link
-              aria-label="Favorites"
-              to="/account/favorites"
-              className={styles.iconContainer}
-            >
-              <Icon symbol="heart" />
-            </Link>
-            <Link
-              aria-label="User"
-              to={user ? '/account' : '/login'}
-              className={styles.iconContainer}
-            >
-              <Icon symbol="user" />
-            </Link>
-            <button
-              aria-label="Cart"
-              className={`${styles.iconButton} ${styles.iconContainer}`}
-              onClick={() => setShowMiniCart(!showMiniCart)}
-            >
-              <Icon symbol="bag" />
-            </button>
-          </div>
+              <button
+                aria-label="Search"
+                className={`${styles.iconButton} ${styles.iconContainer}`}
+                onClick={() => setShowSearch(!showSearch)}
+              >
+                <Icon symbol="search" />
+              </button>
+              <Link
+                aria-label="Favorites"
+                to="/account/favorites"
+                className={styles.iconContainer}
+              >
+                <Icon symbol="heart" />
+              </Link>
+              <Link
+                aria-label="User"
+                to={user ? '/account' : '/login'}
+                className={styles.iconContainer}
+              >
+                <Icon symbol="user" />
+              </Link>
+              <button
+                aria-label="Cart"
+                className={`${styles.iconButton} ${styles.iconContainer}`}
+                onClick={() => setShowMiniCart(!showMiniCart)}
+              >
+                <Icon symbol="bag" />
+              </button>
+            </div>
           )}
 
           {toast && (
@@ -200,8 +204,8 @@ const Header = () => {
                   toast.type === 'error'
                     ? styles.toastError
                     : toast.type === 'info'
-                    ? styles.toastInfo
-                    : styles.toastSuccess,
+                      ? styles.toastInfo
+                      : styles.toastSuccess,
                 ].join(' ')}
               >
                 {toast.message}
@@ -219,14 +223,11 @@ const Header = () => {
         </div>
       </Container>
 
-      {isMobile && showMiniCart && (
-        <div className={`${styles.drawerOverlay} ${styles.drawerOverlayVisible}`} onClick={() => setShowMiniCart(false)} />
-      )}
-
       {isMobile ? (
-        <Drawer visible={showMiniCart} close={() => setShowMiniCart(false)} customClass={styles.miniCartDrawer}>
-          <MiniCart closeCart={() => setShowMiniCart(false)} />
-        </Drawer>
+        <MiniCart
+          isOpen={showMiniCart} // ✅ MiniCart gère son overlay mobile
+          closeCart={() => setShowMiniCart(false)}
+        />
       ) : (
         showMiniCart && (
           <div className={styles.miniCartContainer}>
@@ -237,7 +238,10 @@ const Header = () => {
 
       {mobileMenu && (
         <>
-          <div className={`${styles.overlay} ${styles.visible}`} onClick={handleCloseMobileMenu} />
+          <div
+            className={`${styles.overlay} ${styles.visible}`}
+            onClick={handleCloseMobileMenu}
+          />
           <motion.nav
             initial={{ x: '100%' }}
             animate={{ x: 0 }}
@@ -294,7 +298,7 @@ const Header = () => {
           </form>
           <div className={styles.searchSuggestions}>
             {searchSuggestions.map((suggestion) => (
-              <div 
+              <div
                 key={suggestion}
                 role="button"
                 tabIndex="0"
