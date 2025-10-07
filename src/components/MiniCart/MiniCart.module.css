@@ -229,6 +229,12 @@
   background: #fff;
   border-radius: 12px;
   padding: 12px 14px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.itemRow:hover {
+  background: #f9f9f9;
 }
 
 /* Vignette limitée à 300x300 max, affichée compacte en desktop */
