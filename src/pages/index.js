@@ -1,4 +1,5 @@
-import * as React from 'react'; import { useEffect, useState } from 'react';
+import * as React from 'react';
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { navigate } from 'gatsby';
 import LazyLoad from 'react-lazyload';
@@ -28,11 +29,35 @@ const fadeInAnimation = {
 // Hero Carousel
 const HeroCarousel = () => {
   const images = [
-    { src: 'carousel/Shooting3.webp', alt: 'Image 3', title: 'Votre histoire, votre style', ctaText: 'Commencer le shopping', ctaLink: '/shopTous' },
-    { src: 'carousel/Shooting2.webp', alt: 'Image 2', title: 'Un dressing frais et tendance', ctaText: 'Découvrez la collection homme', ctaLink: '/shopHomme' },
-    { src: 'carousel/Shooting.webp', alt: 'Image 1', title: 'Une mode pour tous', ctaText: 'Découvrez la collection enfant', ctaLink: '/shopEnfant' },
-    { src: 'carousel/Shooting4.webp', alt: 'Image 4', title: 'Douceur et chaleur', ctaText: 'Découvrez la section femme', ctaLink: '/shopFemme' },
-    { src: 'carousel/Shooting5.webp', alt: 'Image 5', title: 'Complétez votre style', ctaText: 'Découvrez les accessoires', ctaLink: '/shopAccessoire' },
+    {
+      src: '/Shooting3.webp',
+      alt: 'Image 3',
+      title: 'Votre histoire, votre style',
+      ctaText: 'Commencer le shopping',
+      ctaLink: '/shopTous',
+    },
+    {
+      src: '/Shooting2.webp',
+      alt: 'Image 2',
+      title: 'Un dressing frais et tendance',
+      ctaText: 'Découvrez la collection homme',
+      ctaLink: '/shopHomme',
+    },
+    {
+      src: '/Shooting.webp',
+      alt: 'Image 1',
+      title: 'Une mode pour tous',
+      ctaText: 'Découvrez la collection enfant',
+      ctaLink: '/shopEnfant',
+    },
+    {
+      src: '/Shooting4.webp',
+      alt: 'Image 4',
+      title: 'Douceur et chaleur',
+      ctaText: 'Découvrez la section femme',
+      ctaLink: '/shopFemme',
+    },
+
   ];
 
   const settings = {
@@ -62,7 +87,10 @@ const HeroCarousel = () => {
           />
           <div className={styles.carouselOverlay}>
             <h2 className={styles.carouselTitle}>{image.title}</h2>
-            <button className={styles.carouselButton} onClick={() => navigate(image.ctaLink)}>
+            <button
+              className={styles.carouselButton}
+              onClick={() => navigate(image.ctaLink)}
+            >
               {image.ctaText}
             </button>
           </div>
@@ -85,7 +113,8 @@ const IndexPage = () => {
         const nodes = data?.result?.data?.allPrintfulProduct?.nodes || [];
         // Try to sort by common date-like fields (created_at/createdAt/etc.)
         const getDate = (p) => {
-          const v = p?.created_at ?? p?.createdAt ?? p?.updatedAt ?? p?.date ?? 0;
+          const v =
+            p?.created_at ?? p?.createdAt ?? p?.updatedAt ?? p?.date ?? 0;
           if (!v) return 0;
           return typeof v === 'string' ? Date.parse(v) : +v || 0;
         };
@@ -104,11 +133,11 @@ const IndexPage = () => {
       <HeroCarousel />
 
       {/* Nouvelle collection */}
-      <motion.div 
-        className={`${styles.newCollectionTitle} `} 
-        initial="hidden" 
-        whileInView="visible" 
-        viewport={{ once: true }} 
+      <motion.div
+        className={`${styles.newCollectionTitle} `}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
         variants={fadeInAnimation}
       >
         <Container size="large">
@@ -118,21 +147,32 @@ const IndexPage = () => {
       </motion.div>
 
       {/* Les nouveautés */}
-      <motion.div 
-        className={`${styles.newArrivalsTitle}`} 
-        initial="hidden" 
-        whileInView="visible" 
-        viewport={{ once: true }} 
+      <motion.div
+        className={`${styles.newArrivalsTitle}`}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
         variants={fadeInAnimation}
       >
         <Container>
           <Title name="Les nouveautés" link="/shopTous" textLink="Tout voir" />
-          <RecentImages products={latestProducts} orderBy="created_at" direction="desc" limit={3} />
+          <RecentImages
+            products={latestProducts}
+            orderBy="created_at"
+            direction="desc"
+            limit={3}
+          />
         </Container>
       </motion.div>
 
       {/* Promotion */}
-      <motion.div className={styles.promotionContainer} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInAnimation}>
+      <motion.div
+        className={styles.promotionContainer}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        variants={fadeInAnimation}
+      >
         <Hero
           image={'/BanniereJM2025.png'}
           title=""
@@ -143,17 +183,44 @@ const IndexPage = () => {
       </motion.div>
 
       {/* Citation */}
-      <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInAnimation}>
-        <Quote bgColor="var(--standard-light-grey)" title="A propos de JM" quote="“Le confort et l'élégance incarnent les piliers fondamentaux de notre approche, car nous croyons fermement que chaque expérience mérite d'être à la fois agréable et raffinée.”" />
+      <motion.div
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        variants={fadeInAnimation}
+      >
+        <Quote
+          bgColor="var(--standard-light-grey)"
+          title="A propos de JM"
+          quote="“Le confort et l'élégance incarnent les piliers fondamentaux de notre approche, car nous croyons fermement que chaque expérience mérite d'être à la fois agréable et raffinée.”"
+        />
       </motion.div>
 
       {/* Réseaux sociaux */}
-      <motion.div className={styles.socialContainer} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInAnimation}>
-        <Title name="Stylisé par Vous" subtitle="Identifiez @chicbyjm pour être mis en avant." />
+      <motion.div
+        className={styles.socialContainer}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        variants={fadeInAnimation}
+      >
+        <Title
+          name="Stylisé par Vous"
+          subtitle="Identifiez @chicbyjm pour être mis en avant."
+        />
         <div className={styles.socialContentGrid}>
-          {['SocialMedia1.webp', 'SocialMedia2.webp', 'SocialMedia3.webp', 'SocialMedia4.webp'].map((img, index) => (
+          {[
+            '/SocialMedia1.webp',
+            '/SocialMedia2.webp',
+            '/SocialMedia3.webp',
+            '/SocialMedia4.webp',
+          ].map((img, index) => (
             <LazyLoad key={index} height={300} offset={100} once>
-              <img src={toOptimizedImage(`/socialMedia/${img}`)} alt={`social media ${index + 1}`} />
+              <img
+                src={toOptimizedImage(img)}
+                alt={`social media ${index + 1}`}
+                className={index === 0 ? styles.socialMediaTop : ''}
+              />
             </LazyLoad>
           ))}
         </div>
@@ -168,7 +235,17 @@ export default IndexPage;
 
 export const Head = () => (
   <>
-    <link rel="preload" as="image" href="/carousel/Shooting3.webp" imagesizes="(max-width: 768px) 100vw, 1400px" />
-    <link rel="preload" as="image" href="/BanniereJM2025.png" imagesizes="(max-width: 768px) 100vw, 1400px" />
+    <link
+      rel="preload"
+      as="image"
+      href="/Shooting3.webp"
+      imagesizes="(max-width: 768px) 100vw, 1400px"
+    />
+    <link
+      rel="preload"
+      as="image"
+      href="/BanniereJM2025.png"
+      imagesizes="(max-width: 768px) 100vw, 1400px"
+    />
   </>
 );

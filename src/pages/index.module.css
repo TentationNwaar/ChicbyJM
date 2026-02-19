@@ -20,9 +20,14 @@ body {
 
 .socialContentGrid img {
     width: 300px;
-    height: auto;
+    height: 300px;
+    object-fit: cover;
     border-radius: 10px;
     margin: 10px;
+}
+
+.socialMediaTop {
+    object-position: center bottom;
 }
 
 .heroCarousel {
@@ -81,7 +86,10 @@ body {
     }
 
     .socialContentGrid img {
-        width: 100%; /* Rendre les images responsives sur mobile */
+        width: calc(100vw - 40px); /* Rendre les images responsives sur mobile */
+        height: calc(100vw - 40px);
+        max-width: 400px;
+        max-height: 400px;
     }
 }
 

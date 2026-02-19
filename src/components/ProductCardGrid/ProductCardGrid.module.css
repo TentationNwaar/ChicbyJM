@@ -18,6 +18,13 @@
   display: grid !important;
 }
 
+.empty {
+  text-align: center;
+  padding: 40px 20px;
+  color: #666;
+  font-size: 16px;
+}
+
 .priceAndFavorite {
   display: flex;
   justify-content: space-between;

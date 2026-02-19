@@ -377,7 +377,35 @@ const ProductTemplate = ({ data }) => {
   );
 };
 
+export const Head = ({ pageContext }) => {
+  const name = (pageContext?.name || "Produit").trim();
+  const slug = (pageContext?.slug || "").trim();
 
+  const title = name ? `${name} | Chic by JM` : "Chic by JM";
+
+  const descriptionRaw = (pageContext?.description || "")
+    .toString()
+    .replace(/<[^>]+>/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  const description = (
+    descriptionRaw || "Vêtements lifestyle & sport. Livraison internationale."
+  ).slice(0, 155);
+
+  const canonical = slug
+    ? `https://www.chicbyjm.ch/en/product/${slug}/`
+    : "https://www.chicbyjm.ch/";
+
+  return (
+    <>
+      <html lang="en" />
+      <title>{title}</title>
+      <meta name="description" content={description} />
+      <link rel="canonical" href={canonical} />
+    </>
+  );
+};
 
 export const query = graphql`
   query ($id: String!) {
@@ -404,5 +432,6 @@ export const query = graphql`
     }
   }
 `;
+
 
 export default ProductTemplate;
