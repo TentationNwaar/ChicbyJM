@@ -28,16 +28,44 @@ module.exports = {
     // On garde sitemap et robots
     `gatsby-plugin-sitemap`,
     {
-      resolve: 'gatsby-plugin-robots-txt',
+      resolve: `gatsby-plugin-robots-txt`,
       options: {
-        host: 'https://www.chicbyjm.ch',
-        sitemap: 'https://www.chicbyjm.ch/sitemap-index.xml',
-        policy: [{ userAgent: '*', allow: '/' }],
+        policy: [
+          {
+            userAgent: "*",
+            allow: "/",
+            disallow: [
+              "/account",
+              "/checkout",
+              "/cart",
+              "/login",
+            ],
+          },
+        ],
       },
     },
     `gatsby-transformer-sharp`,
     `gatsby-transformer-remark`,
     `gatsby-transformer-csv`,
+    {
+      resolve: `gatsby-plugin-sitemap`,
+      options: {
+        excludes: [
+          `/account/*`,
+          `/cart/`,
+          `/checkout/`,
+          `/checkout-result/`,
+          `/login/`,
+          `/signup/`,
+          `/orderConfirm/`,
+          `/forgot/`,
+          `/test/`,
+          `/tempCodeRunnerFile/`,
+          `/account-home/`,
+          `/accountSuccess/`,
+        ],
+      },
+    },
     // IMPORTANT: On retire react-helmet si on utilise Head API, 
     // ou on s'assure qu'il n'interfère pas.
   ],

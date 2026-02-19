@@ -443,28 +443,47 @@ const ProductTemplate = ({ data }) => {
   );
 };
 
-export const Head = ({ pageContext }) => {
-  const name = (pageContext?.name || 'Produit').trim();
-  const slug = (pageContext?.slug || '').trim();
-  const title = name ? `${name} | Chic by JM` : 'Chic by JM';
-  const descriptionRaw = (pageContext?.description || '')
-    .toString()
-    .replace(/<[^>]+>/g, '')
-    .replace(/\s+/g, ' ')
-    .trim();
-  const description = (
-    descriptionRaw || 'Vêtements lifestyle & sport. Livraison internationale.'
-  ).slice(0, 155);
-  const canonical = slug
-    ? `https://www.chicbyjm.ch/en/product/${slug}/`
-    : 'https://www.chicbyjm.ch/';
+export const Head = ({ data }) => {
+  const product = data.printfulProduct;
+
+  const structuredData = {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    name: product.name,
+    image: product.thumbnail_url,
+    description: product.description,
+    brand: {
+      "@type": "Brand",
+      name: "Chic by JM",
+    },
+    offers: {
+      "@type": "Offer",
+      priceCurrency: "CHF",
+      price: product.sync_variants?.[0]?.retail_price || "0",
+      availability: "https://schema.org/InStock",
+      url: `https://www.chicbyjm.ch/en/product/${product.slug}/`,
+    },
+  };
 
   return (
     <>
-      <html lang="en" />
-      <title>{title}</title>
-      <meta name="description" content={description} />
-      <link rel="canonical" href={canonical} />
+      <title>{product.name} | Chic by JM</title>
+
+      <meta
+        name="description"
+        content={product.description?.slice(0, 155)}
+      />
+
+      <meta property="og:title" content={product.name} />
+      <meta
+        property="og:description"
+        content={product.description?.slice(0, 155)}
+      />
+      <meta property="og:image" content={product.thumbnail_url} />
+
+      <script type="application/ld+json">
+        {JSON.stringify(structuredData)}
+      </script>
     </>
   );
 };

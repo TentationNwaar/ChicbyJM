@@ -22,6 +22,22 @@ if (typeof window !== "undefined" && isLoadingUser) {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            name: "Chic by JM",
+            url: "https://www.chicbyjm.ch",
+            logo: "https://www.chicbyjm.ch/logo.png",
+            sameAs: [
+              "https://www.instagram.com/chicbyjm"
+            ],
+            areaServed: "Switzerland"
+          })
+        }}
+      />
       <Header />
       <main className={`${styles.main} ${disablePaddingBottom ? styles.disablePaddingBottom : ''}`}>
         {children}

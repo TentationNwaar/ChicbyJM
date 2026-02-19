@@ -50,8 +50,8 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
       context: {
         id: String(product.id),
         slug: safeSlug,
-        name: product?.name || "",
-        description: product?.description || "",
+        name: product?.name || '',
+        description: product?.description || '',
       },
     });
     createdCount++;
@@ -147,6 +147,8 @@ exports.onCreateWebpackConfig = ({ stage, actions, getConfig }) => {
   }
 };
 
+
+
 // Importation des produits Printful
 exports.sourceNodes = async ({
   actions,
@@ -155,6 +157,12 @@ exports.sourceNodes = async ({
   reporter,
 }) => {
   const { createNode } = actions;
+
+  const normalizeOptionValueToArray = (v) => {
+    if (Array.isArray(v)) return v.map(String);
+    if (v === null || v === undefined) return [];
+    return [String(v)];
+  };
 
   try {
     reporter.info('🛒 Récupération des produits depuis Printful…');
@@ -200,6 +208,15 @@ exports.sourceNodes = async ({
       const detailsData = await detailsResponse.json();
       const productDetails = detailsData.result.sync_product;
       const variants = detailsData.result.sync_variants || [];
+
+      const normalizedVariants = variants.map((sv) => ({
+        ...sv,
+        options: (sv.options || []).map((opt) => ({
+          ...opt,
+          value: normalizeOptionValueToArray(opt.value),
+        })),
+      }));
+
       const baseProductId =
         variants.length > 0 ? variants[0].product.variant_id : null;
 
@@ -240,7 +257,7 @@ exports.sourceNodes = async ({
         description:
           productDetails?.description || 'Aucune description disponible.',
         thumbnail_url: product.thumbnail_url,
-        sync_variants: variants,
+        sync_variants: normalizedVariants,
         size_guide: sizeGuide,
         parent: null,
         children: [],
@@ -276,11 +293,17 @@ exports.createSchemaCustomization = ({ actions }) => {
       retail_price: String
       currency: String
       files: [SyncFile]
+      options: [SyncVariantOption]
     }
 
     type SyncFile {
       filename: String
       preview_url: String
+    }
+
+    type SyncVariantOption {
+      id: String
+      value: [String]
     }
 
     type SizeGuide {

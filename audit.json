@@ -1,0 +1,1181 @@
+{
+  "auditReportVersion": 2,
+  "vulnerabilities": {
+    "@ardatan/relay-compiler": {
+      "name": "@ardatan/relay-compiler",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "glob"
+      ],
+      "effects": [
+        "@graphql-tools/relay-operation-optimizer"
+      ],
+      "range": "12.0.0",
+      "nodes": [
+        "node_modules/@ardatan/relay-compiler"
+      ],
+      "fixAvailable": {
+        "name": "gatsby",
+        "version": "3.3.1",
+        "isSemVerMajor": true
+      }
+    },
+    "@eslint/config-array": {
+      "name": "@eslint/config-array",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "minimatch"
+      ],
+      "effects": [
+        "eslint"
+      ],
+      "range": "<=0.22.0",
+      "nodes": [
+        "node_modules/@eslint/config-array"
+      ],
+      "fixAvailable": {
+        "name": "eslint",
+        "version": "4.1.1",
+        "isSemVerMajor": true
+      }
+    },
+    "@eslint/eslintrc": {
+      "name": "@eslint/eslintrc",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "ajv",
+        "minimatch"
+      ],
+      "effects": [
+        "eslint"
+      ],
+      "range": "*",
+      "nodes": [
+        "node_modules/@eslint/eslintrc",
+        "node_modules/gatsby/node_modules/@eslint/eslintrc"
+      ],
+      "fixAvailable": {
+        "name": "eslint",
+        "version": "4.1.1",
+        "isSemVerMajor": true
+      }
+    },
+    "@graphql-codegen/typescript": {
+      "name": "@graphql-codegen/typescript",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "@graphql-codegen/visitor-plugin-common"
+      ],
+      "effects": [
+        "@graphql-codegen/typescript-operations",
+        "gatsby"
+      ],
+      "range": "1.15.1-alpha-094d4b03.0 - 1.15.1-alpha-7a8dc9a9.0 || 1.15.2-alpha-0056e97b.0 - 1.15.2-alpha-b5f29c7c.0 || 1.15.3-alpha-1ceb41cc.0 - 1.15.3-alpha-599c49ab.0 || 1.15.5-alpha-00d8f290.0 || 1.17.8-alpha-091dfeae.0 - 1.17.8-alpha-bc20b4c2.0 || 2.5.1-alpha-7a65ba05d.0 - 4.0.0-rc-20230524075940-6fc45fc42",
+      "nodes": [
+        "node_modules/@graphql-codegen/typescript"
+      ],
+      "fixAvailable": {
+        "name": "gatsby",
+        "version": "3.3.1",
+        "isSemVerMajor": true
+      }
+    },
+    "@graphql-codegen/typescript-operations": {
+      "name": "@graphql-codegen/typescript-operations",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "@graphql-codegen/typescript",
+        "@graphql-codegen/visitor-plugin-common"
+      ],
+      "effects": [],
+      "range": "1.15.1-alpha-094d4b03.0 - 1.15.1-alpha-7a8dc9a9.0 || 1.15.2-alpha-0056e97b.0 - 1.15.2-alpha-b5f29c7c.0 || 1.15.3-alpha-1ceb41cc.0 - 1.15.3-alpha-599c49ab.0 || 1.15.5-alpha-00d8f290.0 - 1.15.5-alpha-1816020a.0 || 1.16.1-alpha-02b2f1d5.0 - 1.16.1-alpha-631150fc.0 || 1.17.2-alpha-21418116.0 - 1.17.2 || 1.17.8-alpha-091dfeae.0 - 1.17.8-alpha-bc20b4c2.0 || 2.4.2-alpha-7a65ba05d.0 - 4.0.0-rc-20230524075940-6fc45fc42 || 4.0.2-alpha-20230825000350-ed7b96b95 - 4.0.2-rc-20230825041350-c00984afa",
+      "nodes": [
+        "node_modules/@graphql-codegen/typescript-operations"
+      ],
+      "fixAvailable": true
+    },
+    "@graphql-codegen/visitor-plugin-common": {
+      "name": "@graphql-codegen/visitor-plugin-common",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "@graphql-tools/relay-operation-optimizer"
+      ],
+      "effects": [
+        "@graphql-codegen/typescript",
+        "@graphql-codegen/typescript-operations"
+      ],
+      "range": "2.9.1-alpha-7a65ba05d.0 - 4.0.0-rc-20230524075940-6fc45fc42",
+      "nodes": [
+        "node_modules/@graphql-codegen/visitor-plugin-common"
+      ],
+      "fixAvailable": {
+        "name": "gatsby",
+        "version": "3.3.1",
+        "isSemVerMajor": true
+      }
+    },
+    "@graphql-tools/relay-operation-optimizer": {
+      "name": "@graphql-tools/relay-operation-optimizer",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "@ardatan/relay-compiler"
+      ],
+      "effects": [
+        "@graphql-codegen/visitor-plugin-common"
+      ],
+      "range": "6.4.14 - 7.0.11",
+      "nodes": [
+        "node_modules/@graphql-tools/relay-operation-optimizer"
+      ],
+      "fixAvailable": {
+        "name": "gatsby",
+        "version": "3.3.1",
+        "isSemVerMajor": true
+      }
+    },
+    "@humanwhocodes/config-array": {
+      "name": "@humanwhocodes/config-array",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "minimatch"
+      ],
+      "effects": [
+        "eslint"
+      ],
+      "range": "*",
+      "nodes": [
+        "node_modules/@humanwhocodes/config-array"
+      ],
+      "fixAvailable": {
+        "name": "eslint",
+        "version": "4.1.1",
+        "isSemVerMajor": true
+      }
+    },
+    "@parcel/reporter-dev-server": {
+      "name": "@parcel/reporter-dev-server",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1112666,
+          "name": "@parcel/reporter-dev-server",
+          "dependency": "@parcel/reporter-dev-server",
+          "title": "Parcel has an Origin Validation Error vulnerability",
+          "url": "https://github.com/advisories/GHSA-qm9p-f9j5-w83w",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-346"
+          ],
+          "cvss": {
+            "score": 6.5,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:N/A:N"
+          },
+          "range": ">=1.6.1 <=2.16.3"
+        }
+      ],
+      "effects": [
+        "gatsby-parcel-config"
+      ],
+      "range": "<=2.16.3",
+      "nodes": [
+        "node_modules/@parcel/reporter-dev-server"
+      ],
+      "fixAvailable": {
+        "name": "gatsby",
+        "version": "3.3.1",
+        "isSemVerMajor": true
+      }
+    },
+    "@sigmacomputing/babel-plugin-lodash": {
+      "name": "@sigmacomputing/babel-plugin-lodash",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "glob"
+      ],
+      "effects": [
+        "gatsby"
+      ],
+      "range": "*",
+      "nodes": [
+        "node_modules/@sigmacomputing/babel-plugin-lodash"
+      ],
+      "fixAvailable": {
+        "name": "gatsby",
+        "version": "3.3.1",
+        "isSemVerMajor": true
+      }
+    },
+    "ajv": {
+      "name": "ajv",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1113214,
+          "name": "ajv",
+          "dependency": "ajv",
+          "title": "ajv has ReDoS when using `$data` option",
+          "url": "https://github.com/advisories/GHSA-2g4f-4pwh-qvx6",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-400"
+          ],
+          "cvss": {
+            "score": 0,
+            "vectorString": null
+          },
+          "range": "<8.18.0"
+        }
+      ],
+      "effects": [
+        "@eslint/eslintrc",
+        "eslint",
+        "schema-utils"
+      ],
+      "range": "<8.18.0",
+      "nodes": [
+        "node_modules/@eslint/eslintrc/node_modules/ajv",
+        "node_modules/babel-loader/node_modules/ajv",
+        "node_modules/css-loader/node_modules/ajv",
+        "node_modules/css-minimizer-webpack-plugin/node_modules/ajv",
+        "node_modules/eslint-webpack-plugin/node_modules/ajv",
+        "node_modules/eslint/node_modules/ajv",
+        "node_modules/file-loader/node_modules/ajv",
+        "node_modules/fork-ts-checker-webpack-plugin/node_modules/ajv",
+        "node_modules/gatsby/node_modules/ajv",
+        "node_modules/mini-css-extract-plugin/node_modules/ajv",
+        "node_modules/null-loader/node_modules/ajv",
+        "node_modules/raw-loader/node_modules/ajv",
+        "node_modules/style-loader/node_modules/ajv",
+        "node_modules/url-loader/node_modules/ajv"
+      ],
+      "fixAvailable": {
+        "name": "eslint",
+        "version": "4.1.1",
+        "isSemVerMajor": true
+      }
+    },
+    "babel-loader": {
+      "name": "babel-loader",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "schema-utils"
+      ],
+      "effects": [
+        "gatsby"
+      ],
+      "range": "8.1.0 - 8.4.1",
+      "nodes": [
+        "node_modules/babel-loader"
+      ],
+      "fixAvailable": {
+        "name": "gatsby",
+        "version": "3.3.1",
+        "isSemVerMajor": true
+      }
+    },
+    "cookie": {
+      "name": "cookie",
+      "severity": "low",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1103907,
+          "name": "cookie",
+          "dependency": "cookie",
+          "title": "cookie accepts cookie name, path, and domain with out of bounds characters",
+          "url": "https://github.com/advisories/GHSA-pxg6-pf52-xh8x",
+          "severity": "low",
+          "cwe": [
+            "CWE-74"
+          ],
+          "cvss": {
+            "score": 0,
+            "vectorString": null
+          },
+          "range": "<0.7.0"
+        }
+      ],
+      "effects": [
+        "gatsby",
+        "gatsby-adapter-netlify"
+      ],
+      "range": "<0.7.0",
+      "nodes": [
+        "node_modules/gatsby-adapter-netlify/node_modules/cookie",
+        "node_modules/gatsby/node_modules/cookie"
+      ],
+      "fixAvailable": {
+        "name": "gatsby",
+        "version": "3.3.1",
+        "isSemVerMajor": true
+      }
+    },
+    "css-loader": {
+      "name": "css-loader",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "schema-utils"
+      ],
+      "effects": [
+        "gatsby"
+      ],
+      "range": "2.0.0 - 5.2.7",
+      "nodes": [
+        "node_modules/css-loader"
+      ],
+      "fixAvailable": {
+        "name": "gatsby",
+        "version": "3.3.1",
+        "isSemVerMajor": true
+      }
+    },
+    "css-minimizer-webpack-plugin": {
+      "name": "css-minimizer-webpack-plugin",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "schema-utils"
+      ],
+      "effects": [],
+      "range": "<=3.1.3",
+      "nodes": [
+        "node_modules/css-minimizer-webpack-plugin"
+      ],
+      "fixAvailable": true
+    },
+    "del": {
+      "name": "del",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "rimraf"
+      ],
+      "effects": [
+        "node-plop"
+      ],
+      "range": "4.0.0 - 7.1.0",
+      "nodes": [
+        "node_modules/del"
+      ],
+      "fixAvailable": {
+        "name": "plop",
+        "version": "4.0.5",
+        "isSemVerMajor": true
+      }
+    },
+    "eslint": {
+      "name": "eslint",
+      "severity": "high",
+      "isDirect": true,
+      "via": [
+        "@eslint/config-array",
+        "@eslint/eslintrc",
+        "@humanwhocodes/config-array",
+        "ajv",
+        "file-entry-cache",
+        "minimatch"
+      ],
+      "effects": [
+        "gatsby"
+      ],
+      "range": "0.7.1 - 2.0.0-rc.1 || >=4.1.0",
+      "nodes": [
+        "node_modules/eslint",
+        "node_modules/gatsby/node_modules/eslint"
+      ],
+      "fixAvailable": {
+        "name": "eslint",
+        "version": "4.1.1",
+        "isSemVerMajor": true
+      }
+    },
+    "eslint-plugin-import": {
+      "name": "eslint-plugin-import",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "minimatch"
+      ],
+      "effects": [],
+      "range": ">=1.15.0",
+      "nodes": [
+        "node_modules/eslint-plugin-import"
+      ],
+      "fixAvailable": true
+    },
+    "eslint-plugin-jsx-a11y": {
+      "name": "eslint-plugin-jsx-a11y",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "minimatch"
+      ],
+      "effects": [
+        "gatsby"
+      ],
+      "range": ">=6.5.0",
+      "nodes": [
+        "node_modules/eslint-plugin-jsx-a11y"
+      ],
+      "fixAvailable": {
+        "name": "gatsby",
+        "version": "3.3.1",
+        "isSemVerMajor": true
+      }
+    },
+    "eslint-plugin-react": {
+      "name": "eslint-plugin-react",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "minimatch"
+      ],
+      "effects": [
+        "gatsby"
+      ],
+      "range": ">=7.23.0",
+      "nodes": [
+        "node_modules/eslint-plugin-react"
+      ],
+      "fixAvailable": {
+        "name": "gatsby",
+        "version": "3.3.1",
+        "isSemVerMajor": true
+      }
+    },
+    "eslint-webpack-plugin": {
+      "name": "eslint-webpack-plugin",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "schema-utils"
+      ],
+      "effects": [
+        "gatsby"
+      ],
+      "range": "<=3.1.1",
+      "nodes": [
+        "node_modules/eslint-webpack-plugin"
+      ],
+      "fixAvailable": {
+        "name": "gatsby",
+        "version": "3.3.1",
+        "isSemVerMajor": true
+      }
+    },
+    "external-editor": {
+      "name": "external-editor",
+      "severity": "low",
+      "isDirect": false,
+      "via": [
+        "tmp"
+      ],
+      "effects": [
+        "inquirer"
+      ],
+      "range": ">=1.1.1",
+      "nodes": [
+        "node_modules/external-editor"
+      ],
+      "fixAvailable": {
+        "name": "gatsby",
+        "version": "3.3.1",
+        "isSemVerMajor": true
+      }
+    },
+    "file-entry-cache": {
+      "name": "file-entry-cache",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "flat-cache"
+      ],
+      "effects": [
+        "eslint"
+      ],
+      "range": "4.0.0 - 7.0.2",
+      "nodes": [
+        "node_modules/gatsby/node_modules/file-entry-cache"
+      ],
+      "fixAvailable": {
+        "name": "eslint",
+        "version": "4.1.1",
+        "isSemVerMajor": true
+      }
+    },
+    "file-loader": {
+      "name": "file-loader",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "schema-utils"
+      ],
+      "effects": [],
+      "range": ">=1.1.0",
+      "nodes": [
+        "node_modules/file-loader"
+      ],
+      "fixAvailable": true
+    },
+    "flat-cache": {
+      "name": "flat-cache",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "rimraf"
+      ],
+      "effects": [
+        "file-entry-cache"
+      ],
+      "range": "1.3.4 - 4.0.0",
+      "nodes": [
+        "node_modules/gatsby/node_modules/flat-cache"
+      ],
+      "fixAvailable": {
+        "name": "eslint",
+        "version": "4.1.1",
+        "isSemVerMajor": true
+      }
+    },
+    "fork-ts-checker-webpack-plugin": {
+      "name": "fork-ts-checker-webpack-plugin",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "glob",
+        "minimatch",
+        "schema-utils"
+      ],
+      "effects": [
+        "react-dev-utils"
+      ],
+      "range": ">=0.2.9",
+      "nodes": [
+        "node_modules/fork-ts-checker-webpack-plugin"
+      ],
+      "fixAvailable": true
+    },
+    "gatsby": {
+      "name": "gatsby",
+      "severity": "high",
+      "isDirect": true,
+      "via": [
+        "@graphql-codegen/typescript",
+        "@graphql-codegen/typescript-operations",
+        "@sigmacomputing/babel-plugin-lodash",
+        "babel-loader",
+        "cookie",
+        "css-loader",
+        "css-minimizer-webpack-plugin",
+        "eslint",
+        "eslint-plugin-import",
+        "eslint-plugin-jsx-a11y",
+        "eslint-plugin-react",
+        "eslint-webpack-plugin",
+        "file-loader",
+        "gatsby-cli",
+        "gatsby-link",
+        "gatsby-page-utils",
+        "gatsby-parcel-config",
+        "gatsby-plugin-page-creator",
+        "glob",
+        "mini-css-extract-plugin",
+        "null-loader",
+        "raw-loader",
+        "react-dev-utils",
+        "style-loader",
+        "url-loader",
+        "webpack"
+      ],
+      "effects": [],
+      "range": ">=0.0.2",
+      "nodes": [
+        "node_modules/gatsby"
+      ],
+      "fixAvailable": {
+        "name": "gatsby",
+        "version": "3.3.1",
+        "isSemVerMajor": true
+      }
+    },
+    "gatsby-adapter-netlify": {
+      "name": "gatsby-adapter-netlify",
+      "severity": "low",
+      "isDirect": true,
+      "via": [
+        "cookie"
+      ],
+      "effects": [],
+      "range": "*",
+      "nodes": [
+        "node_modules/gatsby-adapter-netlify"
+      ],
+      "fixAvailable": false
+    },
+    "gatsby-cli": {
+      "name": "gatsby-cli",
+      "severity": "low",
+      "isDirect": false,
+      "via": [
+        "yurnalist"
+      ],
+      "effects": [
+        "gatsby"
+      ],
+      "range": ">=1.1.0",
+      "nodes": [
+        "node_modules/gatsby-cli"
+      ],
+      "fixAvailable": {
+        "name": "gatsby",
+        "version": "3.3.1",
+        "isSemVerMajor": true
+      }
+    },
+    "gatsby-link": {
+      "name": "gatsby-link",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "gatsby-page-utils"
+      ],
+      "effects": [],
+      "range": "4.5.0-alpha-trailing-slash.45 - 4.5.0-next.0 || >=4.7.0-alpha-image-service.13",
+      "nodes": [
+        "node_modules/gatsby-link"
+      ],
+      "fixAvailable": true
+    },
+    "gatsby-page-utils": {
+      "name": "gatsby-page-utils",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "glob"
+      ],
+      "effects": [
+        "gatsby",
+        "gatsby-link",
+        "gatsby-plugin-page-creator"
+      ],
+      "range": "*",
+      "nodes": [
+        "node_modules/gatsby-page-utils"
+      ],
+      "fixAvailable": {
+        "name": "gatsby",
+        "version": "3.3.1",
+        "isSemVerMajor": true
+      }
+    },
+    "gatsby-parcel-config": {
+      "name": "gatsby-parcel-config",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "@parcel/reporter-dev-server"
+      ],
+      "effects": [
+        "gatsby"
+      ],
+      "range": "0.5.0-alpha-transformer-json.41 - 0.5.0-next.0 || >=0.6.0-alpha-wp-image-cdn-auth.48",
+      "nodes": [
+        "node_modules/gatsby-parcel-config"
+      ],
+      "fixAvailable": {
+        "name": "gatsby",
+        "version": "3.3.1",
+        "isSemVerMajor": true
+      }
+    },
+    "gatsby-plugin-page-creator": {
+      "name": "gatsby-plugin-page-creator",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "gatsby-page-utils"
+      ],
+      "effects": [
+        "gatsby"
+      ],
+      "range": ">=2.1.1",
+      "nodes": [
+        "node_modules/gatsby-plugin-page-creator"
+      ],
+      "fixAvailable": {
+        "name": "gatsby",
+        "version": "3.3.1",
+        "isSemVerMajor": true
+      }
+    },
+    "gatsby-plugin-sitemap": {
+      "name": "gatsby-plugin-sitemap",
+      "severity": "high",
+      "isDirect": true,
+      "via": [
+        "minimatch"
+      ],
+      "effects": [],
+      "range": "1.2.21 - 1.2.25 || >=2.0.4",
+      "nodes": [
+        "node_modules/gatsby-plugin-sitemap"
+      ],
+      "fixAvailable": {
+        "name": "gatsby-plugin-sitemap",
+        "version": "2.0.3",
+        "isSemVerMajor": true
+      }
+    },
+    "glob": {
+      "name": "glob",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "minimatch"
+      ],
+      "effects": [
+        "@ardatan/relay-compiler",
+        "@sigmacomputing/babel-plugin-lodash",
+        "fork-ts-checker-webpack-plugin",
+        "gatsby",
+        "gatsby-page-utils",
+        "rimraf"
+      ],
+      "range": "3.0.0 - 10.5.0",
+      "nodes": [
+        "node_modules/glob"
+      ],
+      "fixAvailable": {
+        "name": "gatsby",
+        "version": "3.3.1",
+        "isSemVerMajor": true
+      }
+    },
+    "inquirer": {
+      "name": "inquirer",
+      "severity": "low",
+      "isDirect": false,
+      "via": [
+        "external-editor"
+      ],
+      "effects": [
+        "yurnalist"
+      ],
+      "range": "3.0.0 - 8.2.6 || 9.0.0 - 9.3.7",
+      "nodes": [
+        "node_modules/yurnalist/node_modules/inquirer"
+      ],
+      "fixAvailable": {
+        "name": "gatsby",
+        "version": "3.3.1",
+        "isSemVerMajor": true
+      }
+    },
+    "mini-css-extract-plugin": {
+      "name": "mini-css-extract-plugin",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "schema-utils"
+      ],
+      "effects": [
+        "gatsby"
+      ],
+      "range": "0.4.2 - 2.4.4",
+      "nodes": [
+        "node_modules/mini-css-extract-plugin"
+      ],
+      "fixAvailable": {
+        "name": "gatsby",
+        "version": "3.3.1",
+        "isSemVerMajor": true
+      }
+    },
+    "minimatch": {
+      "name": "minimatch",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1113296,
+          "name": "minimatch",
+          "dependency": "minimatch",
+          "title": "minimatch has a ReDoS via repeated wildcards with non-matching literal in pattern",
+          "url": "https://github.com/advisories/GHSA-3ppc-4f35-3m26",
+          "severity": "high",
+          "cwe": [
+            "CWE-1333"
+          ],
+          "cvss": {
+            "score": 0,
+            "vectorString": null
+          },
+          "range": "<10.2.1"
+        }
+      ],
+      "effects": [
+        "@eslint/config-array",
+        "@eslint/eslintrc",
+        "@humanwhocodes/config-array",
+        "eslint",
+        "eslint-plugin-import",
+        "eslint-plugin-jsx-a11y",
+        "eslint-plugin-react",
+        "fork-ts-checker-webpack-plugin",
+        "gatsby-plugin-sitemap",
+        "glob",
+        "recursive-readdir"
+      ],
+      "range": "<10.2.1",
+      "nodes": [
+        "node_modules/minimatch"
+      ],
+      "fixAvailable": {
+        "name": "eslint",
+        "version": "4.1.1",
+        "isSemVerMajor": true
+      }
+    },
+    "node-plop": {
+      "name": "node-plop",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "del"
+      ],
+      "effects": [
+        "plop"
+      ],
+      "range": "0.19.0 - 0.32.0",
+      "nodes": [
+        "node_modules/node-plop"
+      ],
+      "fixAvailable": {
+        "name": "plop",
+        "version": "4.0.5",
+        "isSemVerMajor": true
+      }
+    },
+    "null-loader": {
+      "name": "null-loader",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "schema-utils"
+      ],
+      "effects": [
+        "gatsby"
+      ],
+      "range": ">=1.0.0",
+      "nodes": [
+        "node_modules/null-loader"
+      ],
+      "fixAvailable": {
+        "name": "gatsby",
+        "version": "3.3.1",
+        "isSemVerMajor": true
+      }
+    },
+    "plop": {
+      "name": "plop",
+      "severity": "high",
+      "isDirect": true,
+      "via": [
+        "node-plop"
+      ],
+      "effects": [],
+      "range": "2.4.0 - 3.1.2",
+      "nodes": [
+        "node_modules/plop"
+      ],
+      "fixAvailable": {
+        "name": "plop",
+        "version": "4.0.5",
+        "isSemVerMajor": true
+      }
+    },
+    "raw-loader": {
+      "name": "raw-loader",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "schema-utils"
+      ],
+      "effects": [],
+      "range": ">=1.0.0-beta.0",
+      "nodes": [
+        "node_modules/raw-loader"
+      ],
+      "fixAvailable": true
+    },
+    "react-dev-utils": {
+      "name": "react-dev-utils",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "fork-ts-checker-webpack-plugin",
+        "recursive-readdir"
+      ],
+      "effects": [],
+      "range": ">=0.5.2",
+      "nodes": [
+        "node_modules/react-dev-utils"
+      ],
+      "fixAvailable": true
+    },
+    "recursive-readdir": {
+      "name": "recursive-readdir",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "minimatch"
+      ],
+      "effects": [
+        "react-dev-utils"
+      ],
+      "range": ">=1.2.0",
+      "nodes": [
+        "node_modules/recursive-readdir"
+      ],
+      "fixAvailable": true
+    },
+    "rimraf": {
+      "name": "rimraf",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "glob"
+      ],
+      "effects": [
+        "del",
+        "flat-cache"
+      ],
+      "range": "2.3.0 - 3.0.2 || 4.2.0 - 5.0.10",
+      "nodes": [
+        "node_modules/rimraf"
+      ],
+      "fixAvailable": {
+        "name": "eslint",
+        "version": "4.1.1",
+        "isSemVerMajor": true
+      }
+    },
+    "schema-utils": {
+      "name": "schema-utils",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "ajv"
+      ],
+      "effects": [
+        "babel-loader",
+        "css-loader",
+        "css-minimizer-webpack-plugin",
+        "eslint-webpack-plugin",
+        "file-loader",
+        "fork-ts-checker-webpack-plugin",
+        "mini-css-extract-plugin",
+        "null-loader",
+        "raw-loader",
+        "style-loader",
+        "url-loader"
+      ],
+      "range": "<=3.3.0",
+      "nodes": [
+        "node_modules/babel-loader/node_modules/schema-utils",
+        "node_modules/css-loader/node_modules/schema-utils",
+        "node_modules/css-minimizer-webpack-plugin/node_modules/schema-utils",
+        "node_modules/eslint-webpack-plugin/node_modules/schema-utils",
+        "node_modules/file-loader/node_modules/schema-utils",
+        "node_modules/fork-ts-checker-webpack-plugin/node_modules/schema-utils",
+        "node_modules/mini-css-extract-plugin/node_modules/schema-utils",
+        "node_modules/null-loader/node_modules/schema-utils",
+        "node_modules/raw-loader/node_modules/schema-utils",
+        "node_modules/style-loader/node_modules/schema-utils",
+        "node_modules/url-loader/node_modules/schema-utils"
+      ],
+      "fixAvailable": {
+        "name": "gatsby",
+        "version": "3.3.1",
+        "isSemVerMajor": true
+      }
+    },
+    "style-loader": {
+      "name": "style-loader",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "schema-utils"
+      ],
+      "effects": [
+        "gatsby"
+      ],
+      "range": "0.18.0 - 2.0.0",
+      "nodes": [
+        "node_modules/style-loader"
+      ],
+      "fixAvailable": {
+        "name": "gatsby",
+        "version": "3.3.1",
+        "isSemVerMajor": true
+      }
+    },
+    "tmp": {
+      "name": "tmp",
+      "severity": "low",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1109537,
+          "name": "tmp",
+          "dependency": "tmp",
+          "title": "tmp allows arbitrary temporary file / directory write via symbolic link `dir` parameter",
+          "url": "https://github.com/advisories/GHSA-52f5-9888-hmc6",
+          "severity": "low",
+          "cwe": [
+            "CWE-59"
+          ],
+          "cvss": {
+            "score": 2.5,
+            "vectorString": "CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:U/C:N/I:L/A:N"
+          },
+          "range": "<=0.2.3"
+        }
+      ],
+      "effects": [
+        "external-editor"
+      ],
+      "range": "<=0.2.3",
+      "nodes": [
+        "node_modules/external-editor/node_modules/tmp"
+      ],
+      "fixAvailable": {
+        "name": "gatsby",
+        "version": "3.3.1",
+        "isSemVerMajor": true
+      }
+    },
+    "url-loader": {
+      "name": "url-loader",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "schema-utils"
+      ],
+      "effects": [
+        "gatsby"
+      ],
+      "range": ">=0.6.0",
+      "nodes": [
+        "node_modules/url-loader"
+      ],
+      "fixAvailable": {
+        "name": "gatsby",
+        "version": "3.3.1",
+        "isSemVerMajor": true
+      }
+    },
+    "webpack": {
+      "name": "webpack",
+      "severity": "low",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1113041,
+          "name": "webpack",
+          "dependency": "webpack",
+          "title": "webpack buildHttp: allowedUris allow-list bypass via URL userinfo (@) leading to build-time SSRF behavior",
+          "url": "https://github.com/advisories/GHSA-8fgc-7cc6-rx7x",
+          "severity": "low",
+          "cwe": [
+            "CWE-918"
+          ],
+          "cvss": {
+            "score": 3.7,
+            "vectorString": "CVSS:3.1/AV:N/AC:H/PR:L/UI:R/S:U/C:L/I:L/A:N"
+          },
+          "range": ">=5.49.0 <=5.104.0"
+        },
+        {
+          "source": 1113042,
+          "name": "webpack",
+          "dependency": "webpack",
+          "title": "webpack buildHttp HttpUriPlugin allowedUris bypass via HTTP redirects → SSRF + cache persistence",
+          "url": "https://github.com/advisories/GHSA-38r7-794h-5758",
+          "severity": "low",
+          "cwe": [
+            "CWE-918"
+          ],
+          "cvss": {
+            "score": 3.7,
+            "vectorString": "CVSS:3.1/AV:N/AC:H/PR:L/UI:R/S:U/C:L/I:L/A:N"
+          },
+          "range": ">=5.49.0 <5.104.0"
+        }
+      ],
+      "effects": [
+        "gatsby"
+      ],
+      "range": "5.49.0 - 5.104.0",
+      "nodes": [
+        "node_modules/webpack"
+      ],
+      "fixAvailable": {
+        "name": "gatsby",
+        "version": "3.3.1",
+        "isSemVerMajor": true
+      }
+    },
+    "yurnalist": {
+      "name": "yurnalist",
+      "severity": "low",
+      "isDirect": false,
+      "via": [
+        "inquirer"
+      ],
+      "effects": [
+        "gatsby-cli"
+      ],
+      "range": "*",
+      "nodes": [
+        "node_modules/yurnalist"
+      ],
+      "fixAvailable": {
+        "name": "gatsby",
+        "version": "3.3.1",
+        "isSemVerMajor": true
+      }
+    }
+  },
+  "metadata": {
+    "vulnerabilities": {
+      "info": 0,
+      "low": 8,
+      "moderate": 14,
+      "high": 29,
+      "critical": 0,
+      "total": 51
+    },
+    "dependencies": {
+      "prod": 1788,
+      "dev": 99,
+      "optional": 43,
+      "peer": 0,
+      "peerOptional": 0,
+      "total": 1928
+    }
+  }
+}
