@@ -25,7 +25,7 @@ const Header = () => {
     setShowSearch(false);
   };
 
-  const bannerMessage = 'BIENVENUE SUR CHIC BY JM !';
+  const bannerMessage = 'EXPÉDIÉ DEPUIS L\'EUROPE. POUR NOS CLIENTS SUISSES, NOUS PRENONS EN CHARGE LES ÉVENTUELS FRAIS DE DOUANE SUR TOUTES LES COMMANDES STANDARDS.';
   const searchRef = createRef();
   const searchSuggestions = ['T-shirt', 'School Spirit', 'Ciel bleu'];
 

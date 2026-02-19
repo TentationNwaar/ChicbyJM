@@ -59,7 +59,7 @@
   .introText {
     font-size: 1.3rem;
     color: #444;
-    margin-top: 1px;
+    margin-top: 0;
     text-align: center;
     width: 100%;
   }
@@ -119,7 +119,7 @@
   .parallaxImage {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
     object-position: center;
     transition: transform 0.5s ease-out;
   }
@@ -147,6 +147,7 @@
     font-size: 2.5rem;
     font-weight: bold;
     padding: 0;
+    margin-bottom: 10px;
   }
   
   /* Styles pour les médias queries */

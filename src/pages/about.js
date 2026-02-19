@@ -21,14 +21,15 @@ const AboutPage = () => {
               />
               <Container size={'large'} spacing={'min'}>
                 <p className={styles.introText}>
-                  Bienvenue chez Chic by JM, où l'élégance suisse rencontre l'innovation.
-                  Découvrez notre histoire, nos valeurs et notre engagement envers un avenir durable.
+                  Bienvenue chez Chic by JM, où l'élégance suisse rencontre
+                  l'innovation. Découvrez notre histoire, nos valeurs et notre
+                  engagement envers un avenir durable.
                 </p>
               </Container>
             </div>
             <div className={styles.introImageContent}>
               <img
-                src={'/aboutUs/BoxJM.png'}
+                src={'/BoxJM.webp'}
                 alt="Chic by JM"
                 className={styles.introImage}
               />
@@ -41,12 +42,22 @@ const AboutPage = () => {
           <Container size={'large'} spacing={'min'}>
             <h2 className={styles.sectionTitle}>Notre Histoire</h2>
             <p>
-              Fondée en 2023, Chic by JM est une marque suisse dédiée à l'élégance et au style affirmé.
-              Nous avons pour mission d'offrir à chacun des pièces uniques, modernes et sophistiquées.
+              Fondée en 2023, Chic by JM est une marque suisse dédiée à
+              l'élégance et au style affirmé. L'intégralité de nos designs et de
+              notre conception est réalisée en Suisse, au cœur de notre atelier
+              créatif.
             </p>
             <p>
-              En seulement un an, nous avons attiré une clientèle fidèle et variée, des particuliers aux clubs prestigieux,
-              comme les Montreux Jazzers. Notre engagement est de continuer à offrir des produits qui allient qualité, style et innovation.
+              Pour donner vie à nos créations, nous collaborons avec des
+              artisans partenaires européens spécialisés, reconnus pour leur
+              excellence technique. Ce modèle nous permet de garantir une
+              qualité de fabrication optimale tout en maintenant une production
+              agile et moderne.
+            </p>
+            <p>
+              En seulement un an, nous avons attiré une clientèle fidèle, des
+              particuliers aux clubs prestigieux comme les Montreux Jazzers, qui
+              nous font confiance pour notre sens du détail et notre exigence.
             </p>
           </Container>
         </section>
@@ -56,11 +67,16 @@ const AboutPage = () => {
           <Container size={'large'} spacing={'min'}>
             <h2 className={styles.sectionTitle}>Nos Valeurs</h2>
             <p>
-              Nous croyons profondément en la solidarité, le respect mutuel et l'engagement. Ensemble, nous créons une équipe forte, solidaire et innovante.
+              Nous croyons profondément en la solidarité, le respect mutuel et
+              l'engagement. Ensemble, nous créons une équipe forte, solidaire et
+              innovante.
             </p>
             <ul className={styles.valuesList}>
-              <li>Soutien à l'environnement</li>
-              <li>Excellence dans la production</li>
+              <li>Conception helvétique & Créativité</li>
+              <li>Production à la demande (zéro gaspillage)</li>
+              <li>
+                Soutien à l'environnement via des circuits courts européens
+              </li>
             </ul>
           </Container>
         </section>
@@ -70,8 +86,12 @@ const AboutPage = () => {
           <Container size={'large'} spacing={'min'}>
             <h2 className={styles.sectionTitle}>Développement Durable</h2>
             <p>
-              Chaque produit est conçu avec des matériaux de qualité supérieure, sélectionnés pour garantir une durabilité exceptionnelle et un style intemporel.
-              Nous sommes profondément engagés dans la protection de l'environnement et utilisons des procédés écoresponsables dans toutes les étapes de notre production.
+              Nous avons choisi un modèle de production à la demande : chaque
+              pièce est fabriquée uniquement lorsqu'elle est commandée. Ce
+              procédé nous permet d'éliminer totalement le gaspillage lié au
+              surstockage et de réduire notre empreinte carbone. En utilisant
+              des encres certifiées et des matériaux sélectionnés pour leur
+              longévité, nous privilégions la qualité à la quantité.
             </p>
           </Container>
         </section>
@@ -80,7 +100,7 @@ const AboutPage = () => {
         <section className={styles.parallaxSection}>
           <img
             alt="Montreux Jazzers"
-            src={toOptimizedImage('/aboutUs/Wallpaper_Montreux_Jazzers_Maillots.png')}
+            src={toOptimizedImage('/JMxJazzers.webp')}
             className={styles.parallaxImage}
           />
         </section>

@@ -1,16 +1,16 @@
-import React, { useState, useEffect, useContext } from "react";
-import { graphql } from "gatsby";
-import Layout from "../components/Layout";
-import { CartContext } from "../context/CartContext";
-import "./product-template.css";
-import { supabase } from "../lib/supabaseClient";
-import ProductReviews from "../components/ProductReviews";
+import React, { useState, useEffect, useContext } from 'react';
+import { graphql } from 'gatsby';
+import Layout from '../components/Layout';
+import { CartContext } from '../context/CartContext';
+import './product-template.css';
+import { supabase } from '../lib/supabaseClient';
+import ProductReviews from '../components/ProductReviews';
 
 function parseVariantName(fullName) {
-  const result = { color: "", size: "" };
+  const result = { color: '', size: '' };
   if (!fullName) return result;
 
-  const parts = fullName.split("/").map((part) => part.trim());
+  const parts = fullName.split('/').map((part) => part.trim());
 
   if (parts.length === 2) {
     result.size = parts[1];
@@ -22,19 +22,18 @@ function parseVariantName(fullName) {
   return result;
 }
 
-
 function getProductImage(product, variant) {
   if (!variant || !variant.files || variant.files.length === 0) {
     return product.thumbnail_url;
   }
 
   const validImage = variant.files.find((file) => {
-    const filename = file.filename?.toLowerCase() || "";
+    const filename = file.filename?.toLowerCase() || '';
     return (
       file.preview_url &&
-      filename.includes("front") &&
-      !filename.includes("logo") &&
-      !filename.includes("preview-file")
+      filename.includes('front') &&
+      !filename.includes('logo') &&
+      !filename.includes('preview-file')
     );
   });
 
@@ -49,23 +48,26 @@ const ProductTemplate = ({ data }) => {
   const product = data.printfulProduct;
   const variants = product.sync_variants || [];
 
-
-  const isBrowser = typeof window !== "undefined";
+  const isBrowser = typeof window !== 'undefined';
   const cartContext = isBrowser ? useContext(CartContext) : null;
   const addToCart = cartContext ? cartContext.addToCart : null;
 
   const extractedVariants = variants.map((variant) =>
-    parseVariantName(variant.name)
+    parseVariantName(variant.name),
   );
   const availableColors = Array.from(
-    new Set(extractedVariants.map((variant) => variant.color).filter(Boolean))
+    new Set(extractedVariants.map((variant) => variant.color).filter(Boolean)),
   );
   const availableSizes = Array.from(
-    new Set(extractedVariants.map((variant) => variant.size).filter(Boolean))
+    new Set(extractedVariants.map((variant) => variant.size).filter(Boolean)),
   );
 
-  const [selectedColor, setSelectedColor] = useState(() => availableColors[0] || null);
-  const [selectedSize, setSelectedSize] = useState(() => availableSizes[0] || null);
+  const [selectedColor, setSelectedColor] = useState(
+    () => availableColors[0] || null,
+  );
+  const [selectedSize, setSelectedSize] = useState(
+    () => availableSizes[0] || null,
+  );
   const [selectedImage, setSelectedImage] = useState(product.thumbnail_url);
   const [isDescriptionOpen, setIsDescriptionOpen] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
@@ -96,16 +98,19 @@ const ProductTemplate = ({ data }) => {
 
     if (matchingVariant?.files?.length) {
       const validImage = matchingVariant.files.find((file) => {
-        const filename = file.filename?.toLowerCase() || "";
+        const filename = file.filename?.toLowerCase() || '';
         return (
           file.preview_url &&
-          filename.includes("front") &&
-          !filename.includes("logo") &&
-          !filename.includes("preview-file")
+          filename.includes('front') &&
+          !filename.includes('logo') &&
+          !filename.includes('preview-file')
         );
       });
 
-      if (validImage?.preview_url && validImage.preview_url !== product.thumbnail_url) {
+      if (
+        validImage?.preview_url &&
+        validImage.preview_url !== product.thumbnail_url
+      ) {
         image = validImage.preview_url;
       }
     }
@@ -129,40 +134,43 @@ const ProductTemplate = ({ data }) => {
     const variant = selectedVariant || variants[0];
 
     addToCart({
-      // identifiants utiles pour Printful & suivi
       product_id: product.id,
-      sync_variant_id: Number(variant.id),   // <= Printful sync_variant.id
-      id: String(variant.id),                // pour compat éventuelle de ton CartContext
+      sync_variant_id: Number(variant.id),
+      id: String(variant.id),
       name: product.name,
-      color: selectedColor || "Non précisé",
-      size: selectedSize || "Non précisé",
+      color: selectedColor || 'Non précisé',
+      size: selectedSize || 'Non précisé',
       price: parseFloat(variant.retail_price) || 0,
-      currency: variant.currency || "CHF",
+      currency: variant.currency || 'CHF',
       image: getProductImage(product, variant),
       quantity: 1,
     });
 
-    alert("Produit ajouté au panier !");
+    alert('Produit ajouté au panier !');
   };
 
   const handleAddToFavorites = async () => {
-    const rawUser = localStorage.getItem("user");
+    const rawUser = localStorage.getItem('user');
     if (!rawUser) {
-      setToast({ type: 'error', text: "Connecte-toi pour ajouter aux favoris." });
+      setToast({
+        type: 'error',
+        text: 'Connecte-toi pour ajouter aux favoris.',
+      });
       return;
     }
     const user = JSON.parse(rawUser);
 
-    // Trouver la variante choisie (ou fallback)
-    const selectedVariant = variants.find((v) => {
-      const parsed = parseVariantName(v.name);
-      return (
-        (!selectedColor || parsed.color?.toLowerCase() === selectedColor?.toLowerCase()) &&
-        (!selectedSize || parsed.size?.toLowerCase() === selectedSize?.toLowerCase())
-      );
-    }) || variants[0];
+    const selectedVariant =
+      variants.find((v) => {
+        const parsed = parseVariantName(v.name);
+        return (
+          (!selectedColor ||
+            parsed.color?.toLowerCase() === selectedColor?.toLowerCase()) &&
+          (!selectedSize ||
+            parsed.size?.toLowerCase() === selectedSize?.toLowerCase())
+        );
+      }) || variants[0];
 
-    // On a déjà selectedImage calculée dans ton useEffect
     const payload = {
       user_id: user.id,
       product_id: product.id,
@@ -172,7 +180,6 @@ const ProductTemplate = ({ data }) => {
       image_url: selectedImage || product.thumbnail_url,
     };
 
-    // Toggle: si existe -> delete / sinon -> insert
     const { data: existing } = await supabase
       .from('favorites')
       .select('id')
@@ -187,36 +194,39 @@ const ProductTemplate = ({ data }) => {
         .eq('id', existing.id);
       if (delErr) {
         console.error(delErr);
-        setToast({ type: 'error', text: "Erreur lors du retrait des favoris." });
+        setToast({
+          type: 'error',
+          text: 'Erreur lors du retrait des favoris.',
+        });
         return;
       }
       setIsFavorite(false);
-      setToast({ type: 'ok', text: "Retiré des favoris." });
+      setToast({ type: 'ok', text: 'Retiré des favoris.' });
       return;
     }
 
     const { error } = await supabase.from('favorites').insert(payload);
     if (error) {
       console.error(error);
-      setToast({ type: 'error', text: "Erreur lors de l’ajout aux favoris." });
+      setToast({ type: 'error', text: 'Erreur lors de l’ajout aux favoris.' });
       return;
     }
     setIsFavorite(true);
-    setToast({ type: 'ok', text: "Ajouté aux favoris !" });
+    setToast({ type: 'ok', text: 'Ajouté aux favoris !' });
   };
 
   useEffect(() => {
     const checkIfFavorite = async () => {
-      const rawUser = localStorage.getItem("user");
+      const rawUser = localStorage.getItem('user');
       if (!rawUser) return;
 
       const user = JSON.parse(rawUser);
 
       const { data } = await supabase
-        .from("favorites")
-        .select("*")
-        .eq("user_id", user.id)
-        .eq("product_id", product.id)
+        .from('favorites')
+        .select('*')
+        .eq('user_id', user.id)
+        .eq('product_id', product.id)
         .maybeSingle();
 
       if (data) {
@@ -230,29 +240,31 @@ const ProductTemplate = ({ data }) => {
   return (
     <Layout>
       {toast && (
-      <div style={{
-        position: 'fixed',
-        bottom: 24,
-        left: '50%',
-        transform: 'translateX(-50%)',
-        background: '#b59f66', // same as .add-to-cart background
-        color: '#fff',
-        padding: '12px 20px',
-        borderRadius: 25,
-        boxShadow: '0 4px 10px rgba(0,0,0,0.1)',
-        fontWeight: 'bold',
-        zIndex: 9999
-      }}>
-        {toast.text}
-      </div>
-    )}
+        <div
+          style={{
+            position: 'fixed',
+            bottom: 24,
+            left: '50%',
+            transform: 'translateX(-50%)',
+            background: '#b59f66',
+            color: '#fff',
+            padding: '12px 20px',
+            borderRadius: 25,
+            boxShadow: '0 4px 10px rgba(0,0,0,0.1)',
+            fontWeight: 'bold',
+            zIndex: 9999,
+          }}
+        >
+          {toast.text}
+        </div>
+      )}
       <div className="product-container">
         <div className="product-images-container no-save">
           <img
             src={selectedImage}
             alt="Image principale du produit"
             className="main-product-image"
-            style={{ width: "500px", height: "500px", objectFit: "cover" }}
+            style={{ width: '500px', height: '500px', objectFit: 'cover' }}
             draggable={false}
             onContextMenu={(e) => e.preventDefault()}
             onClick={() => setLightboxSrc(selectedImage)}
@@ -260,19 +272,23 @@ const ProductTemplate = ({ data }) => {
         </div>
 
         <div className="product-info">
-          <h1 className="product-title">{product.name.split("/")[0]}</h1>
-          <p className="product-price">{variants[0]?.retail_price || "N/A"} CHF</p>
+          <h1 className="product-title">{product.name.split('/')[0]}</h1>
+          <p className="product-price">
+            {variants[0]?.retail_price || 'N/A'} CHF
+          </p>
           <p className="tax-info">Taxes incluses.</p>
 
           {availableColors.length > 0 && (
             <div className="color-selection">
-              <p><strong>Couleur</strong></p>
+              <p>
+                <strong>Couleur</strong>
+              </p>
               <div className="color-buttons">
                 {availableColors.map((color) => (
                   <button
                     key={color}
                     onClick={() => setSelectedColor(color)}
-                    className={`color-button ${color === selectedColor ? "selected" : ""}`}
+                    className={`color-button ${color === selectedColor ? 'selected' : ''}`}
                   >
                     {color}
                   </button>
@@ -283,13 +299,15 @@ const ProductTemplate = ({ data }) => {
 
           {availableSizes.length > 0 && (
             <div className="size-selection">
-              <p><strong>Taille</strong></p>
+              <p>
+                <strong>Taille</strong>
+              </p>
               <div className="size-buttons">
                 {availableSizes.map((size) => (
                   <button
                     key={size}
                     onClick={() => setSelectedSize(size)}
-                    className={`size-button ${size === selectedSize ? "selected" : ""}`}
+                    className={`size-button ${size === selectedSize ? 'selected' : ''}`}
                   >
                     {size}
                   </button>
@@ -302,25 +320,73 @@ const ProductTemplate = ({ data }) => {
             <button className="add-to-cart" onClick={handleAddToCart}>
               Ajouter au panier
             </button>
-            <button className="description-button" onClick={() => setIsDescriptionOpen(true)}>
+            <button
+              className="description-button"
+              onClick={() => setIsDescriptionOpen(true)}
+            >
               Description
             </button>
-            <button className="description-button" onClick={handleAddToFavorites}>
-              {isFavorite ? "Ajouté aux favoris ❤️" : "Ajouter aux favoris"}
+            <button
+              className="description-button"
+              onClick={handleAddToFavorites}
+            >
+              {isFavorite ? 'Ajouté aux favoris ❤️' : 'Ajouter aux favoris'}
             </button>
+          </div>
+
+          {/* BLOC RÉASSURANCE SUISSE */}
+          <div
+            className="swiss-assurance"
+            style={{
+              marginTop: '25px',
+              padding: '15px',
+              border: '1px solid #e0e0e0',
+              borderRadius: '12px',
+              backgroundColor: '#fcfcfc',
+              maxWidth: '100%',
+            }}
+          >
+            <p
+              style={{
+                margin: 0,
+                fontSize: '0.95rem',
+                color: '#b59f66',
+                fontWeight: 'bold',
+                display: 'flex',
+                alignItems: 'center',
+              }}
+            >
+              <span style={{ marginRight: '8px' }}>🇨🇭</span> Prix final garanti
+              sans surprise
+            </p>
+            <p
+              style={{
+                margin: '8px 0 0',
+                fontSize: '0.82rem',
+                color: '#666',
+                lineHeight: '1.4',
+              }}
+            >
+              Nous prenons en charge les éventuels frais de douane. Le montant
+              affiché est le seul que vous paierez. Expédié depuis l'Europe.
+            </p>
           </div>
         </div>
       </div>
 
-            {/* --- AVIS & NOTES --- */}
       <section className="reviews-section">
         <ProductReviews productId={String(product.id)} />
       </section>
 
       {isDescriptionOpen && (
-        <div className={`description-overlay ${isDescriptionOpen ? "open" : ""}`}>
+        <div
+          className={`description-overlay ${isDescriptionOpen ? 'open' : ''}`}
+        >
           <div className="description-panel">
-            <button className="close-description" onClick={() => setIsDescriptionOpen(false)}>
+            <button
+              className="close-description"
+              onClick={() => setIsDescriptionOpen(false)}
+            >
               ×
             </button>
             <h2>Description</h2>
@@ -378,24 +444,20 @@ const ProductTemplate = ({ data }) => {
 };
 
 export const Head = ({ pageContext }) => {
-  const name = (pageContext?.name || "Produit").trim();
-  const slug = (pageContext?.slug || "").trim();
-
-  const title = name ? `${name} | Chic by JM` : "Chic by JM";
-
-  const descriptionRaw = (pageContext?.description || "")
+  const name = (pageContext?.name || 'Produit').trim();
+  const slug = (pageContext?.slug || '').trim();
+  const title = name ? `${name} | Chic by JM` : 'Chic by JM';
+  const descriptionRaw = (pageContext?.description || '')
     .toString()
-    .replace(/<[^>]+>/g, "")
-    .replace(/\s+/g, " ")
+    .replace(/<[^>]+>/g, '')
+    .replace(/\s+/g, ' ')
     .trim();
-
   const description = (
-    descriptionRaw || "Vêtements lifestyle & sport. Livraison internationale."
+    descriptionRaw || 'Vêtements lifestyle & sport. Livraison internationale.'
   ).slice(0, 155);
-
   const canonical = slug
     ? `https://www.chicbyjm.ch/en/product/${slug}/`
-    : "https://www.chicbyjm.ch/";
+    : 'https://www.chicbyjm.ch/';
 
   return (
     <>
@@ -432,6 +494,5 @@ export const query = graphql`
     }
   }
 `;
-
 
 export default ProductTemplate;
