@@ -1,31 +1,21 @@
 const React = require("react");
-const { UserProvider } = require("./src/context/UserContext");
-const { CartProvider } = require("./src/context/CartContext");
-
-exports.wrapRootElement = ({ element }) => (
-  <UserProvider>
-    <CartProvider>{element}</CartProvider>
-  </UserProvider>
-);
 
 exports.onRenderBody = ({ setHeadComponents }) => {
+  const orgJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "Chic by JM",
+    url: "https://www.chicbyjm.ch",
+    logo: "https://www.chicbyjm.ch/logo.png",
+    sameAs: ["https://www.instagram.com/chicbyjm"],
+    areaServed: "Switzerland",
+  };
+
   setHeadComponents([
-    <link
-      key="poppins-font"
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap"
-      rel="stylesheet"
-    />,
-    <link
-      key="slick-theme"
-      rel="stylesheet"
-      type="text/css"
-      href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css"
-    />,
-    <link
-      key="slick-main"
-      rel="stylesheet"
-      type="text/css"
-      href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css"
-    />,
+    React.createElement("script", {
+      key: "jsonld-organization",
+      type: "application/ld+json",
+      dangerouslySetInnerHTML: { __html: JSON.stringify(orgJsonLd) },
+    }),
   ]);
 };

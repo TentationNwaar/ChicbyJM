@@ -443,25 +443,35 @@ const ProductTemplate = ({ data }) => {
   );
 };
 
-export const Head = ({ data }) => {
+export const Head = ({ data, location }) => {
   const product = data.printfulProduct;
+  const siteUrl = data?.site?.siteMetadata?.siteUrl || 'https://www.chicbyjm.ch';
+  const pathname = location?.pathname || '';
+  const canonical = `${siteUrl}${pathname}`;
+
+  const description = (product.description || '')
+    .toString()
+    .replace(/<[^>]+>/g, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, 155);
 
   const structuredData = {
-    "@context": "https://schema.org/",
-    "@type": "Product",
+    '@context': 'https://schema.org',
+    '@type': 'Product',
     name: product.name,
-    image: product.thumbnail_url,
-    description: product.description,
+    image: [product.thumbnail_url].filter(Boolean),
+    description,
     brand: {
-      "@type": "Brand",
-      name: "Chic by JM",
+      '@type': 'Brand',
+      name: 'Chic by JM',
     },
     offers: {
-      "@type": "Offer",
-      priceCurrency: "CHF",
-      price: product.sync_variants?.[0]?.retail_price || "0",
-      availability: "https://schema.org/InStock",
-      url: `https://www.chicbyjm.ch/en/product/${product.slug}/`,
+      '@type': 'Offer',
+      priceCurrency: 'CHF',
+      price: product.sync_variants?.[0]?.retail_price || '0',
+      availability: 'https://schema.org/InStock',
+      url: canonical,
     },
   };
 
@@ -469,27 +479,32 @@ export const Head = ({ data }) => {
     <>
       <title>{product.name} | Chic by JM</title>
 
-      <meta
-        name="description"
-        content={product.description?.slice(0, 155)}
-      />
+      <link rel="canonical" href={canonical} />
+
+      <meta name="description" content={description} />
 
       <meta property="og:title" content={product.name} />
-      <meta
-        property="og:description"
-        content={product.description?.slice(0, 155)}
-      />
+      <meta property="og:description" content={description} />
       <meta property="og:image" content={product.thumbnail_url} />
+      <meta property="og:url" content={canonical} />
 
-      <script type="application/ld+json">
-        {JSON.stringify(structuredData)}
-      </script>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(structuredData),
+        }}
+      />
     </>
   );
 };
 
 export const query = graphql`
   query ($id: String!) {
+    site {
+      siteMetadata {
+        siteUrl
+      }
+    }
     printfulProduct(id: { eq: $id }) {
       id
       name

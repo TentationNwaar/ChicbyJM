@@ -98,6 +98,48 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
   }
 };
 
+// Prevent SSR HTML build for nested /account/* pages (client-only routes)
+exports.onCreatePage = async ({ page, actions, reporter }) => {
+  const { deletePage, createPage } = actions;
+
+  // Prevent SSR for checkout page (uses browser-only context / cart)
+  if (page.path === '/checkout/' || page.path === '/checkout') {
+    deletePage(page);
+    reporter.info(`🧹 Skipping SSR page generation for ${page.path} (client-only checkout)`);
+    return;
+  }
+
+  // Delete any concrete pages that Gatsby creates under /account/*
+  // so they don't get SSR-rendered during `gatsby build`.
+  if (page.path.startsWith('/account/') && page.path !== '/account/' && page.path !== '/account') {
+    deletePage(page);
+    reporter.info(`🧹 Skipping SSR page generation for ${page.path} (client-only)`);
+    return;
+  }
+
+  // Ensure the /account/ entry page is a true client-only route
+  if (page.path === '/account/' || page.path === '/account') {
+    const accountCandidatePaths = [
+      path.resolve('./src/pages/account.js'),
+      path.resolve('./src/pages/account/index.js'),
+    ];
+    const accountFile = accountCandidatePaths.find((p) => fs.existsSync(p));
+
+    if (!accountFile) return;
+
+    deletePage(page);
+    createPage({
+      ...page,
+      path: '/account/',
+      matchPath: '/account/*',
+      component: accountFile,
+    });
+    reporter.info(
+      `✅ Client-only route enforced at /account/* using ${path.relative(process.cwd(), accountFile)}`,
+    );
+  }
+};
+
 //  Suppression ESLint & gestion du CSS
 exports.onCreateWebpackConfig = ({ stage, actions, getConfig }) => {
   actions.setWebpackConfig({
