@@ -176,4 +176,23 @@ function getMinPrice(variants = []) {
   return Math.min(...variants.map((v) => parseFloat(v.retail_price)));
 }
 
+export const Head = ({ location }) => {
+  const siteUrl = 'https://www.chicbyjm.ch';
+  const canonical = siteUrl + (location?.pathname || '/shopFemme/');
+  const pageTitle = 'Chic by JM Suisse | Collection Femme';
+  const pageDescription =
+    'Collection Femme Chic by JM : pièces premium. Livraison en Suisse, paiement sécurisé.';
+
+  return (
+    <>
+      <title>{pageTitle}</title>
+      <meta name="description" content={pageDescription} />
+      <link rel="canonical" href={canonical} />
+      <meta property="og:title" content={pageTitle} />
+      <meta property="og:description" content={pageDescription} />
+      <meta property="og:url" content={canonical} />
+    </>
+  );
+};
+
 export default ShopPage;

@@ -79,4 +79,23 @@ const ShopV2Page = (props) => {
   );
 };
 
+export const Head = ({ location }) => {
+  const siteUrl = 'https://www.chicbyjm.ch';
+  const canonical = siteUrl + (location?.pathname || '/shopV2/');
+  const pageTitle = 'Chic by JM Suisse | Collection Boutique';
+  const pageDescription =
+    'Collection Boutique Chic by JM : pièces premium. Livraison en Suisse, paiement sécurisé.';
+
+  return (
+    <>
+      <title>{pageTitle}</title>
+      <meta name="description" content={pageDescription} />
+      <link rel="canonical" href={canonical} />
+      <meta property="og:title" content={pageTitle} />
+      <meta property="og:description" content={pageDescription} />
+      <meta property="og:url" content={canonical} />
+    </>
+  );
+};
+
 export default ShopV2Page;

@@ -449,12 +449,15 @@ export const Head = ({ data, location }) => {
   const pathname = location?.pathname || '';
   const canonical = `${siteUrl}${pathname}`;
 
-  const description = (product.description || '')
+  const cleanedDescription = (product.description || '')
     .toString()
     .replace(/<[^>]+>/g, '')
     .replace(/\s+/g, ' ')
     .trim()
     .slice(0, 155);
+
+  const fallbackDescription = `${product?.name || 'Produit'} | Chic by JM. Livraison en Suisse, paiement sécurisé.`;
+  const description = cleanedDescription || fallbackDescription;
 
   const structuredData = {
     '@context': 'https://schema.org',

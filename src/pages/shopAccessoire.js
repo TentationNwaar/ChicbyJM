@@ -175,4 +175,23 @@ const ShopPage = () => {
   );
 };
 
+export const Head = ({ location }) => {
+  const siteUrl = 'https://www.chicbyjm.ch';
+  const canonical = siteUrl + (location?.pathname || '/shopAccessoire/');
+  const pageTitle = 'Chic by JM Suisse | Collection Accessoires';
+  const pageDescription =
+    'Collection Accessoires Chic by JM : pièces premium. Livraison en Suisse, paiement sécurisé.';
+
+  return (
+    <>
+      <title>{pageTitle}</title>
+      <meta name="description" content={pageDescription} />
+      <link rel="canonical" href={canonical} />
+      <meta property="og:title" content={pageTitle} />
+      <meta property="og:description" content={pageDescription} />
+      <meta property="og:url" content={canonical} />
+    </>
+  );
+};
+
 export default ShopPage;
