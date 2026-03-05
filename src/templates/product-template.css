@@ -6,7 +6,6 @@
   align-items: flex-start;
   padding: 20px;
   gap: 20px; /* Espacement entre les sections */
-  align-items: center;
   max-width: 1200px;
   margin: 0 auto;
 }

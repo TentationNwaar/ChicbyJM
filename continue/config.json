@@ -1,0 +1,36 @@
+{
+  "models": [
+    {
+      "title": "DeepSeek Coder (local)",
+      "provider": "ollama",
+      "model": "deepseek-coder:6.7b"
+    },
+    {
+      "title": "Llama 3 (local)",
+      "provider": "ollama",
+      "model": "llama3:8b"
+    }
+  ],
+  "tabAutocompleteModel": {
+    "title": "DeepSeek Coder (local)",
+    "provider": "ollama",
+    "model": "deepseek-coder:6.7b"
+  },
+  "embeddingsProvider": {
+    "provider": "ollama",
+    "model": "nomic-embed-text"
+  },
+  "contextProviders": [
+    { "name": "code" },
+    { "name": "diff" },
+    { "name": "terminal" },
+    { "name": "problems" },
+    { "name": "folder" }
+  ],
+  "rules": [
+    "Projet Gatsby e-commerce (Printful + Supabase). Corriger le minimum nécessaire, éviter les refactors inutiles.",
+    "Ne jamais casser SSR: tout accès window/document doit être protégé (typeof window !== 'undefined').",
+    "SEO: Head API Gatsby (export const Head) + canonical + JSON-LD via dangerouslySetInnerHTML.",
+    "Pages privées: /account/* et checkout/cart doivent être client-only (pas SSR)."
+  ]
+}

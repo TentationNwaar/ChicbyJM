@@ -1,2 +1,0 @@
-"use strict";(self.webpackChunkgatsby_ecommerce_theme=self.webpackChunkgatsby_ecommerce_theme||[]).push([[634],{3830:function(e,t,a){a.r(t);var c=a(6540);t.default=()=>c.createElement("h1",null,"🎉 Ceci est ma vraie page /account maintenant")}}]);
-//# sourceMappingURL=component---src-pages-account-home-js-4e5eb3fc292f3dd2c496.js.map

@@ -1,3 +1,0 @@
-/*! For license information please see 2cca2479-ebf0c928d43124678bb3.js.LICENSE.txt */
-"use strict";(self.webpackChunkgatsby_ecommerce_theme=self.webpackChunkgatsby_ecommerce_theme||[]).push([[180],{7875:function(e,c,t){t.d(c,{AIX:function(){return a}});const a={prefix:"fab",iconName:"tiktok",icon:[448,512,[],"e07b","M448,209.91a210.06,210.06,0,0,1-122.77-39.25V349.38A162.55,162.55,0,1,1,185,188.31V278.2a74.62,74.62,0,1,0,52.23,71.18V0l88,0a121.18,121.18,0,0,0,1.86,22.17h0A122.18,122.18,0,0,0,381,102.39a121.43,121.43,0,0,0,67,20.14Z"]}}}]);
-//# sourceMappingURL=2cca2479-ebf0c928d43124678bb3.js.map
