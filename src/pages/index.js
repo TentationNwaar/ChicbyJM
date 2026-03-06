@@ -239,13 +239,13 @@ export const Head = () => (
       rel="preload"
       as="image"
       href="/Shooting3.webp"
-      imagesizes="(max-width: 768px) 100vw, 1400px"
+      imageSizes="(max-width: 768px) 100vw, 1400px"
     />
     <link
       rel="preload"
       as="image"
       href="/BanniereJM2025.png"
-      imagesizes="(max-width: 768px) 100vw, 1400px"
+      imageSizes="(max-width: 768px) 100vw, 1400px"
     />
   </>
 );

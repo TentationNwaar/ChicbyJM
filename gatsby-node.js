@@ -91,6 +91,7 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
       fromPath: legacyNoSlash,
       toPath: canonicalPath,
       isPermanent: true,
+      ignoreCase: false,
       redirectInBrowser: true,
     });
 
@@ -98,6 +99,7 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
       fromPath: legacyPath,
       toPath: canonicalPath,
       isPermanent: true,
+      ignoreCase: false,
       redirectInBrowser: true,
     });
   });

@@ -9,10 +9,11 @@ import * as styles from './Layout.module.css';
 import './Globals.css';
 
 const Layout = ({ children, disablePaddingBottom = false }) => {
-  const { user, isLoadingUser } = useContext(UserContext);
+  const userContext = useContext(UserContext) || {};
+  const { user, isLoadingUser } = userContext;
 
   // Avoid SSR crash + show a spinner only in the browser while user state loads
-  if (typeof window !== 'undefined' && isLoadingUser) {
+  if (typeof window !== 'undefined' && isLoadingUser === true) {
     return (
       <div className={styles.spinnerContainer}>
         <LoadingSpinner />

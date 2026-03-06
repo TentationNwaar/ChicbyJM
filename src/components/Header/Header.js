@@ -261,11 +261,11 @@ const Header = () => {
 
             <ul className={styles.mobileMenuList}>
               {[
-                { label: 'Shopping', path: '/shopTous' },
-                { label: 'Homme', path: '/shopHomme' },
-                { label: 'Femme', path: '/shopFemme' },
-                { label: 'Enfant', path: '/shopEnfant' },
-                { label: 'Accessoires', path: '/shopAccessoire' },
+                { label: 'Shopping', path: '/shoptous' },
+                { label: 'Homme', path: '/shophomme' },
+                { label: 'Femme', path: '/shopfemme' },
+                { label: 'Enfant', path: '/shopenfant' },
+                { label: 'Accessoires', path: '/shopaccessoire' },
                 { label: 'Contact', path: '/support#contact' },
               ].map((item, i) => (
                 <motion.li
