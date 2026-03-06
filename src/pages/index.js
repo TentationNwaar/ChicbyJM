@@ -34,28 +34,28 @@ const HeroCarousel = () => {
       alt: 'Image 3',
       title: 'Votre histoire, votre style',
       ctaText: 'Commencer le shopping',
-      ctaLink: '/shopTous',
+      ctaLink: '/shoptous',
     },
     {
       src: '/Shooting2.webp',
       alt: 'Image 2',
       title: 'Un dressing frais et tendance',
       ctaText: 'Découvrez la collection homme',
-      ctaLink: '/shopHomme',
+      ctaLink: '/shophomme',
     },
     {
       src: '/Shooting.webp',
       alt: 'Image 1',
       title: 'Une mode pour tous',
       ctaText: 'Découvrez la collection enfant',
-      ctaLink: '/shopEnfant',
+      ctaLink: '/shopenfant',
     },
     {
       src: '/Shooting4.webp',
       alt: 'Image 4',
       title: 'Douceur et chaleur',
       ctaText: 'Découvrez la section femme',
-      ctaLink: '/shopFemme',
+      ctaLink: '/shopfemme',
     },
 
   ];
@@ -106,7 +106,7 @@ const IndexPage = () => {
 
   useEffect(() => {
     // Fetch Gatsby's page-data from the Shop page at runtime so Netlify always shows fresh items
-    const url = '/page-data/shopTous/page-data.json';
+    const url = '/page-data/shoptous/page-data.json';
     fetch(url, { credentials: 'same-origin' })
       .then((r) => r.json())
       .then((data) => {
@@ -155,7 +155,7 @@ const IndexPage = () => {
         variants={fadeInAnimation}
       >
         <Container>
-          <Title name="Les nouveautés" link="/shopTous" textLink="Tout voir" />
+          <Title name="Les nouveautés" link="/shoptous" textLink="Tout voir" />
           <RecentImages
             products={latestProducts}
             orderBy="created_at"

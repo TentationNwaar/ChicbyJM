@@ -40,12 +40,41 @@ function getProductImage(product, variant) {
   return validImage?.preview_url || product.thumbnail_url;
 }
 
+function getFallbackDescription(productName) {
+  return `${productName}. Pièce premium Chic by JM. Livraison en Suisse, paiement sécurisé.`;
+}
+
+function getEffectiveProductDescription(rawDescription, productName, maxLength) {
+  const cleaned = (rawDescription || '')
+    .toString()
+    .replace(/<[^>]+>/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  const normalized = cleaned.toLowerCase();
+  const isPlaceholderDescription = [
+    'aucune description disponible',
+    'aucune description disponible.',
+  ].includes(normalized);
+
+  const fallbackDescription = getFallbackDescription(productName);
+  const description =
+    !cleaned || isPlaceholderDescription ? fallbackDescription : cleaned;
+
+  return maxLength ? description.slice(0, maxLength) : description;
+}
+
 const ProductTemplate = ({ data }) => {
   if (!data || !data.printfulProduct) {
     return <div>Produit non trouvé</div>;
   }
 
   const product = data.printfulProduct;
+  const productName = product?.name || 'Produit';
+  const productDescription = getEffectiveProductDescription(
+    product?.description,
+    productName,
+  );
   const variants = product.sync_variants || [];
 
   const isBrowser = typeof window !== 'undefined';
@@ -390,7 +419,7 @@ const ProductTemplate = ({ data }) => {
               ×
             </button>
             <h2>Description</h2>
-            <p>{product.description}</p>
+            <p>{productDescription}</p>
 
             {product.size_guide && product.size_guide.length > 0 && (
               <div className="size-guide">
@@ -448,26 +477,12 @@ export const Head = ({ data, location }) => {
   const siteUrl = data?.site?.siteMetadata?.siteUrl || 'https://chicbyjm.ch';
   const pathname = location?.pathname || '/';
   const canonical = `${siteUrl}${pathname}`;
-
-  const cleanedDescription = (product.description || '')
-    .toString()
-    .replace(/<[^>]+>/g, '')
-    .replace(/\s+/g, ' ')
-    .trim()
-    .slice(0, 160);
-
-  const normalizedDescription = cleanedDescription.toLowerCase();
-  const isPlaceholderDescription = [
-    'aucune description disponible',
-    'aucune description disponible.',
-  ].includes(normalizedDescription);
-
   const productName = product?.name || 'Produit';
-  const fallbackDescription = `${productName}. Pièce premium Chic by JM. Livraison en Suisse, paiement sécurisé.`;
-  const description =
-    !cleanedDescription || isPlaceholderDescription
-      ? fallbackDescription
-      : cleanedDescription;
+  const description = getEffectiveProductDescription(
+    product?.description,
+    productName,
+    160,
+  );
   const imageUrl = product?.thumbnail_url || null;
 
   const structuredData = {

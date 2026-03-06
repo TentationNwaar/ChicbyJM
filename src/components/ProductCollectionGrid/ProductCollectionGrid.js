@@ -10,25 +10,25 @@ const ProductCollectionGrid = (props) => {
         image={'/Homme.webp'}
         title={'Homme'}
         text={'Acheter maintenant'}
-        link={'/shopHomme'}
+        link={'/shophomme'}
       />
       <ProductCollection
         image={'/Femme.webp'}
         title={'Femme'}
         text={'Acheter maintenant'}
-        link={'/shopFemme'}
+        link={'/shopfemme'}
       />
       <ProductCollection
         image={'Accessoires.webp'}
         title={'Accessoires'}
         text={'Acheter maintenant'}
-        link={'/shopAccessoire'}
+        link={'/shopaccessoire'}
       />
       <ProductCollection
         image={'/SchoolSpirit.webp'}
         title={'Enfants'}
         text={'Acheter maintenant'}
-        link={'/shopEnfant'}
+        link={'/shopenfant'}
       />
     </div>
   );
