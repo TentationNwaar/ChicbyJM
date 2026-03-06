@@ -1,4 +1,8 @@
 node_modules
+public/
+.cache/
+home.html
+live-home.html
 .DS_Store
 .cache/
 
