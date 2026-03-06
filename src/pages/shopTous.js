@@ -164,8 +164,9 @@ const ShopPage = () => {
 };
 
 export const Head = ({ location }) => {
-  const siteUrl = 'https://www.chicbyjm.ch';
-  const canonical = siteUrl + (location?.pathname || '/shopTous/');
+  const siteUrl = 'https://chicbyjm.ch';
+  const pathname = location?.pathname || '/';
+  const canonical = `${siteUrl}${pathname}`;
   const pageTitle = 'Chic by JM Suisse | Collection Complète';
   const pageDescription =
     'Collection complète Chic by JM : pièces premium. Livraison en Suisse, paiement sécurisé.';

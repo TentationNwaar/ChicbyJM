@@ -4,6 +4,51 @@
   publish = "public"
   environment = { NODE_VERSION = "18" }
 
+## Canonical host: force www -> non-www
+[[redirects]]
+  from = "/*"
+  to = "https://chicbyjm.ch/:splat"
+  status = 301
+  force = true
+  conditions = { Host = ["www.chicbyjm.ch"] }
+
+## Normalize known shop route casing
+[[redirects]]
+  from = "/shopHomme*"
+  to = "/shophomme/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/shopFemme*"
+  to = "/shopfemme/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/shopEnfant*"
+  to = "/shopenfant/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/shopAccessoire*"
+  to = "/shopaccessoire/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/shopTous*"
+  to = "/shoptous/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/shopV2*"
+  to = "/shopv2/:splat"
+  status = 301
+  force = true
+
 ## Rewrite image URLs marked with imgcdn=true to use Netlify Image CDN
 [[redirects]]
   from = "/*"

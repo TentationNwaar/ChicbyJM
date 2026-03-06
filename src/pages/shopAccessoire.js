@@ -176,8 +176,9 @@ const ShopPage = () => {
 };
 
 export const Head = ({ location }) => {
-  const siteUrl = 'https://www.chicbyjm.ch';
-  const canonical = siteUrl + (location?.pathname || '/shopAccessoire/');
+  const siteUrl = 'https://chicbyjm.ch';
+  const pathname = location?.pathname || '/';
+  const canonical = `${siteUrl}${pathname}`;
   const pageTitle = 'Chic by JM Suisse | Collection Accessoires';
   const pageDescription =
     'Collection Accessoires Chic by JM : pièces premium. Livraison en Suisse, paiement sécurisé.';

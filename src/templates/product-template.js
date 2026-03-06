@@ -445,8 +445,8 @@ const ProductTemplate = ({ data }) => {
 
 export const Head = ({ data, location }) => {
   const product = data.printfulProduct;
-  const siteUrl = data?.site?.siteMetadata?.siteUrl || 'https://www.chicbyjm.ch';
-  const pathname = location?.pathname || '';
+  const siteUrl = data?.site?.siteMetadata?.siteUrl || 'https://chicbyjm.ch';
+  const pathname = location?.pathname || '/';
   const canonical = `${siteUrl}${pathname}`;
 
   const cleanedDescription = (product.description || '')
@@ -454,10 +454,21 @@ export const Head = ({ data, location }) => {
     .replace(/<[^>]+>/g, '')
     .replace(/\s+/g, ' ')
     .trim()
-    .slice(0, 155);
+    .slice(0, 160);
 
-  const fallbackDescription = `${product?.name || 'Produit'} | Chic by JM. Livraison en Suisse, paiement sécurisé.`;
-  const description = cleanedDescription || fallbackDescription;
+  const normalizedDescription = cleanedDescription.toLowerCase();
+  const isPlaceholderDescription = [
+    'aucune description disponible',
+    'aucune description disponible.',
+  ].includes(normalizedDescription);
+
+  const productName = product?.name || 'Produit';
+  const fallbackDescription = `${productName}. Pièce premium Chic by JM. Livraison en Suisse, paiement sécurisé.`;
+  const description =
+    !cleanedDescription || isPlaceholderDescription
+      ? fallbackDescription
+      : cleanedDescription;
+  const imageUrl = product?.thumbnail_url || null;
 
   const structuredData = {
     '@context': 'https://schema.org',
@@ -488,8 +499,13 @@ export const Head = ({ data, location }) => {
 
       <meta property="og:title" content={product.name} />
       <meta property="og:description" content={description} />
-      <meta property="og:image" content={product.thumbnail_url} />
       <meta property="og:url" content={canonical} />
+      {imageUrl ? <meta property="og:image" content={imageUrl} /> : null}
+
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:title" content={product.name} />
+      <meta name="twitter:description" content={description} />
+      {imageUrl ? <meta name="twitter:image" content={imageUrl} /> : null}
 
       <script
         type="application/ld+json"

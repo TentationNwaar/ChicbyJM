@@ -5,8 +5,8 @@ exports.onRenderBody = ({ setHeadComponents }) => {
     "@context": "https://schema.org",
     "@type": "Organization",
     name: "Chic by JM",
-    url: "https://www.chicbyjm.ch",
-    logo: "https://www.chicbyjm.ch/logo.png",
+    url: "https://chicbyjm.ch",
+    logo: "https://chicbyjm.ch/logo.png",
     sameAs: ["https://www.instagram.com/chicbyjm"],
     areaServed: "Switzerland",
   };

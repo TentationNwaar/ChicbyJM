@@ -3,6 +3,15 @@ const fs = require('fs');
 const fetch = require('node-fetch');
 require('dotenv').config({ path: `.env.${process.env.NODE_ENV}` });
 
+const SHOP_ROUTE_MAP = {
+  '/shopHomme/': '/shophomme/',
+  '/shopFemme/': '/shopfemme/',
+  '/shopEnfant/': '/shopenfant/',
+  '/shopAccessoire/': '/shopaccessoire/',
+  '/shopTous/': '/shoptous/',
+  '/shopV2/': '/shopv2/',
+};
+
 exports.createPages = async ({ actions, graphql, reporter }) => {
   const { createPage } = actions;
 
@@ -75,6 +84,24 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
     redirectInBrowser: true,
   });
 
+  Object.entries(SHOP_ROUTE_MAP).forEach(([legacyPath, canonicalPath]) => {
+    const legacyNoSlash = legacyPath.replace(/\/$/, '');
+
+    actions.createRedirect({
+      fromPath: legacyNoSlash,
+      toPath: canonicalPath,
+      isPermanent: true,
+      redirectInBrowser: true,
+    });
+
+    actions.createRedirect({
+      fromPath: legacyPath,
+      toPath: canonicalPath,
+      isPermanent: true,
+      redirectInBrowser: true,
+    });
+  });
+
   // 2) Route client-only /account/* (optionnelle, seulement si le fichier existe)
   const accountCandidatePaths = [
     path.resolve('./src/pages/account.js'),
@@ -108,6 +135,11 @@ exports.onCreatePage = async ({ page, actions, reporter }) => {
     reporter.info(`🧹 Skipping SSR page generation for ${page.path} (client-only checkout)`);
     return;
   }
+
+  // ⚠️  REMOVED: Shop route normalization via deletePage/createPage
+  // (This causes infinite recursion in onCreatePage hook)
+  // Instead, use createRedirect() in createPages() — stable one-way redirects.
+  // See SHOP_ROUTE_MAP createRedirect() calls ~line 89-101.
 
   // Delete any concrete pages that Gatsby creates under /account/*
   // so they don't get SSR-rendered during `gatsby build`.

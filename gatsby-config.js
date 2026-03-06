@@ -6,7 +6,7 @@ module.exports = {
   siteMetadata: {
     title: `Chic by JM`,
     description: `Vêtements lifestyle et sport.`,
-    siteUrl: `https://www.chicbyjm.ch`,
+    siteUrl: `https://chicbyjm.ch`,
   },
   plugins: [
     {
