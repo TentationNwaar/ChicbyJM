@@ -40,23 +40,23 @@
   "headerLinks": [
     {
       "menuLabel": "Shopping",
-      "menuLink": "/shopTous"
+      "menuLink": "/shoptous"
     },
     {
       "menuLabel": "Homme",
-      "menuLink": "/shopHomme"
+      "menuLink": "/shophomme"
     },
     {
       "menuLabel": "Femme",
-      "menuLink": "/shopFemme"
+      "menuLink": "/shopfemme"
     },
     {
       "menuLabel": "Enfant",
-      "menuLink": "/shopEnfant"
+      "menuLink": "/shopenfant"
     },
     {
       "menuLabel": "Accessoires",
-      "menuLink": "/shopAccessoire"
+      "menuLink": "/shopaccessoire"
     },
     {
       "menuLabel": "Contact",
