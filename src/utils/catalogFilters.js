@@ -61,7 +61,7 @@ export const extractVariantColors = (node) => {
 
 // --- helpers communs ---
 export const stripAccents = (s = "") =>
-  s.normalize("NFD").replace(/\p{Diacritic}+/gu, "").toLowerCase().trim();
+  s.normalize("NFD").replace(/[\u0300-\u036f]+/g, "").toLowerCase().trim();
 
 const singularizeFr = (word = "") => {
   let w = stripAccents(word);
