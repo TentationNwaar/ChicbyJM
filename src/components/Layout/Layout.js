@@ -12,15 +12,8 @@ const Layout = ({ children, disablePaddingBottom = false }) => {
   const userContext = useContext(UserContext) || {};
   const { user, isLoadingUser } = userContext;
 
-  // Avoid SSR crash + show a spinner only in the browser while user state loads
-  if (typeof window !== 'undefined' && isLoadingUser === true) {
-    return (
-      <div className={styles.spinnerContainer}>
-        <LoadingSpinner />
-      </div>
-    );
-  }
-
+  // Always render Header/Footer to avoid SSR/client mismatch
+  // Show spinner in main only while user state loads
   return (
     <>
       <Header />
@@ -29,7 +22,13 @@ const Layout = ({ children, disablePaddingBottom = false }) => {
           disablePaddingBottom ? styles.disablePaddingBottom : ''
         }`}
       >
-        {children}
+        {typeof window !== 'undefined' && isLoadingUser ? (
+          <div className={styles.spinnerContainer}>
+            <LoadingSpinner />
+          </div>
+        ) : (
+          children
+        )}
       </main>
       <Footer />
     </>
